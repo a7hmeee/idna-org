@@ -1,0 +1,55 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'login_title' => 'تسجيل الدخول',
+    'login_subtitle' => 'نظام إدارة بلدية إذنا',
+    'email' => 'البريد الإلكتروني',
+    'password' => 'كلمة المرور',
+    'remember_me' => 'تذكرني',
+    'forgot_password' => 'نسيت كلمة المرور؟',
+    'login' => 'تسجيل الدخول',
+    'logging_in' => 'جاري تسجيل الدخول...',
+    'logout' => 'تسجيل الخروج',
+    'new_password' => 'كلمة المرور الجديدة',
+    'confirm_password' => 'تأكيد كلمة المرور',
+    'confirm_new_password' => 'تأكيد كلمة المرور الجديدة',
+    'current_password' => 'كلمة المرور الحالية',
+    'send_reset_link' => 'إرسال رابط إعادة التعيين',
+    'sending' => 'جاري الإرسال...',
+    'reset_password' => 'إعادة تعيين كلمة المرور',
+    'resetting' => 'جاري إعادة التعيين...',
+    'change_password' => 'تغيير كلمة المرور',
+    'change_password_description' => 'قم بتغيير كلمة المرور الخاصة بك للحفاظ على أمان حسابك.',
+    'save_changes' => 'حفظ التغييرات',
+    'saving' => 'جاري الحفظ...',
+    'cancel' => 'إلغاء',
+    'back_to_login' => 'العودة إلى تسجيل الدخول',
+    'all_rights_reserved' => 'جميع الحقوق محفوظة.',
+    'forgot_password_description' => 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.',
+
+    'messages' => [
+        'login_successful' => 'تم تسجيل الدخول بنجاح.',
+        'invalid_credentials' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+        'account_locked' => 'الحساب مقفل مؤقتاً. يرجى المحاولة بعد :minutes دقائق.',
+        'password_reset_link_sent' => 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.',
+        'unable_to_send_reset_link' => 'تعذر إرسال رابط إعادة تعيين كلمة المرور. يرجى المحاولة لاحقاً.',
+        'password_reset_successful' => 'تم إعادة تعيين كلمة المرور بنجاح. يمكنك الآن تسجيل الدخول.',
+        'invalid_reset_token' => 'رابط إعادة تعيين كلمة المرور غير صالح أو منتهي الصلاحية.',
+        'password_changed_successful' => 'تم تغيير كلمة المرور بنجاح.',
+    ],
+
+    'validation' => [
+        'email_required' => 'البريد الإلكتروني مطلوب.',
+        'email_invalid' => 'البريد الإلكتروني غير صالح.',
+        'email_not_found' => 'لم يتم العثور على هذا البريد الإلكتروني.',
+        'password_required' => 'كلمة المرور مطلوبة.',
+        'password_min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل.',
+        'password_confirmation_mismatch' => 'تأكيد كلمة المرور غير متطابق.',
+        'current_password_required' => 'كلمة المرور الحالية مطلوبة.',
+        'current_password_incorrect' => 'كلمة المرور الحالية غير صحيحة.',
+        'password_same_as_current' => 'كلمة المرور الجديدة يجب أن تختلف عن كلمة المرور الحالية.',
+        'token_required' => 'رمز إعادة التعيين مطلوب.',
+    ],
+];
