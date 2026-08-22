@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Domains\Authentication\Models\User;
 use App\Domains\Department\Models\Department;
 use Illuminate\Database\Seeder;
 
@@ -11,7 +12,7 @@ final class DepartmentSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminId = \App\Domains\Authentication\Models\User::first()?->id;
+        $adminId = User::first()?->id;
 
         $departments = [
             [

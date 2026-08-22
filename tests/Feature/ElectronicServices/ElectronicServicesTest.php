@@ -3,16 +3,25 @@
 declare(strict_types=1);
 
 use App\Domains\Authentication\Models\User;
+use App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface;
 use App\Domains\ElectronicServices\Models\ElectronicService;
 use App\Domains\ElectronicServices\Models\ServiceCategory;
+use App\Livewire\ElectronicServices\ElectronicServiceForm;
+use App\Livewire\ElectronicServices\ElectronicServiceShow;
+use App\Livewire\ElectronicServices\PublicServiceDetail;
+use App\Livewire\ElectronicServices\ServiceCategoriesIndex;
+use App\Livewire\ElectronicServices\ServiceCategoryForm;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // Categories - Permissions
@@ -53,7 +62,7 @@ it('admin can create category', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\ElectronicServices\ServiceCategoryForm::class)
+    Livewire::test(ServiceCategoryForm::class)
         ->set('name', 'خدمات الكهرباء')
         ->set('status', 'active')
         ->call('save')
@@ -90,7 +99,7 @@ it('admin can update category', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\ElectronicServices\ServiceCategoryForm::class, ['category' => $category])
+    Livewire::test(ServiceCategoryForm::class, ['category' => $category])
         ->set('name', 'خدمات المياه')
         ->call('save')
         ->assertRedirect(route('dashboard.electronic-services.categories'));
@@ -104,7 +113,7 @@ it('admin can delete category', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\ElectronicServices\ServiceCategoriesIndex::class)
+    Livewire::test(ServiceCategoriesIndex::class)
         ->call('confirmDelete', $category->id)
         ->assertSet('showDeleteModal', true)
         ->call('delete');
@@ -150,7 +159,7 @@ it('admin can create service with JSON steps', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\ElectronicServices\ElectronicServiceForm::class)
+    Livewire::test(ElectronicServiceForm::class)
         ->set('name', 'طلب توصيل كهرباء')
         ->set('service_category_id', (string) $category->id)
         ->set('status', 'draft')
@@ -188,7 +197,7 @@ it('admin can publish service', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\ElectronicServices\ElectronicServiceShow::class, ['service' => $service])
+    Livewire::test(ElectronicServiceShow::class, ['service' => $service])
         ->call('publish');
 
     expect($service->fresh()->status)->toBe('active');
@@ -252,7 +261,7 @@ it('getMostViewed returns ordered services', function (): void {
         'is_public' => true,
     ]);
 
-    $repo = app(\App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface::class);
+    $repo = app(ElectronicServiceRepositoryInterface::class);
     $mostViewed = $repo->getMostViewed(5);
 
     expect($mostViewed->count())->toBe(2);
@@ -275,7 +284,7 @@ it('getMostClicked returns ordered services', function (): void {
         'is_public' => true,
     ]);
 
-    $repo = app(\App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface::class);
+    $repo = app(ElectronicServiceRepositoryInterface::class);
     $mostClicked = $repo->getMostClicked(5);
 
     expect($mostClicked->count())->toBe(2);
@@ -297,7 +306,7 @@ it('getByCategory returns services for given category', function (): void {
         'is_public' => true,
     ]);
 
-    $repo = app(\App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface::class);
+    $repo = app(ElectronicServiceRepositoryInterface::class);
     $services = $repo->getByCategory($category->id);
 
     expect($services->count())->toBe(1);
@@ -435,7 +444,7 @@ it('portal click tracking works via livewire', function (): void {
 
     $initialClicks = $service->portal_clicks_count;
 
-    \Livewire\Livewire::test(\App\Livewire\ElectronicServices\PublicServiceDetail::class, ['service' => $service])
+    Livewire::test(PublicServiceDetail::class, ['service' => $service])
         ->call('goToPortal');
 
     expect($service->fresh()->portal_clicks_count)->toBe($initialClicks + 1);
@@ -464,7 +473,7 @@ it('related services exclude current service', function (): void {
         'name' => 'الخدمة الحالية',
     ]);
 
-    $repo = app(\App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface::class);
+    $repo = app(ElectronicServiceRepositoryInterface::class);
     $related = $repo->getRelatedServices($category->id, $service->id, 10);
 
     expect($related->count())->toBe(2);

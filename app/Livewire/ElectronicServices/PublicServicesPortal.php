@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\ElectronicServices;
 
+use App\Domains\Department\Models\Department;
 use App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface;
 use App\Domains\ElectronicServices\Contracts\ServiceCategoryRepositoryInterface;
+use App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface;
+use App\Domains\Municipality\Models\Municipality;
+use App\Domains\SharedKernel\Models\Media;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,9 +18,13 @@ final class PublicServicesPortal extends Component
     use WithPagination;
 
     public string $search = '';
+
     public ?int $filterCategoryId = null;
+
     public ?string $filterDepartmentSlug = null;
+
     public ?string $filterDepartmentName = null;
+
     public bool $showFilters = true;
 
     public function mount(): void
@@ -25,7 +33,7 @@ final class PublicServicesPortal extends Component
         if ($departmentSlug) {
             $this->filterDepartmentSlug = $departmentSlug;
             try {
-                $dept = \App\Domains\Department\Models\Department::where('slug', $departmentSlug)
+                $dept = Department::where('slug', $departmentSlug)
                     ->where('status', 'active')
                     ->where('is_public', true)
                     ->first(['name']);
@@ -38,7 +46,7 @@ final class PublicServicesPortal extends Component
 
     public function toggleFilters(): void
     {
-        $this->showFilters = !$this->showFilters;
+        $this->showFilters = ! $this->showFilters;
     }
 
     public function updatedSearch(): void
@@ -69,7 +77,7 @@ final class PublicServicesPortal extends Component
         $heroImage = null;
         $ctaBackground = null;
         try {
-            $homeRepo = app(\App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface::class);
+            $homeRepo = app(HomepagePublicRepositoryInterface::class);
             $homeData = $homeRepo->getHomePageData();
             $portalUrl = $homeData['settings']['portal_url'] ?? null;
             $municipalityName = ($homeData['municipality']['name_ar'] ?? $homeData['settings']['site_title'] ?? 'بلدية إذنا');
@@ -78,32 +86,32 @@ final class PublicServicesPortal extends Component
         }
 
         try {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+            $municipality = Municipality::first();
             if ($municipality) {
-                $heroMedia = \App\Domains\SharedKernel\Models\Media::where('mediable_type', $municipality->getMorphClass())
+                $heroMedia = Media::where('mediable_type', $municipality->getMorphClass())
                     ->where('mediable_id', $municipality->getKey())
                     ->where('collection', 'images')
                     ->where('is_active', true)
                     ->orderBy('display_order')
                     ->skip(1)
                     ->first();
-                $heroImage = $heroMedia ? asset('storage/' . $heroMedia->path) : null;
+                $heroImage = $heroMedia ? asset('storage/'.$heroMedia->path) : null;
 
-                $ctaMedia = \App\Domains\SharedKernel\Models\Media::where('mediable_type', $municipality->getMorphClass())
+                $ctaMedia = Media::where('mediable_type', $municipality->getMorphClass())
                     ->where('mediable_id', $municipality->getKey())
                     ->where('collection', 'portal-cta')
                     ->where('is_active', true)
                     ->orderBy('display_order')
                     ->first();
-                if (!$ctaMedia) {
-                    $ctaMedia = \App\Domains\SharedKernel\Models\Media::where('mediable_type', $municipality->getMorphClass())
+                if (! $ctaMedia) {
+                    $ctaMedia = Media::where('mediable_type', $municipality->getMorphClass())
                         ->where('mediable_id', $municipality->getKey())
                         ->where('collection', 'images')
                         ->where('is_active', true)
                         ->orderBy('display_order')
                         ->first();
                 }
-                $ctaBackground = $ctaMedia ? asset('storage/' . $ctaMedia->path) : null;
+                $ctaBackground = $ctaMedia ? asset('storage/'.$ctaMedia->path) : null;
             }
         } catch (\Throwable $e) {
             // Fail silently
@@ -117,8 +125,8 @@ final class PublicServicesPortal extends Component
             'heroImage' => $heroImage,
             'ctaBackground' => $ctaBackground,
         ])->layout('layouts.home', [
-            'title' => 'بوابة الخدمات الإلكترونية | ' . $municipalityName,
-            'metaDescription' => 'تصفح جميع الخدمات الإلكترونية المتاحة في ' . $municipalityName . '، واختر التصنيف المناسب لتقديم طلبك.',
+            'title' => 'بوابة الخدمات الإلكترونية | '.$municipalityName,
+            'metaDescription' => 'تصفح جميع الخدمات الإلكترونية المتاحة في '.$municipalityName.'، واختر التصنيف المناسب لتقديم طلبك.',
         ]);
     }
 }

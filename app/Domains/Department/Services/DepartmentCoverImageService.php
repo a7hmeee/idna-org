@@ -13,14 +13,14 @@ final readonly class DepartmentCoverImageService
     public function upload(UploadedFile $file): string
     {
         $extension = $file->getClientOriginalExtension();
-        $filename = Str::uuid()->toString() . '.' . $extension;
+        $filename = Str::uuid()->toString().'.'.$extension;
 
         return $file->storeAs('departments', $filename, 'public');
     }
 
     public function delete(?string $path): bool
     {
-        if (!$path) {
+        if (! $path) {
             return false;
         }
 

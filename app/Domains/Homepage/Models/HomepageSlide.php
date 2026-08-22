@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -32,9 +32,9 @@ use Illuminate\Support\Facades\Storage;
  * @property string|null $ends_at
  * @property int|null $created_by
  * @property int|null $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  */
 final class HomepageSlide extends Model
 {
@@ -84,20 +84,20 @@ final class HomepageSlide extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        if (!$this->image_path) {
+        if (! $this->image_path) {
             return null;
         }
 
-        return asset('storage/' . $this->image_path);
+        return asset('storage/'.$this->image_path);
     }
 
     public function getMobileImageUrlAttribute(): ?string
     {
-        if (!$this->mobile_image_path) {
+        if (! $this->mobile_image_path) {
             return null;
         }
 
-        return asset('storage/' . $this->mobile_image_path);
+        return asset('storage/'.$this->mobile_image_path);
     }
 
     public function scopeForPage(Builder $query, string $pageKey): Builder
@@ -114,10 +114,10 @@ final class HomepageSlide extends Model
     {
         return $query->where(function (Builder $q): void {
             $q->whereNull('starts_at')
-              ->orWhere('starts_at', '<=', now());
+                ->orWhere('starts_at', '<=', now());
         })->where(function (Builder $q): void {
             $q->whereNull('ends_at')
-              ->orWhere('ends_at', '>=', now());
+                ->orWhere('ends_at', '>=', now());
         });
     }
 

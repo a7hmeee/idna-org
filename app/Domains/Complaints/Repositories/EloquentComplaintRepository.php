@@ -9,6 +9,7 @@ use App\Domains\Complaints\Enums\ComplaintPriority;
 use App\Domains\Complaints\Enums\ComplaintStatus;
 use App\Domains\Complaints\Models\Complaint;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -171,8 +172,8 @@ final readonly class EloquentComplaintRepository implements ComplaintRepositoryI
     {
         $complaint = $this->model->find($id);
 
-        if (!$complaint) {
-            throw new \Illuminate\Database\Eloquent\ModelNotFoundException("Complaint with ID {$id} not found.");
+        if (! $complaint) {
+            throw new ModelNotFoundException("Complaint with ID {$id} not found.");
         }
 
         return $complaint;

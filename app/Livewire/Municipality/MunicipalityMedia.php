@@ -22,17 +22,25 @@ final class MunicipalityMedia extends Component
     use WithFileUploads;
 
     public bool $showForm = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $editingId = null;
+
     public ?int $deletingId = null;
 
     public $file = null;
+
     public ?string $previewUrl = null;
 
     public string $collection = 'attachment';
+
     public ?string $title = null;
+
     public ?string $alt = null;
+
     public int $displayOrder = 0;
+
     public bool $isActive = true;
 
     public function mount(): void
@@ -62,7 +70,7 @@ final class MunicipalityMedia extends Component
             $this->displayOrder = $media->display_order;
             $this->isActive = $media->is_active;
             $this->previewUrl = Storage::disk($media->disk)->exists($media->path)
-                ? asset('storage/' . $media->path)
+                ? asset('storage/'.$media->path)
                 : null;
             $this->showForm = true;
         }

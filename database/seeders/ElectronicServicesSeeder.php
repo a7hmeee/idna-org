@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Domains\Authentication\Models\User;
 use App\Domains\ElectronicServices\Models\ElectronicService;
 use App\Domains\ElectronicServices\Models\ServiceCategory;
 use Illuminate\Database\Seeder;
@@ -14,7 +15,7 @@ final class ElectronicServicesSeeder extends Seeder
 
     public function run(): void
     {
-        $adminId = \App\Domains\Authentication\Models\User::where('email', 'admin@idhna.ps')->first()?->id;
+        $adminId = User::where('email', 'admin@idhna.ps')->first()?->id;
 
         $categories = [
             [
@@ -444,42 +445,50 @@ final class ElectronicServicesSeeder extends Seeder
 
         $sortOrder = 0;
         foreach ($categories as $catData) {
-            $category = ServiceCategory::create([
-                'name' => $catData['name'],
-                'description' => $catData['description'],
-                'icon' => $catData['icon'],
-                'status' => 'active',
-                'is_public' => true,
-                'sort_order' => $sortOrder++,
-                'created_by' => $adminId,
-                'updated_by' => $adminId,
-            ]);
-
-            foreach ($catData['services'] as $index => $serviceData) {
-                ElectronicService::create([
-                    'service_category_id' => $category->id,
-                    'department_id' => $serviceData['department_id'] ?? null,
-                    'name' => $serviceData['name'],
-                    'summary' => $serviceData['summary'] ?? null,
-                    'description' => $serviceData['description'] ?? null,
-                    'eligibility' => $serviceData['eligibility'] ?? null,
-                    'requirements' => $serviceData['requirements'] ?? null,
-                    'documents' => $serviceData['documents'] ?? null,
-                    'steps' => $serviceData['steps'] ?? null,
-                    'fees' => $serviceData['fees'] ?? null,
-                    'processing_time' => $serviceData['processing_time'] ?? null,
-                    'portal_url' => self::PORTAL_URL,
-                    'requires_login' => true,
+            $category = ServiceCategory::firstOrCreate(
+                ['name' => $catData['name']],
+                [
+                    'description' => $catData['description'],
+                    'icon' => $catData['icon'],
                     'status' => 'active',
                     'is_public' => true,
-                    'is_featured' => $index < 2,
-                    'sort_order' => $index,
-                    'views_count' => rand(50, 500),
-                    'portal_clicks_count' => rand(10, 200),
+                    'sort_order' => $sortOrder,
                     'created_by' => $adminId,
                     'updated_by' => $adminId,
-                    'published_at' => now(),
-                ]);
+                ]
+            );
+
+            $sortOrder++;
+
+            foreach ($catData['services'] as $index => $serviceData) {
+                ElectronicService::firstOrCreate(
+                    [
+                        'service_category_id' => $category->id,
+                        'name' => $serviceData['name'],
+                    ],
+                    [
+                        'department_id' => $serviceData['department_id'] ?? null,
+                        'summary' => $serviceData['summary'] ?? null,
+                        'description' => $serviceData['description'] ?? null,
+                        'eligibility' => $serviceData['eligibility'] ?? null,
+                        'requirements' => $serviceData['requirements'] ?? null,
+                        'documents' => $serviceData['documents'] ?? null,
+                        'steps' => $serviceData['steps'] ?? null,
+                        'fees' => $serviceData['fees'] ?? null,
+                        'processing_time' => $serviceData['processing_time'] ?? null,
+                        'portal_url' => self::PORTAL_URL,
+                        'requires_login' => true,
+                        'status' => 'active',
+                        'is_public' => true,
+                        'is_featured' => $index < 2,
+                        'sort_order' => $index,
+                        'views_count' => rand(50, 500),
+                        'portal_clicks_count' => rand(10, 200),
+                        'created_by' => $adminId,
+                        'updated_by' => $adminId,
+                        'published_at' => now(),
+                    ]
+                );
             }
         }
     }

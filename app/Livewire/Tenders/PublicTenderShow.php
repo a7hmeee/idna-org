@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Tenders;
 
+use App\Domains\Municipality\Models\Municipality;
 use App\Domains\Tenders\Actions\RecordTenderViewAction;
 use App\Domains\Tenders\Contracts\TenderRepositoryInterface;
 use App\Domains\Tenders\Models\Tender;
@@ -16,19 +17,21 @@ final class PublicTenderShow extends Component
     public function mount(?Tender $tender = null): void
     {
         if ($tender && $tender->exists) {
-            abort_if(!$tender->is_public || $tender->status->value !== 'open', 404);
+            abort_if(! $tender->is_public || $tender->status->value !== 'open', 404);
 
             $this->tender = $tender;
 
             app(RecordTenderViewAction::class)->execute($tender->id);
         }
+
+        abort_unless($this->tender, 404);
     }
 
     public function render()
     {
         $municipalityName = 'بلدية إذنا';
         try {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+            $municipality = Municipality::first();
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
             }
@@ -43,8 +46,8 @@ final class PublicTenderShow extends Component
             'municipalityName' => $municipalityName,
             'relatedTenders' => $relatedTenders,
         ])->layout('layouts.home', [
-            'title' => ($this->tender->title_ar ?? 'المناقصة') . ' | ' . $municipalityName,
-            'metaDescription' => $this->tender->summary ?? 'التفاصيل الكاملة للمناقصة ' . ($this->tender->title_ar ?? '') . ' في ' . $municipalityName,
+            'title' => ($this->tender->title_ar ?? 'المناقصة').' | '.$municipalityName,
+            'metaDescription' => $this->tender->summary ?? 'التفاصيل الكاملة للمناقصة '.($this->tender->title_ar ?? '').' في '.$municipalityName,
         ]);
     }
 }

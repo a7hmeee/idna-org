@@ -44,7 +44,7 @@ final class EloquentUserManagementRepository implements UserManagementRepository
         return DB::transaction(function () use ($data): User {
             $user = User::create($data);
 
-            if (!empty($data['role'])) {
+            if (! empty($data['role'])) {
                 $user->assignRole($data['role']);
             }
 

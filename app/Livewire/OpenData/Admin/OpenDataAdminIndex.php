@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\OpenData\Admin;
 
+use App\Domains\OpenData\Actions\DeleteOpenDatasetAction;
 use App\Domains\OpenData\Models\OpenDataset;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -15,13 +16,14 @@ final class OpenDataAdminIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $status = '';
 
     public function delete(OpenDataset $dataset): void
     {
         $this->authorize('delete', OpenDataset::class);
 
-        app(\App\Domains\OpenData\Actions\DeleteOpenDatasetAction::class)->execute($dataset);
+        app(DeleteOpenDatasetAction::class)->execute($dataset);
 
         session()->flash('success', 'تم حذف مجموعة البيانات بنجاح');
     }

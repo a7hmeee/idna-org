@@ -61,7 +61,7 @@ final class Announcement extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Announcement $announcement): void {
+        self::creating(function (Announcement $announcement): void {
             if (empty($announcement->slug)) {
                 $announcement->slug = Str::slug($announcement->title);
             }
@@ -69,7 +69,7 @@ final class Announcement extends Model
             $announcement->views ??= 0;
         });
 
-        static::updating(function (Announcement $announcement): void {
+        self::updating(function (Announcement $announcement): void {
             if (empty($announcement->slug) && $announcement->title) {
                 $announcement->slug = Str::slug($announcement->title);
             }
@@ -90,7 +90,7 @@ final class Announcement extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        return $this->desktop_image_path ? asset('storage/' . $this->desktop_image_path) : null;
+        return $this->desktop_image_path ? asset('storage/'.$this->desktop_image_path) : null;
     }
 
     public function scopePublished($query)

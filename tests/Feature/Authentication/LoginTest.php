@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Domains\Authentication\Actions\LoginAction;
 use App\Domains\Authentication\DTOs\LoginDTO;
+use App\Domains\Authentication\Events\UserLoggedIn;
 use App\Domains\Authentication\Exceptions\AccountLockedException;
 use App\Domains\Authentication\Exceptions\InvalidCredentialsException;
 use App\Domains\Authentication\Models\User;
@@ -133,5 +134,5 @@ it('logs login activity', function (): void {
         rememberMe: false,
     ));
 
-    Event::assertDispatched(\App\Domains\Authentication\Events\UserLoggedIn::class);
+    Event::assertDispatched(UserLoggedIn::class);
 });

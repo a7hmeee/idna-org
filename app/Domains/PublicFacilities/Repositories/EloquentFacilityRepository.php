@@ -88,7 +88,7 @@ final readonly class EloquentFacilityRepository implements FacilityRepositoryInt
     public function toggleFeatured(int $id): Facility
     {
         $facility = $this->model->findOrFail($id);
-        $facility->update(['is_featured' => !$facility->is_featured]);
+        $facility->update(['is_featured' => ! $facility->is_featured]);
 
         $this->forgetCache();
 
@@ -109,8 +109,8 @@ final readonly class EloquentFacilityRepository implements FacilityRepositoryInt
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('summary', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%");
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
             });
         }
 

@@ -17,12 +17,14 @@ final class PublicAnnouncementShow extends Component
     public function mount(?Announcement $announcement = null): void
     {
         if ($announcement && $announcement->exists) {
-            abort_if(!$announcement->isVisible(), 404);
+            abort_if(! $announcement->isVisible(), 404);
 
             $this->announcement = $announcement;
 
             app(RecordAnnouncementViewAction::class)->execute($announcement->id);
         }
+
+        abort_unless($this->announcement, 404);
     }
 
     public function render()
@@ -33,7 +35,8 @@ final class PublicAnnouncementShow extends Component
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
             }
-        } catch (\Throwable $e) {}
+        } catch (\Throwable $e) {
+        }
 
         $relatedAnnouncements = app(AnnouncementRepositoryInterface::class)->getLatest(3)
             ->reject(fn ($a) => $a->id === $this->announcement->id)
@@ -43,8 +46,8 @@ final class PublicAnnouncementShow extends Component
             'municipalityName' => $municipalityName,
             'relatedAnnouncements' => $relatedAnnouncements,
         ])->layout('layouts.home', [
-            'title' => ($this->announcement->title ?? 'الإعلان') . ' | ' . $municipalityName,
-            'metaDescription' => $this->announcement->short_description ?? 'إعلان من ' . $municipalityName,
+            'title' => ($this->announcement->title ?? 'الإعلان').' | '.$municipalityName,
+            'metaDescription' => $this->announcement->short_description ?? 'إعلان من '.$municipalityName,
         ]);
     }
 }

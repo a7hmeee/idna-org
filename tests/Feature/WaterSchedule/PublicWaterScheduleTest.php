@@ -5,14 +5,16 @@ declare(strict_types=1);
 use App\Domains\WaterSchedule\Models\WaterArea;
 use App\Domains\WaterSchedule\Models\WaterSchedule;
 use App\Livewire\WaterSchedule\PublicWaterSchedule;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 it('water schedule page returns 200', function (): void {

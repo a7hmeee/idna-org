@@ -7,7 +7,6 @@ namespace App\Domains\Authentication\Actions;
 use App\Domains\Authentication\Contracts\UserRepositoryInterface;
 use App\Domains\Authentication\DTOs\ResetPasswordDTO;
 use App\Domains\Authentication\Events\PasswordResetCompleted;
-use App\Domains\Authentication\Exceptions\AuthenticationException;
 use App\Domains\Authentication\ValueObjects\Password;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password as PasswordFacade;

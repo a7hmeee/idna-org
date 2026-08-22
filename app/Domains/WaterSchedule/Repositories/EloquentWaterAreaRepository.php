@@ -7,7 +7,6 @@ namespace App\Domains\WaterSchedule\Repositories;
 use App\Domains\WaterSchedule\Contracts\WaterAreaRepositoryInterface;
 use App\Domains\WaterSchedule\Models\WaterArea;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 final readonly class EloquentWaterAreaRepository implements WaterAreaRepositoryInterface
@@ -60,7 +59,7 @@ final readonly class EloquentWaterAreaRepository implements WaterAreaRepositoryI
     public function toggleActive(int $id): WaterArea
     {
         $area = $this->model->findOrFail($id);
-        $area->update(['is_active' => !$area->is_active]);
+        $area->update(['is_active' => ! $area->is_active]);
 
         return $area->fresh();
     }

@@ -6,6 +6,7 @@ namespace App\Domains\OpenData\Actions;
 
 use App\Domains\OpenData\Models\OpenDataset;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 final class UpdateOpenDatasetAction
 {
@@ -13,7 +14,7 @@ final class UpdateOpenDatasetAction
     {
         if ($file) {
             if ($dataset->file_path) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($dataset->file_path);
+                Storage::disk('public')->delete($dataset->file_path);
             }
 
             $data['file_path'] = $file->store('open-data', 'public');

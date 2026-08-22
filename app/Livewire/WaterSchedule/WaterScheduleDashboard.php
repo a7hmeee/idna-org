@@ -17,6 +17,7 @@ use Livewire\Component;
 final class WaterScheduleDashboard extends Component
 {
     public string $date;
+
     public array $scheduleItems = [];
 
     public function mount(): void

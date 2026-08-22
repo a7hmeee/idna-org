@@ -6,6 +6,7 @@ namespace App\Domains\RoleManagement\Repositories;
 
 use App\Domains\RoleManagement\Contracts\RoleRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -23,7 +24,7 @@ final class EloquentRoleRepository implements RoleRepositoryInterface
         return $query->latest()->paginate($perPage);
     }
 
-    public function all(): \Illuminate\Database\Eloquent\Collection
+    public function all(): Collection
     {
         return Role::withCount('users')->get();
     }
@@ -43,7 +44,7 @@ final class EloquentRoleRepository implements RoleRepositoryInterface
         return DB::transaction(function () use ($data): Role {
             $role = Role::create(['name' => $data['name']]);
 
-            if (!empty($data['permissions'])) {
+            if (! empty($data['permissions'])) {
                 $role->givePermissionTo($data['permissions']);
             }
 
@@ -103,9 +104,16 @@ final class EloquentRoleRepository implements RoleRepositoryInterface
             $order = ['users', 'roles', 'departments', 'news', 'services', 'complaints', 'projects', 'tenders', 'jobs', 'settings', 'system'];
             $posA = array_search($a, $order);
             $posB = array_search($b, $order);
-            if ($posA === false && $posB === false) return strcmp($a, $b);
-            if ($posA === false) return 1;
-            if ($posB === false) return -1;
+            if ($posA === false && $posB === false) {
+                return strcmp($a, $b);
+            }
+            if ($posA === false) {
+                return 1;
+            }
+            if ($posB === false) {
+                return -1;
+            }
+
             return $posA <=> $posB;
         });
 

@@ -76,7 +76,7 @@ final class Tender extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Tender $tender): void {
+        self::creating(function (Tender $tender): void {
             if (empty($tender->slug)) {
                 $tender->slug = Str::slug($tender->title_ar);
             }
@@ -84,7 +84,7 @@ final class Tender extends Model
             $tender->views_count ??= 0;
         });
 
-        static::updating(function (Tender $tender): void {
+        self::updating(function (Tender $tender): void {
             if (empty($tender->slug) && $tender->title_ar) {
                 $tender->slug = Str::slug($tender->title_ar);
             }

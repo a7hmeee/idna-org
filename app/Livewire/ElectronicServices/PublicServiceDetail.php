@@ -8,6 +8,7 @@ use App\Domains\ElectronicServices\Actions\RecordPortalClickAction;
 use App\Domains\ElectronicServices\Actions\RecordServiceViewAction;
 use App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface;
 use App\Domains\ElectronicServices\Models\ElectronicService;
+use App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
@@ -77,7 +78,7 @@ final class PublicServiceDetail extends Component
         $municipalityName = 'بلدية إذنا';
         $portalUrl = null;
         try {
-            $homeRepo = app(\App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface::class);
+            $homeRepo = app(HomepagePublicRepositoryInterface::class);
             $homeData = $homeRepo->getHomePageData();
             $municipalityName = ($homeData['municipality']['name_ar'] ?? $homeData['settings']['site_title'] ?? 'بلدية إذنا');
             $portalUrl = $homeData['settings']['portal_url'] ?? null;
@@ -90,8 +91,8 @@ final class PublicServiceDetail extends Component
             'relatedServices' => $this->relatedServices,
             'portalUrl' => $portalUrl,
         ])->layout('layouts.home', [
-            'title' => $this->service->name . ' | ' . $municipalityName,
-            'metaDescription' => $this->service->summary ?? 'تفاصيل خدمة ' . $this->service->name,
+            'title' => $this->service->name.' | '.$municipalityName,
+            'metaDescription' => $this->service->summary ?? 'تفاصيل خدمة '.$this->service->name,
         ]);
     }
 }

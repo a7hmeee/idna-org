@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Homepage\Requests;
 
+use App\Domains\Homepage\Enums\PageCarouselKey;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class StoreHomepageSlideRequest extends FormRequest
@@ -16,7 +17,7 @@ final class StoreHomepageSlideRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pageKey' => ['required', 'string', 'in:' . implode(',', \App\Domains\Homepage\Enums\PageCarouselKey::values())],
+            'pageKey' => ['required', 'string', 'in:'.implode(',', PageCarouselKey::values())],
             'title' => ['required', 'string', 'max:255'],
             'subtitle' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string', 'max:1000'],

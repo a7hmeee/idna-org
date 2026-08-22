@@ -6,6 +6,7 @@ namespace App\Domains\RoleManagement\Support;
 
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 final class PermissionSynchronizer
 {
@@ -15,7 +16,7 @@ final class PermissionSynchronizer
      */
     public function sync(array $registry): void
     {
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $registeredNames = [];
 
@@ -38,7 +39,7 @@ final class PermissionSynchronizer
             }
         });
 
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
     }
 
     /**
@@ -52,6 +53,7 @@ final class PermissionSynchronizer
                 $names[] = $perm['name'];
             }
         }
+
         return $names;
     }
 }

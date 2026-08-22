@@ -17,7 +17,7 @@ final class CouncilDecisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'decision_number' => 'ق-' . fake()->unique()->year() . '-' . fake()->unique()->numerify('###'),
+            'decision_number' => 'ق-'.fake()->unique()->year().'-'.fake()->unique()->numerify('###'),
             'title' => fake()->sentence(6),
             'summary' => fake()->optional()->paragraph(),
             'content' => fake()->optional()->paragraphs(3, true),

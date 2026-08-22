@@ -7,7 +7,6 @@ namespace App\Domains\Authentication\Actions;
 use App\Domains\Authentication\Contracts\UserRepositoryInterface;
 use App\Domains\Authentication\DTOs\ForgotPasswordDTO;
 use App\Domains\Authentication\Events\PasswordResetRequested;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;

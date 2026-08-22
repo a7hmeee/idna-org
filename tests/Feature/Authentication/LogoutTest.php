@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Domains\Authentication\Actions\LogoutAction;
+use App\Domains\Authentication\Events\UserLoggedOut;
+use App\Domains\Authentication\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
@@ -12,7 +14,7 @@ uses(RefreshDatabase::class);
 beforeEach(function (): void {
     Event::fake();
 
-    $this->user = \App\Domains\Authentication\Models\User::factory()->create();
+    $this->user = User::factory()->create();
     Auth::login($this->user);
 });
 
@@ -29,7 +31,7 @@ it('dispatches logout event', function (): void {
     $logoutAction = app(LogoutAction::class);
     $logoutAction->execute();
 
-    Event::assertDispatched(\App\Domains\Authentication\Events\UserLoggedOut::class);
+    Event::assertDispatched(UserLoggedOut::class);
 });
 
 it('invalidates session after logout', function (): void {

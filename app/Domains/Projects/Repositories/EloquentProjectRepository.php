@@ -7,6 +7,7 @@ namespace App\Domains\Projects\Repositories;
 use App\Domains\Projects\Contracts\ProjectRepositoryInterface;
 use App\Domains\Projects\Models\Project;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -90,7 +91,7 @@ final readonly class EloquentProjectRepository implements ProjectRepositoryInter
     public function toggleFeatured(int $id): Project
     {
         $project = $this->findOrFail($id);
-        $project->update(['is_featured' => !$project->is_featured]);
+        $project->update(['is_featured' => ! $project->is_featured]);
 
         $this->forgetCache();
 
@@ -174,8 +175,8 @@ final readonly class EloquentProjectRepository implements ProjectRepositoryInter
     {
         $project = $this->model->find($id);
 
-        if (!$project) {
-            throw new \Illuminate\Database\Eloquent\ModelNotFoundException("Project with ID {$id} not found.");
+        if (! $project) {
+            throw new ModelNotFoundException("Project with ID {$id} not found.");
         }
 
         return $project;

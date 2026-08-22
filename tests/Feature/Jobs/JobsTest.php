@@ -5,22 +5,23 @@ declare(strict_types=1);
 use App\Domains\Authentication\Models\User;
 use App\Domains\Jobs\Actions\CreateJobAction;
 use App\Domains\Jobs\Actions\PublishJobAction;
+use App\Domains\Jobs\Actions\RecordJobViewAction;
 use App\Domains\Jobs\Contracts\JobRepositoryInterface;
 use App\Domains\Jobs\DTOs\JobData;
-use App\Domains\Jobs\Enums\JobStatus;
 use App\Domains\Jobs\Models\Job;
-use App\Domains\Jobs\Actions\RecordJobViewAction;
 use App\Livewire\Jobs\PublicJobShow;
 use App\Livewire\Jobs\PublicJobsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================

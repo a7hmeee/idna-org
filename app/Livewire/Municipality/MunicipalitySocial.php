@@ -10,6 +10,7 @@ use App\Domains\Municipality\Contracts\MunicipalityRepositoryInterface;
 use App\Domains\Municipality\DTOs\SocialPlatformDTO;
 use App\Domains\Municipality\Enums\SocialPlatformSlug;
 use App\Domains\Municipality\Models\Municipality;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -17,16 +18,25 @@ use Livewire\Component;
 final class MunicipalitySocial extends Component
 {
     public bool $showForm = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $editingId = null;
+
     public ?int $deletingId = null;
 
     public string $name = '';
+
     public string $slug = '';
+
     public string $icon = '';
+
     public string $url = '';
+
     public ?string $color = null;
+
     public int $displayOrder = 0;
+
     public bool $isActive = true;
 
     public function mount(): void
@@ -67,7 +77,7 @@ final class MunicipalitySocial extends Component
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', \Illuminate\Validation\Rule::in(SocialPlatformSlug::values())],
+            'slug' => ['required', 'string', Rule::in(SocialPlatformSlug::values())],
             'icon' => ['required', 'string', 'max:100'],
             'url' => ['required', 'url', 'max:2000'],
             'color' => ['nullable', 'string', 'max:50'],

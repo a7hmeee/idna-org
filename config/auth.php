@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use App\Domains\Authentication\Models\User;
 
 return [
     'defaults' => [
@@ -18,7 +19,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', \App\Domains\Authentication\Models\User::class),
+            'model' => env('AUTH_MODEL', User::class),
         ],
     ],
 

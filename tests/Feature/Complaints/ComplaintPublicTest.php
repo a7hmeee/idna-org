@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-use App\Domains\Complaints\Enums\ComplaintCategory;
+use App\Domains\Authentication\Models\User;
 use App\Domains\Complaints\Models\Complaint;
 use App\Livewire\Complaints\PublicComplaintForm;
 use App\Livewire\Complaints\PublicComplaintTracking;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================
@@ -168,7 +169,7 @@ it('tracking does not expose internal notes', function (): void {
 });
 
 it('tracking does not expose assigned_to directly to public', function (): void {
-    $employee = \App\Domains\Authentication\Models\User::factory()->create();
+    $employee = User::factory()->create();
     $complaint = Complaint::factory()->assigned()->create(['assigned_to' => $employee->id]);
 
     $tracking = Livewire::test(PublicComplaintTracking::class)

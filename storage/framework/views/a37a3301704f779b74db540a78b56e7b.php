@@ -62,89 +62,19 @@
     
     
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(in_array('hero', $sectionKeys)): ?>
-        <?php
-            $heroImg = !empty($slides[0]['image_path']) ? asset('storage/' . $slides[0]['image_path']) : (!empty($slides[0]['image_url']) ? $slides[0]['image_url'] : null);
-        ?>
-        <section id="hero" class="relative overflow-hidden" style="min-height:500px;isolation:isolate;">
-            
-            <div class="absolute inset-0" style="z-index:0;">
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($heroImg): ?>
-                    <img src="<?php echo e($heroImg); ?>" alt="منظر بانورامي لمدينة إدنا" class="w-full h-full object-cover" style="object-position:60% center;" fetchpriority="high">
-                <?php else: ?>
-                    <div class="w-full h-full" style="background:linear-gradient(135deg,#17243A,#1E2D4A,#2B3A5C);"></div>
-                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
-
-            
-            <div class="absolute inset-0" style="z-index:1;background:linear-gradient(90deg,rgba(8,20,25,0.25),rgba(8,20,25,0.42),rgba(8,20,25,0.70));"></div>
-
-            
-            <div class="hidden lg:block" style="position:absolute;right:-120px;top:-40px;width:280px;height:calc(100% + 80px);border-radius:50% 0 0 50%/45% 0 0 55%;background:linear-gradient(180deg,#1A7A3E 0%,#176B32 40%,#0F4F28 100%);opacity:0.85;pointer-events:none;z-index:2;"></div>
-
-            
-            <div class="relative w-full h-full flex items-center" style="z-index:3;padding-top:36px;padding-bottom:105px;">
-                <div class="w-full">
-                    <div style="width:100%;max-width:1280px;margin-left:auto;margin-right:auto;padding-left:clamp(16px,2.5vw,36px);padding-right:clamp(16px,2.5vw,36px);">
-                        <div class="max-w-[500px] text-right" style="padding-inline:32px;">
-                            
-                            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold text-white mb-5 shadow-lg" style="background:rgba(23,107,50,0.9);backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(23,107,50,0.35);">
-                                <i data-lucide="landmark" class="w-3.5 h-3.5"></i>
-                                <span>الموقع الرسمي</span>
-                            </span>
-
-                            
-                            <h1 class="text-white font-black leading-[1.15] mb-4" style="font-size:clamp(30px,4vw,52px);max-width:500px;text-shadow:0 2px 20px rgba(0,0,0,0.35);">
-                                مرحباً بكم في
-                                <br>
-                                <span style="color:#A5D6A7;"><?php echo e($municipalityName); ?></span>
-                            </h1>
-
-                            
-                            <p class="text-white/80 max-w-md mb-7 leading-relaxed" style="font-size:clamp(13px,1.3vw,15px);text-shadow:0 1px 8px rgba(0,0,0,0.2);">
-                                <?php echo e($municipality['short_description'] ?? 'نسعى لتقديم أفضل الخدمات البلدية بثقافة وشفافية من أجل مجتمع أفضل'); ?>
-
-                            </p>
-
-                            
-                            <div class="flex flex-wrap items-center gap-3 mt-6">
-                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($portalUrl): ?>
-                                    <a href="<?php echo e($portalUrl); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 h-[48px] rounded-xl bg-white text-primary text-sm font-bold no-underline transition-all duration-300 shadow-lg hover:shadow-xl">
-                                        <i data-lucide="external-link" class="w-4 h-4"></i>
-                                        <span><?php echo e($primaryBtn); ?></span>
-                                    </a>
-                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 h-[48px] rounded-xl text-white text-sm font-bold no-underline transition-all duration-300 border border-white/30" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);">
-                                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                                    <span>تواصل معنا</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <style>
-                @media (max-width: 1024px) {
-                    #hero .decorative-shape { width:200px !important; right:-80px !important; }
-                }
-                @media (max-width: 640px) {
-                    #hero .hero-content-inner { padding-inline:16px !important; }
-                }
-                @media (prefers-reduced-motion:reduce) {
-                    #hero * { transition-duration:0.01ms !important; }
-                }
-            </style>
-        </section>
+        <?php echo $__env->make('livewire.homepage.sections.hero', [
+            'slides' => $slides,
+            'settings' => $settings,
+            'municipalityName' => $municipalityName,
+            'portalUrl' => $portalUrl,
+            'logoUrl' => $logoUrl,
+            'quickLinks' => $quickLinks,
+        ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     
     
     
-    <?php echo $__env->renderWhen(in_array('quick_links', $sectionKeys), 'livewire.homepage.sections.quick-access', [
-        'quickLinks' => $quickLinks,
-        'publicServicesIndexUrl' => $publicServicesIndexUrl,
-        'portalUrl' => $portalUrl,
-    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     
     
@@ -155,6 +85,16 @@
         'sectionSubtitle' => $sectionSubtitle('services'),
         'publicServicesIndexUrl' => $publicServicesIndexUrl,
         'portalUrl' => $portalUrl,
+    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
+
+    
+    
+    
+    <?php echo $__env->renderWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
+        'latestNews' => $latestNews,
+        'latestAnnouncements' => $latestAnnouncements,
+        'sectionTitle' => $sectionTitle('latest_news'),
+        'sectionSubtitle' => $sectionSubtitle('latest_news'),
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     
@@ -213,6 +153,8 @@
     <?php echo $__env->renderWhen(!empty($waterSchedule), 'livewire.homepage.sections.water-status', [
         'waterSchedule' => $waterSchedule,
         'waterAreas' => $waterAreas,
+        'sectionTitle' => $sectionTitle('water_schedule') ?? 'جدول توزيع المياه',
+        'sectionSubtitle' => $sectionSubtitle('water_schedule') ?? '',
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     
@@ -223,16 +165,6 @@
         'engineeringOffices' => $engineeringOffices,
         'sectionTitle' => $sectionTitle('jobs'),
         'sectionSubtitle' => $sectionSubtitle('jobs'),
-    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
-
-    
-    
-    
-    <?php echo $__env->renderWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
-        'latestNews' => $latestNews,
-        'latestAnnouncements' => $latestAnnouncements,
-        'sectionTitle' => $sectionTitle('latest_news'),
-        'sectionSubtitle' => $sectionSubtitle('latest_news'),
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     

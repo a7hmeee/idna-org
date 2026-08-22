@@ -1,0 +1,434 @@
+﻿
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\ArabicTextNormalizerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes alef variants t[39m[90mΓÇª[39m [90m0.30s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes ┘ë to ┘è[39m[90m          [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes ╪ñ to ┘ê[39m[90m          [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes ╪ª to ┘è[39m[90m          [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes Arabic diacritics[39m[90m  [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes punctuation[39m[90m        [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit collapses repeated whitesp[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves numbers[39m[90m          [39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves Latin letters an[39m[90mΓÇª[39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles empty input safely[39m[90m [39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not convert ╪⌐ to ┘ç[39m[90m    [39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves Arabic letters c[39m[90mΓÇª[39m [90m0.02s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\ArabicTypoMatcherTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects one-character typo[39m[90m [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null for exact mat[39m[90mΓÇª[39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects very short terms[39m[90m   [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects large edit distanc[39m[90mΓÇª[39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit exact match beats typo[39m[90m     [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit weak typo cannot auto-sele[39m[90mΓÇª[39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit isTypoOnly returns correct[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles empty input[39m[90m        [39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\CancelWorkflowHandlerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit supports CancelWorkflow in[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit delegates to engine cancel[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\ClarificationResolverTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves pronoun ┘ç╪º┘è when[39m[90mΓÇª [39m [90m0.26s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves pronoun ┘é╪»┘è╪┤ ╪▒╪│┘ê┘à[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves pronoun ┘ê┘è┘å ╪ú┘é╪»┘à┘ç[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit asks for service when pron[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not resolve non-prono[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves direct digit sele[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves ordinal selection[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves ╪▒┘é┘à ┘ó style[39m[90m       [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null for invalid s[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null when no pendi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit builds clarification quest[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null when single c[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns clarification when[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit service switch does not ke[39m[90mΓÇª[39m [90m0.04s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\ConversationContextTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns default state for[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns state for existing[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit can update context with se[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit can update intent chain (p[39m[90mΓÇª[39m [90m0.06s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit can reset context[39m[90m          [39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit is not expired immediately[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit expired state returns expi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles update on nonexist[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles reset on nonexiste[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles empty metadata[39m[90m     [39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit service switch overrides p[39m[90mΓÇª[39m [90m0.04s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\DirectServiceResolverTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves by exact official[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves by alias exact ma[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves by official name[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit protects against short ali[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null when no match[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\EntityResolverTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves exact official se[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves exact official na[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves exact alias[39m[90m       [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves contained officia[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ranks contained aliases by[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ranks exact alias match ov[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit uses priority for tie-brea[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns multiple candidate[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ignores aliases shorter th[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit falls back to context serv[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not match unpublished[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\HandlersTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit greeting handler supports[39m[90mΓÇª [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit thanks handler supports on[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit unknown handler supports o[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit greeting handler returns w[39m[90mΓÇª[39m [90m0.06s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit thanks handler returns pol[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit unknown handler returns cl[39m[90mΓÇª[39m [90m0.04s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\HybridIntentPredictorTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit strong rule returns immedi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit strong rule returns immedi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit specific rule with non-wea[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit weak generic phrase with r[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit weak generic phrase with l[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ML with high confidence wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ML low confidence with no[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit empty message returns unkn[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ML disabled mode falls bac[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ML disabled with no rule m[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ML prediction of Unknown w[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit uses custom threshold from[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit classifier failure does no[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\MunicipalityTokenizerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes a simple Arabic[39m[90mΓÇª [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes with normalized[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns empty array for em[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns empty array for wh[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles mixed Arabic and n[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit builds vocabulary from mul[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit vocabulary has unique toke[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles special characters[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\Phase5\ArabicTypoMatcherTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null for exact mat[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects one-character subs[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects one-character inse[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects one-character dele[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects query shorter than[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects candidate shorter[39m[90mΓÇª [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects both shorter than[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects more than max edit[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects completely differe[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit typo score is less than 1.[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit typo score is positive[39m[90m     [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit isTypoOnly returns false f[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit isTypoOnly returns true fo[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit isTypoOnly returns false f[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit isTypoOnly returns false f[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles empty query[39m[90m        [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles empty candidate[39m[90m    [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles both empty[39m[90m         [39m [90m0.02s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit weak typo score below auto[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles Arabic letter vari[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles long Arabic words[39m[90m  [39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\Phase5\ServiceSearchScorerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores exact official name[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores exact phrase at 0.9[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores exact citizen expre[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores exact alias at 0.95[39m[90m [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores contained official[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores contained phrase at[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores contained citizen e[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores contained alias at[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores keyword match at 0.[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores token overlap for p[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit higher token overlap yield[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores description overlap[39m[90m [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores category overlap[39m[90m    [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit applies context boost when[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit applies priority boost[39m[90m     [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit clamps score between 0.0 a[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null for no match[39m[90m  [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit includes explanation in ma[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit better match score with mo[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\Phase5\SmartServiceSearchTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds building permit from[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds business licence fro[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds building permit from[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds completion certifica[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds services by keyword[39m[90m  [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds services by multiple[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds services by descript[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit respects result limit[39m[90m      [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns all matches when l[39m[90mΓÇª[39m [90m0.04s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit applies default limit[39m[90m      [39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns no match for unrel[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns no match for gibbe[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit applies context boost to c[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit context boost is not enoug[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit context boost with null cu[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit deterministic ranking acro[39m[90mΓÇª[39m [90m0.04s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit ranking is stable for ambi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit auto-selects when score ex[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not auto-select when[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not auto-select when[39m[90mΓÇª [39m [90m0.05s[39m  
+  [33;1m![39;22m[90m [39m[90mit typo match prevents auto-s[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit requires clarification for[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not require clarifica[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not require clarifica[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit calculates score gap corre[39m[90mΓÇª[39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit score gap is zero for sing[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes query before se[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles mixed Arabic and E[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles empty query[39m[90m        [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles whitespace-only qu[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles alef variants[39m[90m      [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles ╪⌐ vs ┘ç normalizati[39m[90mΓÇª[39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit handles ┘ë vs ┘è normalizati[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves original message[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves normalized messa[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns array representati[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns array representati[39m[90mΓÇª[39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit caches search documents[39m[90m    [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit clears cache[39m[90m               [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit clearCache returns void[39m[90m    [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit sorts matches by score des[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit sorts by priority descendi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles very long query[39m[90m    [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles special characters[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles unicode characters[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles zero limit[39m[90m         [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit handles negative limit[39m[90m     [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles single character q[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles numeric query[39m[90m      [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles query with only st[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\Phase5\TokenizerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes alef variants[39m[90m   [39m [90m0.06s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes ┘ë to ┘è[39m[90m          [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit normalizes ╪ñ to ┘ê[39m[90m          [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit normalizes ╪ª to ┘è[39m[90m          [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes Arabic diacritics[39m[90m  [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit removes punctuation[39m[90m        [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit collapses repeated whitesp[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes stop words ╪¿╪»┘è[39m[90m     [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes stop words ╪ú╪▒┘è╪»[39m[90m    [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes stop words ┘à┘à┘â┘å[39m[90m    [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes stop words ╪┤┘ê[39m[90m      [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes stop words ┘â┘è┘ü[39m[90m     [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes stop words ╪«╪»┘à╪⌐[39m[90m    [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes multiple stop word[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects tokens shorter tha[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves tokens at minimu[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves 2-char tokens af[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves Arabic-Indic dig[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves Western digits[39m[90m   [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves mixed numbers an[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes duplicate tokens[39m[90m   [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves different tokens[39m[90m [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles empty string[39m[90m       [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles whitespace only[39m[90m    [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles string with only s[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves stop words when[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit still removes duplicates i[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes natural citizen[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes natural citizen[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes natural citizen[39m[90mΓÇª [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit tokenizes natural citizen[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes natural citizen[39m[90mΓÇª [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit tokenizes natural citizen[39m[90mΓÇª [39m [90m0.05s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\Phase6\MunicipalityDomainRouterTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes greeting to general[39m[90mΓÇª[39m [90m0.07s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes thanks to general d[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes service intents to[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes municipality_phone[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes municipality_addres[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes municipality_workin[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes municipality_about[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes departments_list to[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes water_schedule to w[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes jobs_open to jobs d[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes latest_news to news[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes latest_announcement[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes latest_council_deci[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes facilities_list to[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes engineering_offices[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routes council_members_lis[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit routing is deterministic[39m[90m   [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit sets requiresEntity for se[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit does not set requiresEntit[39m[90mΓÇª[39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit all domain routes have exp[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit static isNonServiceIntent[39m[90mΓÇª [39m [90m0.03s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\Phase6\MunicipalityInfoHandlersTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality phone handler[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality phone handler[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality email handler[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality address handl[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality address handl[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality working hours[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality about handler[39m[90mΓÇª[39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit municipality contact handl[39m[90mΓÇª[39m [90m0.04s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit municipality contact handl[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit all municipality handlers[39m[90mΓÇª [39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\Phase6\Phase6HandlersTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit departments list handler r[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit departments list handler r[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit department search handler[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit department search handler[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit department contact handler[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit all department handlers su[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit water schedule handler ask[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit water schedule handler ret[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit water schedule today handl[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit water schedule next handle[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit open jobs handler returns[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit open jobs handler returns[39m[90mΓÇª [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit job details handler return[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit job deadline handler retur[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\Phase7\ContactRequestHandlerTest[39m
+  [31;1mΓ¿»[39;22m[90m [39m[90mit supports only contact_request intent[39m
+  [31;1mΓ¿»[39;22m[90m [39m[90mit starts contact request workflow on handle[39m
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\Phase7\CreateComplaintHandlerTest[39m
+  [31;1mΓ¿»[39;22m[90m [39m[90mit supports only create_complaint intent[39m
+  [31;1mΓ¿»[39;22m[90m [39m[90mit starts complaint workflow on handle[39m
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\Phase7\TrackWorkflowHandlerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit supports only track_workfl[39m[90mΓÇª[39m [90m0.06s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit asks for tracking number w[39m[90mΓÇª[39m [90m0.04s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit returns complaint status w[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns not found message[39m[90mΓÇª [39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\ResumeWorkflowHandlerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit supports ResumeWorkflow in[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit delegates to engine resume[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\RuleIntentDetectorTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects greeting intent wi[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects greeting intent wi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects greeting intent wi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects greeting intent wi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects greeting intent wi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects greeting intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects greeting intent wi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects thanks intent with[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects thanks intent with[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects thanks intent with[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects thanks intent with[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects thanks intent with[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service applicatio[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service applicatio[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service applicatio[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service applicatio[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service applicatio[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service applicatio[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service applicatio[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects requirements inten[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects requirements inten[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects requirements inten[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects requirements inten[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects requirements inten[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects requirements inten[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects fees intent with ([39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects fees intent with ([39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects fees intent with ([39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects fees intent with ([39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects fees intent with ([39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects fees intent with ([39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects duration intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects duration intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects duration intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects duration intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects duration intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects location intent wi[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects location intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects location intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects location intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects online link intent[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects online link intent[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects online link intent[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects online link intent[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects online link intent[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects overview intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects overview intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects overview intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects overview intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects overview intent wi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service search int[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service search int[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service search int[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service search int[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit detects service search int[39m[90mΓÇª[39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit specific intent takes prec[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns unknown for empty[39m[90mΓÇª [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns unknown for unrela[39m[90mΓÇª[39m [90m0.04s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\ServiceSearchScorerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit scores exact official name[39m[90mΓÇª[39m [90m0.08s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit scores exact alias match a[39m[90mΓÇª[39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit scores keyword match[39m[90m       [39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit scores token overlap[39m[90m       [39m [90m0.06s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit applies context boost[39m[90m      [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns null for no match[39m[90m  [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit deterministic ordering: hi[39m[90mΓÇª[39m [90m0.03s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit scores citizen expression[39m[90mΓÇª [39m [90m0.05s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\Chatbot\ServiceSearchTokenizerTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes normal Arabic te[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes stop words[39m[90m         [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit removes duplicate tokens[39m[90m   [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit preserves numbers[39m[90m          [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit rejects tokens shorter tha[39m[90mΓÇª[39m [90m0.05s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit ignores empty input[39m[90m        [39m [90m0.08s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit tokenizes without removing[39m[90mΓÇª[39m [90m0.08s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit handles Arabic normalisati[39m[90mΓÇª[39m [90m0.06s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Chatbot\SmartServiceSearchTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds building permit from[39m[90mΓÇª[39m [90m0.07s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit finds business licence fro[39m[90mΓÇª[39m [90m0.04s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit returns multiple candidate[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit respects result limit[39m[90m      [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit returns no match for unrel[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit applies context boost[39m[90m      [39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit deterministic ranking[39m[90m      [39m [90m0.03s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit requires clarification for[39m[90mΓÇª[39m [90m0.03s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Unit\Console\ChatbotWorkflowDiagnosticCommandTest[39m
+  [31;1mΓ¿»[39;22m[90m [39m[90mit displays context state for[39m[90mΓÇª[39m [90m0.05s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit shows warning when no acti[39m[90mΓÇª[39m [90m0.04s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit lists all active workflows[39m[90mΓÇª[39m [90m0.04s[39m  
+
+  [39;41;1m FAIL [39;49;22m[39m Tests\Feature\Chatbot\ChatbotAnalyticsTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit has chatbot_intent_analyti[39m[90mΓÇª[39m [90m0.45s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit has chatbot_unknown_questi[39m[90mΓÇª[39m [90m0.52s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit has chatbot_search_analyti[39m[90mΓÇª[39m [90m0.47s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit has chatbot_workflow_analy[39m[90mΓÇª[39m [90m0.46s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit has chatbot_performance_lo[39m[90mΓÇª[39m [90m0.42s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit has chatbot_dataset_versio[39m[90mΓÇª[39m [90m0.52s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit resolves all analytics rep[39m[90mΓÇª[39m [90m0.59s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit calculates metrics in anal[39m[90mΓÇª[39m [90m0.56s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit can render ChatbotDashboar[39m[90mΓÇª[39m [90m0.72s[39m  
+  [31;1mΓ¿»[39;22m[90m [39m[90mit can filter and update stat[39m[90mΓÇª[39m [90m0.76s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit dispatches UnknownQuestion[39m[90mΓÇª[39m [90m0.61s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Feature\Chatbot\ChatbotDatabaseIntegrationTest[39m
+  [32;1mΓ£ô[39;22m[90m [39m[90mit displayed service categori[39m[90mΓÇª[39m [90m0.49s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit displayed services come fr[39m[90mΓÇª[39m [90m0.47s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit service requirements come[39m[90mΓÇª [39m [90m0.45s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit service fees come from dat[39m[90mΓÇª[39m [90m0.48s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit category selection resolve[39m[90mΓÇª[39m [90m0.47s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit service selection resolves[39m[90mΓÇª[39m [90m0.45s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit water schedule uses databa[39m[90mΓÇª[39m [90m0.69s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit facilities come from datab[39m[90mΓÇª[39m [90m0.77s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit jobs come from database[39m[90m    [39m [90m0.97s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit council members come from[39m[90mΓÇª [39m [90m1.34s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit municipality contact comes[39m[90mΓÇª[39m [90m1.00s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit seeded services have no co[39m[90mΓÇª[39m [90m1.23s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit category names are unique[39m[90mΓÇª [39m [90m1.13s[39m  
+  [32;1mΓ£ô[39;22m[90m [39m[90mit service names are unique i[39m[90mΓÇª[39m [90m0.91s[39m  

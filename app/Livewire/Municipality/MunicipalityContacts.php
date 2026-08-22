@@ -10,6 +10,7 @@ use App\Domains\Municipality\Contracts\MunicipalityRepositoryInterface;
 use App\Domains\Municipality\DTOs\ContactDTO;
 use App\Domains\Municipality\Enums\ContactType;
 use App\Domains\Municipality\Models\Municipality;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -17,16 +18,25 @@ use Livewire\Component;
 final class MunicipalityContacts extends Component
 {
     public bool $showForm = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $editingId = null;
+
     public ?int $deletingId = null;
 
     public string $type = 'phone';
+
     public string $label = '';
+
     public ?string $value = null;
+
     public ?string $icon = null;
+
     public ?string $url = null;
+
     public int $displayOrder = 0;
+
     public bool $isActive = true;
 
     public function mount(): void
@@ -66,7 +76,7 @@ final class MunicipalityContacts extends Component
         $this->authorize($this->editingId ? 'updateContact' : 'createContact', Municipality::class);
 
         $validated = $this->validate([
-            'type' => ['required', 'string', \Illuminate\Validation\Rule::in(ContactType::values())],
+            'type' => ['required', 'string', Rule::in(ContactType::values())],
             'label' => ['required', 'string', 'max:255'],
             'value' => ['nullable', 'string', 'max:500'],
             'icon' => ['nullable', 'string', 'max:100'],

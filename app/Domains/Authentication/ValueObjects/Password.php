@@ -9,6 +9,7 @@ use App\Domains\Authentication\Exceptions\AuthenticationException;
 final readonly class Password
 {
     private const MIN_LENGTH = 8;
+
     private const MAX_LENGTH = 64;
 
     private function __construct(
@@ -21,13 +22,13 @@ final readonly class Password
 
         if (mb_strlen($trimmed) < self::MIN_LENGTH) {
             throw new AuthenticationException(
-                "Password must be at least " . self::MIN_LENGTH . " characters long."
+                'Password must be at least '.self::MIN_LENGTH.' characters long.'
             );
         }
 
         if (mb_strlen($trimmed) > self::MAX_LENGTH) {
             throw new AuthenticationException(
-                "Password must not exceed " . self::MAX_LENGTH . " characters."
+                'Password must not exceed '.self::MAX_LENGTH.' characters.'
             );
         }
 

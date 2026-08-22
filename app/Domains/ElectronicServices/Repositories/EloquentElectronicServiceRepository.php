@@ -20,7 +20,7 @@ final class EloquentElectronicServiceRepository implements ElectronicServiceRepo
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('summary', 'like', "%{$search}%");
+                    ->orWhere('summary', 'like', "%{$search}%");
             });
         }
 
@@ -102,7 +102,7 @@ final class EloquentElectronicServiceRepository implements ElectronicServiceRepo
     {
         return DB::transaction(function () use ($id): ElectronicService {
             $service = ElectronicService::findOrFail($id);
-            $service->update(['is_public' => !$service->is_public]);
+            $service->update(['is_public' => ! $service->is_public]);
 
             return $service->fresh();
         });
@@ -112,7 +112,7 @@ final class EloquentElectronicServiceRepository implements ElectronicServiceRepo
     {
         return DB::transaction(function () use ($id): ElectronicService {
             $service = ElectronicService::findOrFail($id);
-            $service->update(['is_featured' => !$service->is_featured]);
+            $service->update(['is_featured' => ! $service->is_featured]);
 
             return $service->fresh();
         });
@@ -167,8 +167,8 @@ final class EloquentElectronicServiceRepository implements ElectronicServiceRepo
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('summary', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -207,8 +207,8 @@ final class EloquentElectronicServiceRepository implements ElectronicServiceRepo
 
         $query->where(function ($q) use ($search): void {
             $q->where('name', 'like', "%{$search}%")
-              ->orWhere('summary', 'like', "%{$search}%")
-              ->orWhere('description', 'like', "%{$search}%");
+                ->orWhere('summary', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
         });
 
         if ($categoryId) {

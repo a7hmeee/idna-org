@@ -21,9 +21,13 @@ final class CouncilMembersIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $status = '';
+
     public string $position = '';
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
 
     public function mount(): void

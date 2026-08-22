@@ -8,6 +8,8 @@ use App\Domains\Authentication\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -29,8 +31,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $contact_cta_button_url
  * @property int|null $created_by
  * @property int|null $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 final class HomepageSetting extends Model
 {
@@ -76,12 +78,12 @@ final class HomepageSetting extends Model
 
     public function getMayorImageUrlAttribute(): ?string
     {
-        if (!$this->mayor_image_path) {
+        if (! $this->mayor_image_path) {
             return null;
         }
 
-        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($this->mayor_image_path)) {
-            return asset('storage/' . $this->mayor_image_path);
+        if (Storage::disk('public')->exists($this->mayor_image_path)) {
+            return asset('storage/'.$this->mayor_image_path);
         }
 
         return null;

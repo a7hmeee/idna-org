@@ -14,6 +14,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 final class EloquentHomepageRepository implements HomepageRepositoryInterface
 {
@@ -82,7 +83,7 @@ final class EloquentHomepageRepository implements HomepageRepositoryInterface
     public function createSlide(array $data): HomepageSlide
     {
         return DB::transaction(function () use ($data): HomepageSlide {
-            if (!isset($data['sort_order'])) {
+            if (! isset($data['sort_order'])) {
                 $data['sort_order'] = HomepageSlide::max('sort_order') + 1;
             }
 
@@ -105,12 +106,12 @@ final class EloquentHomepageRepository implements HomepageRepositoryInterface
         return DB::transaction(function () use ($id): bool {
             $slide = HomepageSlide::findOrFail($id);
 
-            if ($slide->image_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($slide->image_path)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($slide->image_path);
+            if ($slide->image_path && Storage::disk('public')->exists($slide->image_path)) {
+                Storage::disk('public')->delete($slide->image_path);
             }
 
-            if ($slide->mobile_image_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($slide->mobile_image_path)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($slide->mobile_image_path);
+            if ($slide->mobile_image_path && Storage::disk('public')->exists($slide->mobile_image_path)) {
+                Storage::disk('public')->delete($slide->mobile_image_path);
             }
 
             return (bool) $slide->delete();
@@ -120,7 +121,7 @@ final class EloquentHomepageRepository implements HomepageRepositoryInterface
     public function toggleSlide(int $id): HomepageSlide
     {
         $slide = HomepageSlide::findOrFail($id);
-        $slide->update(['is_active' => !$slide->is_active]);
+        $slide->update(['is_active' => ! $slide->is_active]);
 
         return $slide->fresh();
     }
@@ -187,7 +188,7 @@ final class EloquentHomepageRepository implements HomepageRepositoryInterface
     public function createQuickLink(array $data): HomepageQuickLink
     {
         return DB::transaction(function () use ($data): HomepageQuickLink {
-            if (!isset($data['sort_order'])) {
+            if (! isset($data['sort_order'])) {
                 $data['sort_order'] = HomepageQuickLink::max('sort_order') + 1;
             }
 
@@ -215,7 +216,7 @@ final class EloquentHomepageRepository implements HomepageRepositoryInterface
     public function toggleQuickLink(int $id): HomepageQuickLink
     {
         $link = HomepageQuickLink::findOrFail($id);
-        $link->update(['is_active' => !$link->is_active]);
+        $link->update(['is_active' => ! $link->is_active]);
 
         return $link->fresh();
     }
@@ -253,7 +254,7 @@ final class EloquentHomepageRepository implements HomepageRepositoryInterface
     public function createStatistic(array $data): HomepageStatistic
     {
         return DB::transaction(function () use ($data): HomepageStatistic {
-            if (!isset($data['sort_order'])) {
+            if (! isset($data['sort_order'])) {
                 $data['sort_order'] = HomepageStatistic::max('sort_order') + 1;
             }
 
@@ -281,7 +282,7 @@ final class EloquentHomepageRepository implements HomepageRepositoryInterface
     public function toggleStatistic(int $id): HomepageStatistic
     {
         $stat = HomepageStatistic::findOrFail($id);
-        $stat->update(['is_active' => !$stat->is_active]);
+        $stat->update(['is_active' => ! $stat->is_active]);
 
         return $stat->fresh();
     }

@@ -19,8 +19,8 @@ final class ComplaintFactory extends Factory
     public function definition(): array
     {
         return [
-            'complaint_number' => 'ش-' . fake()->year() . '-' . fake()->unique()->randomNumber(4),
-            'tracking_number' => 'CMP-' . strtoupper(Str::random(10)),
+            'complaint_number' => 'ش-'.fake()->year().'-'.fake()->unique()->randomNumber(4),
+            'tracking_number' => 'CMP-'.strtoupper(Str::random(10)),
             'citizen_name' => fake()->name(),
             'phone' => fake()->phoneNumber(),
             'email' => fake()->optional()->email(),

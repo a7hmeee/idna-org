@@ -22,6 +22,9 @@
             if ($user->can('announcements.view')) {
                 $navGroups['المحتوى والخدمات'][] = ['icon' => 'megaphone', 'label' => 'الإعلانات', 'route' => 'dashboard.announcements', 'active' => $currentRoute === 'dashboard.announcements' || str_starts_with($currentRoute ?? '', 'dashboard.announcements.')];
             }
+            if ($user->can('chatbot.view')) {
+                $navGroups['المحتوى والخدمات'][] = ['icon' => 'bot-message', 'label' => 'المساعد الذكي', 'route' => 'dashboard.chatbot', 'active' => str_starts_with($currentRoute ?? '', 'dashboard.chatbot') || str_starts_with($currentRoute ?? '', 'admin.chatbot.')];
+            }
     $navGroups = array_filter($navGroups, fn ($items) => !empty($items));
 @endphp
 

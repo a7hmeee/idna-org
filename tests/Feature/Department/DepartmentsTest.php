@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 use App\Domains\Authentication\Models\User;
 use App\Domains\Department\Models\Department;
+use App\Livewire\Department\DepartmentForm;
+use App\Livewire\Department\DepartmentsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 it('redirects unauthenticated user to login', function (): void {
@@ -73,7 +78,7 @@ it('admin can create department', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Department\DepartmentForm::class)
+    Livewire::test(DepartmentForm::class)
         ->set('name', 'دائرة الهندسة')
         ->set('status', 'active')
         ->call('save')
@@ -92,7 +97,7 @@ it('admin can update department', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Department\DepartmentForm::class, ['department' => $department])
+    Livewire::test(DepartmentForm::class, ['department' => $department])
         ->set('name', 'الاسم الجديد')
         ->call('save')
         ->assertRedirect(route('dashboard.departments'));
@@ -110,7 +115,7 @@ it('admin can toggle public', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Department\DepartmentsIndex::class)
+    Livewire::test(DepartmentsIndex::class)
         ->call('togglePublic', $department->id)
         ->assertSessionHas('success');
 
@@ -127,7 +132,7 @@ it('admin can toggle featured', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Department\DepartmentsIndex::class)
+    Livewire::test(DepartmentsIndex::class)
         ->call('toggleFeatured', $department->id)
         ->assertSessionHas('success');
 
@@ -142,7 +147,7 @@ it('unauthorized user cannot manage departments', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Department\DepartmentsIndex::class)
+    Livewire::test(DepartmentsIndex::class)
         ->call('togglePublic', $department->id)
         ->assertForbidden();
 });
@@ -155,7 +160,7 @@ it('admin can delete department', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Department\DepartmentsIndex::class)
+    Livewire::test(DepartmentsIndex::class)
         ->call('confirmDelete', $department->id)
         ->assertSet('showDeleteModal', true)
         ->call('delete')

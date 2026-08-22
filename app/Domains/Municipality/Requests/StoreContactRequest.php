@@ -21,7 +21,7 @@ final class StoreContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', 'string', 'in:' . implode(',', ContactType::values())],
+            'type' => ['required', 'string', 'in:'.implode(',', ContactType::values())],
             'label' => ['required', 'string', 'max:255'],
             'value' => ['nullable', 'string'],
             'icon' => ['nullable', 'string', 'max:100'],

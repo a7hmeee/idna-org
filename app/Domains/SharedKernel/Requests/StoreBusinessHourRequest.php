@@ -17,7 +17,7 @@ final class StoreBusinessHourRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'day' => ['required', 'string', 'in:' . implode(',', BusinessDay::values())],
+            'day' => ['required', 'string', 'in:'.implode(',', BusinessDay::values())],
             'opening_time' => ['required_without:is_closed', 'nullable', 'date_format:H:i'],
             'closing_time' => ['required_with:opening_time', 'nullable', 'date_format:H:i', 'after:opening_time'],
             'is_closed' => ['nullable', 'boolean'],

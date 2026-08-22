@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\WaterSchedule\Repositories;
 
+use App\Domains\WaterSchedule\Contracts\WaterAreaRepositoryInterface;
 use App\Domains\WaterSchedule\Contracts\WaterScheduleRepositoryInterface;
 use App\Domains\WaterSchedule\Models\WaterArea;
+use App\Domains\WaterSchedule\Models\WaterMaintenance;
 use App\Domains\WaterSchedule\Models\WaterSchedule;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 final readonly class EloquentWaterScheduleRepository implements WaterScheduleRepositoryInterface
 {
@@ -46,7 +47,7 @@ final readonly class EloquentWaterScheduleRepository implements WaterScheduleRep
             ->where('schedule_date', '<', now()->toDateString())
             ->max('schedule_date');
 
-        if (!$latestDate) {
+        if (! $latestDate) {
             return collect();
         }
 
@@ -146,14 +147,25 @@ final readonly class EloquentWaterScheduleRepository implements WaterScheduleRep
             ->first();
     }
 
-    public function getAreas(): Collection
+    public function getLatestScheduleForArea(int $areaId): ?WaterSchedule
     {
-        return app(\App\Domains\WaterSchedule\Contracts\WaterAreaRepositoryInterface::class)->getActiveAreas();
+        return $this->model
+            ->with(['area'])
+            ->where('water_area_id', $areaId)
+            ->where('is_public', true)
+            ->where('schedule_date', '<=', now()->toDateString())
+            ->orderBy('schedule_date', 'desc')
+            ->first();
     }
 
-    public function getCurrentMaintenance(int $areaId): ?\App\Domains\WaterSchedule\Models\WaterMaintenance
+    public function getAreas(): Collection
     {
-        return \App\Domains\WaterSchedule\Models\WaterMaintenance::where('status', 'active')
+        return app(WaterAreaRepositoryInterface::class)->getActiveAreas();
+    }
+
+    public function getCurrentMaintenance(int $areaId): ?WaterMaintenance
+    {
+        return WaterMaintenance::where('status', 'active')
             ->where('is_public', true)
             ->where('starts_at', '<=', now())
             ->where('ends_at', '>=', now())

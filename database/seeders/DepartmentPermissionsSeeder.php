@@ -9,6 +9,7 @@ use App\Domains\Department\Models\Department;
 use App\Domains\RoleManagement\Support\PermissionSynchronizer;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 final class DepartmentPermissionsSeeder extends Seeder
 {
@@ -218,6 +219,6 @@ final class DepartmentPermissionsSeeder extends Seeder
             Department::create($department);
         }
 
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
     }
 }

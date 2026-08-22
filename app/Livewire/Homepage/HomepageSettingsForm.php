@@ -15,14 +15,23 @@ use Livewire\Component;
 final class HomepageSettingsForm extends Component
 {
     public ?string $portalUrl = null;
+
     public ?string $primaryButtonText = null;
+
     public ?string $secondaryButtonText = null;
+
     public ?string $secondaryButtonUrl = null;
+
     public ?string $welcomeTitle = null;
+
     public ?string $welcomeDescription = null;
+
     public ?string $contactCtaTitle = null;
+
     public ?string $contactCtaDescription = null;
+
     public ?string $contactCtaButtonText = null;
+
     public ?string $contactCtaButtonUrl = null;
 
     public function mount(): void

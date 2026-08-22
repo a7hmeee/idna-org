@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Projects;
 
+use App\Domains\Municipality\Models\Municipality;
 use App\Domains\Projects\Actions\RecordProjectViewAction;
 use App\Domains\Projects\Contracts\ProjectRepositoryInterface;
 use App\Domains\Projects\Models\Project;
@@ -16,19 +17,21 @@ final class PublicProjectShow extends Component
     public function mount(?Project $project = null): void
     {
         if ($project && $project->exists) {
-            abort_if(!$project->is_public || $project->status->value !== 'completed', 404);
+            abort_if(! $project->is_public || $project->status->value !== 'completed', 404);
 
             $this->project = $project;
 
             app(RecordProjectViewAction::class)->execute($project->id);
         }
+
+        abort_unless($this->project, 404);
     }
 
     public function render()
     {
         $municipalityName = 'بلدية إذنا';
         try {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+            $municipality = Municipality::first();
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
             }
@@ -43,8 +46,8 @@ final class PublicProjectShow extends Component
             'municipalityName' => $municipalityName,
             'relatedProjects' => $relatedProjects,
         ])->layout('layouts.home', [
-            'title' => ($this->project->name_ar ?? 'المشروع') . ' | ' . $municipalityName,
-            'metaDescription' => $this->project->summary ?? 'تفاصيل مشروع ' . ($this->project->name_ar ?? '') . ' في ' . $municipalityName,
+            'title' => ($this->project->name_ar ?? 'المشروع').' | '.$municipalityName,
+            'metaDescription' => $this->project->summary ?? 'تفاصيل مشروع '.($this->project->name_ar ?? '').' في '.$municipalityName,
         ]);
     }
 }

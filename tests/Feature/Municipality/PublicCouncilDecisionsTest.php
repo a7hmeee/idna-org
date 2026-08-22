@@ -5,14 +5,16 @@ declare(strict_types=1);
 use App\Domains\Municipality\Enums\CouncilDecisionStatus;
 use App\Domains\Municipality\Enums\CouncilDecisionType;
 use App\Domains\Municipality\Models\CouncilDecision;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================

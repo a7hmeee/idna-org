@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 use App\Domains\EngineeringOffices\Models\EngineeringOffice;
-use App\Domains\Homepage\Enums\PageCarouselKey;
-use App\Domains\Homepage\Models\HomepageSlide;
-use App\Livewire\EngineeringOffices\PublicEngineeringOfficesIndex;
 use App\Livewire\EngineeringOffices\PublicEngineeringOfficeShow;
+use App\Livewire\EngineeringOffices\PublicEngineeringOfficesIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 it('engineering offices index page returns 200', function (): void {

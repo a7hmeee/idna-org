@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Domains\Homepage\Actions;
 
+use Illuminate\Support\Facades\Cache;
+
 final class CacheForgetHomepageDataAction
 {
     public static function execute(?string $section = null): void
     {
-        \Illuminate\Support\Facades\Cache::forget('homepage.public.data');
+        Cache::forget('homepage.public.data');
 
         if ($section === 'council-decisions') {
-            \Illuminate\Support\Facades\Cache::forget('public.council-decisions.years');
-            \Illuminate\Support\Facades\Cache::forget('public.council-decisions.statistics');
+            Cache::forget('public.council-decisions.years');
+            Cache::forget('public.council-decisions.statistics');
         }
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Livewire\OpenData;
 
-use App\Domains\OpenData\Contracts\OpenDataRepositoryInterface;
+use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
 use App\Domains\Homepage\Enums\PageCarouselKey;
+use App\Domains\OpenData\Contracts\OpenDataRepositoryInterface;
+use App\Domains\OpenData\Enums\OpenDataType;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,7 +16,9 @@ final class OpenDataIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $category = '';
+
     public string $type = 'datasets';
 
     public function updatedSearch(): void
@@ -27,13 +31,13 @@ final class OpenDataIndex extends Component
         $repo = app(OpenDataRepositoryInterface::class);
         $pageKey = PageCarouselKey::OpenData->value;
 
-        $slidesRepo = app(\App\Domains\Homepage\Contracts\HomepageRepositoryInterface::class);
+        $slidesRepo = app(HomepageRepositoryInterface::class);
         $slides = $slidesRepo->getPageSlides($pageKey);
 
         $datasets = $repo->getDatasets(
             search: strlen($this->search) >= 2 ? $this->search : null,
             category: $this->category ?: null,
-            type: $this->type
+            type: OpenDataType::tryFrom($this->type)
         );
 
         $categories = $repo->getCategories();

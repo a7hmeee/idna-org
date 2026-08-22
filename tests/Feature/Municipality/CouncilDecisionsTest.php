@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 use App\Domains\Authentication\Models\User;
 use App\Domains\Municipality\Models\CouncilDecision;
+use App\Livewire\Municipality\CouncilDecisionForm;
+use App\Livewire\Municipality\CouncilDecisionsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 it('redirects unauthenticated user to login', function (): void {
@@ -73,7 +78,7 @@ it('admin can create decision', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Municipality\CouncilDecisionForm::class)
+    Livewire::test(CouncilDecisionForm::class)
         ->set('decision_number', 'ق-2026-001')
         ->set('title', 'قرار اختبار')
         ->set('type', 'administrative')
@@ -95,7 +100,7 @@ it('admin can update decision', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Municipality\CouncilDecisionForm::class, ['councilDecision' => $decision])
+    Livewire::test(CouncilDecisionForm::class, ['councilDecision' => $decision])
         ->set('title', 'العنوان الجديد')
         ->call('save')
         ->assertRedirect(route('dashboard.municipality.council-decisions'));
@@ -113,7 +118,7 @@ it('admin can publish decision', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Municipality\CouncilDecisionsIndex::class)
+    Livewire::test(CouncilDecisionsIndex::class)
         ->call('publish', $decision->id)
         ->assertSessionHas('success');
 
@@ -131,7 +136,7 @@ it('admin can archive decision', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Municipality\CouncilDecisionsIndex::class)
+    Livewire::test(CouncilDecisionsIndex::class)
         ->call('archive', $decision->id)
         ->assertSessionHas('success');
 
@@ -149,7 +154,7 @@ it('admin can cancel decision', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Municipality\CouncilDecisionsIndex::class)
+    Livewire::test(CouncilDecisionsIndex::class)
         ->call('cancel', $decision->id)
         ->assertSessionHas('success');
 
@@ -164,7 +169,7 @@ it('unauthorized user cannot manage decisions', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Municipality\CouncilDecisionsIndex::class)
+    Livewire::test(CouncilDecisionsIndex::class)
         ->call('publish', $decision->id)
         ->assertForbidden();
 });
@@ -177,7 +182,7 @@ it('admin can delete decision', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Municipality\CouncilDecisionsIndex::class)
+    Livewire::test(CouncilDecisionsIndex::class)
         ->call('confirmDelete', $decision->id)
         ->assertSet('showDeleteModal', true)
         ->call('delete')

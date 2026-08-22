@@ -10,18 +10,27 @@ use Livewire\Component;
 final class PublicPageCarousel extends Component
 {
     public string $pageKey;
+
     public bool $compact = false;
 
     public ?string $fallbackTitle = null;
+
     public ?string $fallbackDescription = null;
+
     public ?string $fallbackBadge = null;
+
     public ?string $fallbackIcon = null;
+
     public ?string $fallbackImage = null;
 
     public array $breadcrumb = [];
+
     public ?string $pageTitle = null;
+
     public ?string $pageSubtitle = null;
+
     public ?string $pageBadge = null;
+
     public ?string $pageBadgeIcon = null;
 
     /** Extra breadcrumb levels (e.g. category for services detail) */

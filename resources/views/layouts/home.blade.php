@@ -100,6 +100,9 @@
         </svg>
     </button>
 
+    {{-- Floating Chatbot Widget --}}
+    <livewire:chatbot.chatbot-widget key="chatbot-public-widget" />
+
     @livewireScripts
     @stack('scripts')
 </body>

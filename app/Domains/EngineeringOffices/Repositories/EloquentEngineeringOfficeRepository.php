@@ -18,8 +18,8 @@ final class EloquentEngineeringOfficeRepository implements EngineeringOfficeRepo
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('office_name', 'like', "%{$search}%")
-                  ->orWhere('engineer_name', 'like', "%{$search}%")
-                  ->orWhere('license_number', 'like', "%{$search}%");
+                    ->orWhere('engineer_name', 'like', "%{$search}%")
+                    ->orWhere('license_number', 'like', "%{$search}%");
             });
         }
 
@@ -54,6 +54,7 @@ final class EloquentEngineeringOfficeRepository implements EngineeringOfficeRepo
         return DB::transaction(function () use ($id, $data): EngineeringOffice {
             $office = EngineeringOffice::findOrFail($id);
             $office->update($data);
+
             return $office->fresh()->load(['creator:id,name', 'updater:id,name']);
         });
     }
@@ -72,6 +73,7 @@ final class EloquentEngineeringOfficeRepository implements EngineeringOfficeRepo
                 'approved_at' => now(),
                 'suspended_at' => null,
             ]);
+
             return $office->fresh();
         });
     }
@@ -84,6 +86,7 @@ final class EloquentEngineeringOfficeRepository implements EngineeringOfficeRepo
                 'approval_status' => 'suspended',
                 'suspended_at' => now(),
             ]);
+
             return $office->fresh();
         });
     }
@@ -95,6 +98,7 @@ final class EloquentEngineeringOfficeRepository implements EngineeringOfficeRepo
             $office->update([
                 'approval_status' => 'expired',
             ]);
+
             return $office->fresh();
         });
     }
@@ -103,7 +107,8 @@ final class EloquentEngineeringOfficeRepository implements EngineeringOfficeRepo
     {
         return DB::transaction(function () use ($id): EngineeringOffice {
             $office = EngineeringOffice::findOrFail($id);
-            $office->update(['is_public' => !$office->is_public]);
+            $office->update(['is_public' => ! $office->is_public]);
+
             return $office->fresh();
         });
     }
@@ -141,8 +146,8 @@ final class EloquentEngineeringOfficeRepository implements EngineeringOfficeRepo
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('office_name', 'like', "%{$search}%")
-                  ->orWhere('engineer_name', 'like', "%{$search}%")
-                  ->orWhere('license_number', 'like', "%{$search}%");
+                    ->orWhere('engineer_name', 'like', "%{$search}%")
+                    ->orWhere('license_number', 'like', "%{$search}%");
             });
         }
 

@@ -77,7 +77,7 @@ final class Project extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Project $project): void {
+        self::creating(function (Project $project): void {
             if (empty($project->slug)) {
                 $project->slug = Str::slug($project->name_ar);
             }
@@ -86,7 +86,7 @@ final class Project extends Model
             $project->implementation_percentage ??= 0;
         });
 
-        static::updating(function (Project $project): void {
+        self::updating(function (Project $project): void {
             if (empty($project->slug) && $project->name_ar) {
                 $project->slug = Str::slug($project->name_ar);
             }
@@ -108,7 +108,7 @@ final class Project extends Model
 
     public function getCoverImageUrlAttribute(): ?string
     {
-        return $this->cover_image_path ? asset('storage/' . $this->cover_image_path) : null;
+        return $this->cover_image_path ? asset('storage/'.$this->cover_image_path) : null;
     }
 
     public function getGalleryUrlsAttribute(): array
@@ -117,7 +117,7 @@ final class Project extends Model
             return [];
         }
 
-        return array_map(fn (string $path): string => asset('storage/' . $path), $this->gallery);
+        return array_map(fn (string $path): string => asset('storage/'.$path), $this->gallery);
     }
 
     public function scopePublished($query)

@@ -10,6 +10,7 @@ use App\Domains\Municipality\Contracts\MunicipalityRepositoryInterface;
 use App\Domains\Municipality\DTOs\CustomFieldDTO;
 use App\Domains\Municipality\Enums\CustomFieldType;
 use App\Domains\Municipality\Models\Municipality;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -17,14 +18,21 @@ use Livewire\Component;
 final class MunicipalityCustomFields extends Component
 {
     public bool $showForm = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $editingId = null;
+
     public ?int $deletingId = null;
 
     public string $key = '';
+
     public string $value = '';
+
     public string $type = 'text';
+
     public int $displayOrder = 0;
+
     public bool $isActive = true;
 
     public function mount(): void
@@ -64,7 +72,7 @@ final class MunicipalityCustomFields extends Component
         $validated = $this->validate([
             'key' => ['required', 'string', 'max:255'],
             'value' => ['required', 'string'],
-            'type' => ['required', 'string', \Illuminate\Validation\Rule::in(CustomFieldType::values())],
+            'type' => ['required', 'string', Rule::in(CustomFieldType::values())],
             'displayOrder' => ['required', 'integer', 'min:0'],
             'isActive' => ['required', 'boolean'],
         ]);

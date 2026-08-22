@@ -25,28 +25,51 @@ final class JobForm extends Component
     public ?int $jobId = null;
 
     public string $title = '';
+
     public ?string $departmentId = null;
+
     public string $jobNumber = '';
+
     public string $employmentType = 'full_time';
+
     public string $location = '';
+
     public string $salary = '';
+
     public int $vacancies = 1;
+
     public string $summary = '';
+
     public string $description = '';
+
     public array $requirements = [''];
+
     public array $responsibilities = [''];
+
     public array $benefits = [];
+
     public array $requiredDocuments = [''];
+
     public string $applicationMethod = 'external_link';
+
     public string $applicationUrl = '';
+
     public string $applicationEmail = '';
+
     public string $applicationPhone = '';
+
     public $attachment = null;
+
     public ?string $existingAttachment = null;
+
     public string $publishAt = '';
+
     public string $closingAt = '';
+
     public string $status = 'draft';
+
     public bool $isPublic = false;
+
     public bool $isFeatured = false;
 
     public function mount(?Job $job = null): void

@@ -181,6 +181,40 @@
     opacity: 0;
 }
 
+@keyframes chatbotFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+@utility animate-chatbot-float {
+    animation: chatbotFloat 3.6s ease-in-out infinite;
+}
+
+@keyframes chatbotStatusPulse {
+    0% { box-shadow: 0 0 0 0 rgba(200, 168, 90, 0.55); }
+    70% { box-shadow: 0 0 0 9px rgba(200, 168, 90, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(200, 168, 90, 0); }
+}
+@utility animate-chatbot-status {
+    animation: chatbotStatusPulse 2.2s ease-out infinite;
+}
+
+@keyframes chatbotRise {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+@utility animate-chatbot-rise {
+    animation: chatbotRise 0.5s ease-out forwards;
+}
+
+@keyframes chatbotBubbleIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@utility animate-chatbot-bubble {
+    animation: chatbotBubbleIn 0.4s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
 @utility timeline-item {
     position: relative;
     padding-right: 28px;
@@ -707,7 +741,137 @@ input:focus-visible {
     border-radius: 8px;
 }
 
-/* Hero mobile overlay adjustment */
+/* Hero Entrance Animations */
+@keyframes heroFadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes heroSlideInRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes heroGoldPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+}
+@keyframes heroOrnamentDraw {
+    from { stroke-dashoffset: 200; }
+    to { stroke-dashoffset: 0; }
+}
+@keyframes heroFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+@utility hero-animate-title {
+    animation: heroFadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+@utility hero-animate-desc {
+    animation: heroFadeInUp 0.8s ease-out 0.2s forwards;
+    opacity: 0;
+}
+@utility hero-animate-badge {
+    animation: heroFadeIn 0.6s ease-out 0.1s forwards;
+    opacity: 0;
+}
+@utility hero-animate-buttons {
+    animation: heroFadeInUp 0.8s ease-out 0.4s forwards;
+    opacity: 0;
+}
+@utility hero-animate-ornament {
+    animation: heroGoldPulse 4s ease-in-out infinite;
+}
+@utility hero-float {
+    animation: heroFloat 6s ease-in-out infinite;
+}
+
+/* Hero Ornamental Frame */
+@utility hero-content-frame {
+    position: relative;
+    border: 1px solid rgba(200, 168, 90, 0.12);
+    border-radius: 4px;
+    padding: 2rem;
+}
+@utility hero-content-frame::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
+    border: 1px solid rgba(200, 168, 90, 0.06);
+    border-radius: 6px;
+    pointer-events: none;
+}
+
+/* Hero Button Enhancements */
+@utility hero-btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border-radius: 12px;
+    background: white;
+    color: #073A25;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 1px rgba(200,168,90,0.2);
+    overflow: hidden;
+}
+@utility hero-btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    border: 1px solid rgba(200,168,90,0.3);
+    pointer-events: none;
+    transition: border-color 0.3s ease;
+}
+@utility hero-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2), 0 0 0 1px rgba(200,168,90,0.4);
+    background: #f8f8f8;
+}
+
+@utility hero-btn-secondary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border-radius: 12px;
+    border: 1px solid rgba(200, 168, 90, 0.35);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+@utility hero-btn-secondary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    border: 1px solid rgba(200,168,90,0.1);
+    pointer-events: none;
+}
+@utility hero-btn-secondary:hover {
+    background: rgba(200, 168, 90, 0.12);
+    border-color: rgba(200, 168, 90, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* Hero Mobile overlay adjustment */
 @media (max-width: 640px) {
     #hero .absolute.inset-0:last-of-type {
         background: linear-gradient(180deg, rgba(8,20,25,0.3) 0%, rgba(8,20,25,0.75) 100%) !important;

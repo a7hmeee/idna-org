@@ -19,7 +19,7 @@ final readonly class DeleteMediaAction
     {
         $media = $this->repository->findById($id);
 
-        if (!$media) {
+        if (! $media) {
             return false;
         }
 

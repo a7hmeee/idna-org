@@ -11,16 +11,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table): void {
-            if (!Schema::hasColumn('users', 'phone')) {
+            if (! Schema::hasColumn('users', 'phone')) {
                 $table->string('phone', 20)->nullable()->after('email');
             }
-            if (!Schema::hasColumn('users', 'department_id')) {
+            if (! Schema::hasColumn('users', 'department_id')) {
                 $table->foreignId('department_id')->nullable()->after('phone')->constrained('departments')->nullOnDelete();
             }
-            if (!Schema::hasColumn('users', 'avatar')) {
+            if (! Schema::hasColumn('users', 'avatar')) {
                 $table->string('avatar')->nullable()->after('department_id');
             }
-            if (!Schema::hasColumn('users', 'status')) {
+            if (! Schema::hasColumn('users', 'status')) {
                 $table->enum('status', ['active', 'inactive'])->default('active')->after('avatar');
             }
         });

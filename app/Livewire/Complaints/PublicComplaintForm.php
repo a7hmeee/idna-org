@@ -6,8 +6,8 @@ namespace App\Livewire\Complaints;
 
 use App\Domains\Complaints\Enums\ComplaintCategory;
 use App\Domains\Complaints\Enums\ComplaintPriority;
+use App\Domains\Complaints\Enums\ComplaintStatus;
 use App\Domains\Complaints\Models\Complaint;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -17,16 +17,27 @@ final class PublicComplaintForm extends Component
     use WithFileUploads;
 
     public string $citizenName = '';
+
     public string $phone = '';
+
     public string $email = '';
+
     public string $category = '';
+
     public string $subject = '';
+
     public string $description = '';
+
     public string $location = '';
+
     public ?float $latitude = null;
+
     public ?float $longitude = null;
+
     public $attachments = [];
+
     public bool $submitted = false;
+
     public string $trackingNumber = '';
 
     protected function rules(): array
@@ -35,7 +46,7 @@ final class PublicComplaintForm extends Component
             'citizenName' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
-            'category' => ['required', 'string', 'in:' . implode(',', array_map(fn($c) => $c->value, ComplaintCategory::cases()))],
+            'category' => ['required', 'string', 'in:'.implode(',', array_map(fn ($c) => $c->value, ComplaintCategory::cases()))],
             'subject' => ['required', 'string', 'min:10', 'max:500'],
             'description' => ['required', 'string', 'min:20'],
             'location' => ['nullable', 'string', 'max:500'],
@@ -70,7 +81,7 @@ final class PublicComplaintForm extends Component
             }
         }
 
-        $trackingNumber = 'CMP-' . strtoupper(Str::random(10));
+        $trackingNumber = 'CMP-'.strtoupper(Str::random(10));
 
         Complaint::create([
             'tracking_number' => $trackingNumber,
@@ -83,9 +94,9 @@ final class PublicComplaintForm extends Component
             'location' => $this->location ?: null,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'attachments' => !empty($attachmentPaths) ? $attachmentPaths : null,
+            'attachments' => ! empty($attachmentPaths) ? $attachmentPaths : null,
             'priority' => ComplaintPriority::Medium,
-            'status' => \App\Domains\Complaints\Enums\ComplaintStatus::Submitted,
+            'status' => ComplaintStatus::Submitted,
             'submitted_at' => now(),
         ]);
 
@@ -113,6 +124,10 @@ final class PublicComplaintForm extends Component
     {
         $categories = ComplaintCategory::cases();
 
-        return view('livewire.complaints.public-complaint-form', compact('categories'));
+        return view('livewire.complaints.public-complaint-form', compact('categories'))
+            ->layout('layouts.home', [
+                'title' => 'تقديم شكوى | بلدية إذنا',
+                'metaDescription' => 'تقديم شكوى جديدة لبلدية إذنا',
+            ]);
     }
 }

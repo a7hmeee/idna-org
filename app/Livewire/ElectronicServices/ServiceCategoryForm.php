@@ -16,14 +16,23 @@ use Livewire\Component;
 final class ServiceCategoryForm extends Component
 {
     public ?int $categoryId = null;
+
     public ?int $parent_id = null;
+
     public string $name = '';
+
     public ?string $slug = null;
+
     public ?string $description = null;
+
     public ?string $icon = null;
+
     public ?string $image_path = null;
+
     public string $status = 'active';
+
     public bool $is_public = true;
+
     public int $sort_order = 0;
 
     public function mount(?ServiceCategory $category = null): void

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Domains\OpenData\Repositories;
 
 use App\Domains\OpenData\Contracts\OpenDataRepositoryInterface;
-use App\Domains\OpenData\Enums\OpenDataStatus;
 use App\Domains\OpenData\Enums\OpenDataType;
 use App\Domains\OpenData\Models\OpenDataset;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 
 final class EloquentOpenDataRepository implements OpenDataRepositoryInterface
 {
@@ -65,7 +63,7 @@ final class EloquentOpenDataRepository implements OpenDataRepositoryInterface
     {
         $dataset = $this->find($id);
 
-        if (!$dataset || !$dataset->download_url) {
+        if (! $dataset || ! $dataset->download_url) {
             throw new \RuntimeException('No dataset found');
         }
 

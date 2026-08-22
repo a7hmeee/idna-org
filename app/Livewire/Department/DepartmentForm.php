@@ -23,26 +23,47 @@ final class DepartmentForm extends Component
     public ?int $editingId = null;
 
     public string $name = '';
+
     public ?string $short_description = null;
+
     public ?string $description = null;
+
     public ?string $icon = null;
+
     public $cover_image = null;
+
     public ?string $existingCoverImageUrl = null;
+
     public ?string $existingCoverImagePath = null;
+
     public ?string $manager_name = null;
+
     public ?string $manager_position = null;
+
     public ?string $phone = null;
+
     public ?string $extension = null;
+
     public ?string $mobile = null;
+
     public ?string $email = null;
+
     public ?string $office_location = null;
+
     public ?string $working_hours = null;
+
     public ?string $vision = null;
+
     public ?string $mission = null;
+
     public ?string $responsibilities = null;
+
     public string $status = 'active';
+
     public int $display_order = 0;
+
     public bool $is_public = true;
+
     public bool $is_featured = false;
 
     public function mount(?Department $department = null): void

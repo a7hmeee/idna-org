@@ -17,7 +17,7 @@
         <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 0;">
             <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(46,125,50,0.9);color:rgba(255,255,255,0.9);">
                 <i data-lucide="tag" style="width:12px;height:12px;"></i>
-                <span>{{ $news->category->label() }}</span>
+                <span>{{ $news->category?->label() }}</span>
             </span>
             <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(46,125,50,0.9);color:rgba(255,255,255,0.9);">
                 <i data-lucide="calendar" style="width:12px;height:12px;"></i>
@@ -122,7 +122,7 @@
                                         @endif
                                         <div class="flex-1 min-w-0">
                                             <h3 class="text-sm font-bold text-text group-hover:text-primary transition-colors line-clamp-2">{{ $related->title_ar }}</h3>
-                                            <p class="text-xs text-text-tertiary">{{ $related->category->label() }} · {{ $related->publish_at?->format('Y/m/d') }}</p>
+                                            <p class="text-xs text-text-tertiary">{{ $related->category?->label() }} · {{ $related->publish_at?->format('Y/m/d') }}</p>
                                         </div>
                                         <i data-lucide="chevron-left" class="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors shrink-0"></i>
                                     </a>
@@ -141,7 +141,7 @@
                         <div class="space-y-3 text-sm">
                             <div class="flex items-center justify-between">
                                 <span class="text-text-tertiary">التصنيف</span>
-                                <span class="text-text font-semibold">{{ $news->category->label() }}</span>
+                                <span class="text-text font-semibold">{{ $news->category?->label() }}</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-text-tertiary">تاريخ النشر</span>

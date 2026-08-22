@@ -23,22 +23,39 @@ final class FacilityForm extends Component
     public ?int $facilityId = null;
 
     public string $name = '';
+
     public ?string $facilityCategoryId = null;
+
     public string $summary = '';
+
     public string $description = '';
+
     public $coverImage = null;
+
     public ?string $existingCoverImage = null;
+
     public array $galleryUploads = [];
+
     public array $existingGallery = [];
+
     public string $phone = '';
+
     public string $email = '';
+
     public string $address = '';
+
     public string $workingHours = '';
+
     public array $services = [];
+
     public array $features = [];
+
     public array $rules = [];
+
     public string $status = 'draft';
+
     public bool $isPublic = false;
+
     public bool $isFeatured = false;
 
     public function mount(?Facility $facility = null): void

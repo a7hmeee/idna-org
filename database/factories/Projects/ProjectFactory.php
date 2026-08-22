@@ -21,7 +21,7 @@ final class ProjectFactory extends Factory
         return [
             'name_ar' => $nameAr,
             'name_en' => fake()->sentence(4),
-            'slug' => Str::slug($nameAr) . '-' . fake()->unique()->randomNumber(4),
+            'slug' => Str::slug($nameAr).'-'.fake()->unique()->randomNumber(4),
             'category' => fake()->randomElement(ProjectCategory::cases())->value,
             'project_status' => fake()->randomElement([ProjectStatus::Planned->value, ProjectStatus::InProgress->value, ProjectStatus::Completed->value]),
             'status' => ProjectStatus::Completed->value,

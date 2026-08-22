@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 use App\Domains\Authentication\Models\User;
 use App\Domains\WaterSchedule\Actions\CopyPreviousScheduleAction;
-use App\Domains\WaterSchedule\Actions\CreateWaterAreaAction;
 use App\Domains\WaterSchedule\Actions\CreateWaterScheduleAction;
-use App\Domains\WaterSchedule\Contracts\WaterAreaRepositoryInterface;
 use App\Domains\WaterSchedule\Contracts\WaterMaintenanceRepositoryInterface;
 use App\Domains\WaterSchedule\Contracts\WaterScheduleRepositoryInterface;
-use App\Domains\WaterSchedule\DTOs\WaterAreaData;
 use App\Domains\WaterSchedule\DTOs\WaterScheduleData;
 use App\Domains\WaterSchedule\Enums\WaterScheduleStatus;
 use App\Domains\WaterSchedule\Models\WaterArea;
@@ -18,21 +15,18 @@ use App\Domains\WaterSchedule\Models\WaterSchedule;
 use App\Livewire\WaterSchedule\PublicWaterSchedule;
 use App\Livewire\WaterSchedule\WaterAreasForm;
 use App\Livewire\WaterSchedule\WaterAreasIndex;
-use App\Livewire\WaterSchedule\WaterMaintenanceForm;
-use App\Livewire\WaterSchedule\WaterMaintenanceIndex;
 use App\Livewire\WaterSchedule\WaterScheduleDashboard;
-use Database\Factories\WaterSchedule\WaterAreaFactory;
-use Database\Factories\WaterSchedule\WaterMaintenanceFactory;
-use Database\Factories\WaterSchedule\WaterScheduleFactory;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================
@@ -171,6 +165,76 @@ it('returns latest published when no schedule for today', function (): void {
 
     expect($schedules)->toHaveCount(1);
     expect($schedules->first()->schedule_date->toDateString())->toBe($yesterday);
+});
+
+it('returns latest schedule for specific area', function (): void {
+    $area = WaterArea::factory()->create();
+    $yesterday = now()->subDay()->toDateString();
+
+    WaterSchedule::factory()->forDate($yesterday)->create([
+        'water_area_id' => $area->id,
+        'start_time' => '08:00',
+        'end_time' => '12:00',
+        'is_public' => true,
+    ]);
+
+    $repository = app(WaterScheduleRepositoryInterface::class);
+    $schedule = $repository->getLatestScheduleForArea($area->id);
+
+    expect($schedule)->not->toBeNull();
+    expect($schedule->start_time)->toBe('08:00');
+    expect($schedule->end_time)->toBe('12:00');
+    expect($schedule->water_area_id)->toBe($area->id);
+});
+
+it('returns null for latest schedule when no schedules exist', function (): void {
+    $area = WaterArea::factory()->create();
+
+    $repository = app(WaterScheduleRepositoryInterface::class);
+    $schedule = $repository->getLatestScheduleForArea($area->id);
+
+    expect($schedule)->toBeNull();
+});
+
+it('can create water schedule with start and end time via dashboard', function (): void {
+    $user = User::factory()->create();
+    $user->givePermissionTo(['water.update', 'water.view']);
+
+    $area = WaterArea::factory()->create(['name' => 'حي البلد']);
+
+    actingAs($user);
+
+    Livewire::test(WaterScheduleDashboard::class)
+        ->call('save');
+
+    $schedule = WaterSchedule::where('water_area_id', $area->id)
+        ->where('schedule_date', now()->toDateString())
+        ->first();
+
+    expect($schedule)->not->toBeNull();
+    expect($schedule->start_time)->not->toBeNull();
+    expect($schedule->end_time)->not->toBeNull();
+});
+
+it('persists start_time and end_time correctly', function (): void {
+    $area = WaterArea::factory()->create();
+
+    $repository = app(WaterScheduleRepositoryInterface::class);
+    $repository->upsert([
+        'water_area_id' => $area->id,
+        'schedule_date' => now()->toDateString(),
+        'start_time' => '08:00',
+        'end_time' => '12:00',
+        'status' => 'available',
+        'is_public' => true,
+    ]);
+
+    $schedule = WaterSchedule::where('water_area_id', $area->id)
+        ->where('schedule_date', now()->toDateString())
+        ->first();
+
+    expect($schedule->start_time)->toBe('08:00');
+    expect($schedule->end_time)->toBe('12:00');
 });
 
 it('can publish today schedule', function (): void {

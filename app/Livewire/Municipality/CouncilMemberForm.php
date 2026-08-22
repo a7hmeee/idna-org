@@ -24,28 +24,51 @@ final class CouncilMemberForm extends Component
     public ?int $editingId = null;
 
     public string $full_name = '';
+
     public ?string $national_number = null;
+
     public string $position = 'council_member';
+
     public ?string $qualification = null;
+
     public ?string $profession = null;
+
     public ?string $bio = null;
+
     public $photo = null;
+
     public ?string $existingPhotoUrl = null;
+
     public ?string $existingPhotoPath = null;
+
     public ?string $phone = null;
+
     public ?string $mobile = null;
+
     public ?string $email = null;
+
     public ?string $address = null;
+
     public ?string $facebook = null;
+
     public ?string $twitter = null;
+
     public ?string $linkedin = null;
+
     public ?string $term_start = null;
+
     public ?string $term_end = null;
+
     public ?int $years_of_experience = null;
+
     public ?string $committee = null;
+
     public string $status = 'active';
+
     public int $display_order = 0;
+
     public bool $is_public = false;
+
     public bool $is_featured = false;
 
     public function mount(?CouncilMember $councilMember = null): void

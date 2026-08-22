@@ -14,8 +14,11 @@ use Livewire\Component;
 final class PublicCouncilDecisionShow extends Component
 {
     public $decision;
+
     public ?array $relatedDecisions = [];
+
     public ?array $previousDecision = null;
+
     public ?array $nextDecision = null;
 
     public function mount($decision): void
@@ -24,7 +27,7 @@ final class PublicCouncilDecisionShow extends Component
 
         $model = $repo->findPublicById((int) $decision);
 
-        if (!$model) {
+        if (! $model) {
             abort(404);
         }
 
@@ -69,13 +72,13 @@ final class PublicCouncilDecisionShow extends Component
         $attachmentName = null;
         $attachmentUrl = null;
         if ($this->decision->attachment_path) {
-            $attachmentUrl = asset('storage/' . $this->decision->attachment_path);
+            $attachmentUrl = asset('storage/'.$this->decision->attachment_path);
             $attachmentExists = Storage::disk('public')->exists($this->decision->attachment_path);
             $attachmentName = basename($this->decision->attachment_path);
         }
 
-        $ogTitle = $this->decision->title . ' | ' . $municipalityName;
-        $ogDescription = $this->decision->summary ?? 'قرار رقم ' . $this->decision->decision_number;
+        $ogTitle = $this->decision->title.' | '.$municipalityName;
+        $ogDescription = $this->decision->summary ?? 'قرار رقم '.$this->decision->decision_number;
 
         return view('livewire.council.public-council-decision-show', [
             'municipalityName' => $municipalityName,

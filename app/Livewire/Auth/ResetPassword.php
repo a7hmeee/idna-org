@@ -16,6 +16,7 @@ use Livewire\Component;
 final class ResetPassword extends Component
 {
     public string $token = '';
+
     public string $email = '';
 
     #[Rule(['required', 'string', 'min:8', 'confirmed'])]

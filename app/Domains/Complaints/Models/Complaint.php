@@ -69,9 +69,9 @@ final class Complaint extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Complaint $complaint): void {
+        self::creating(function (Complaint $complaint): void {
             if (empty($complaint->tracking_number)) {
-                $complaint->tracking_number = 'CMP-' . strtoupper(Str::random(10));
+                $complaint->tracking_number = 'CMP-'.strtoupper(Str::random(10));
             }
             $complaint->status ??= ComplaintStatus::Submitted;
             $complaint->priority ??= ComplaintPriority::Medium;
@@ -110,7 +110,7 @@ final class Complaint extends Model
             return [];
         }
 
-        return array_map(fn (string $path): string => asset('storage/' . $path), $this->attachments);
+        return array_map(fn (string $path): string => asset('storage/'.$path), $this->attachments);
     }
 
     public function scopeByStatus($query, ComplaintStatus $status)

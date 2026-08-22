@@ -8,6 +8,7 @@ use App\Domains\News\Contracts\NewsRepositoryInterface;
 use App\Domains\News\Enums\NewsStatus;
 use App\Domains\News\Models\NewsItem;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -88,7 +89,7 @@ final readonly class EloquentNewsRepository implements NewsRepositoryInterface
     public function toggleFeatured(int $id): NewsItem
     {
         $news = $this->findOrFail($id);
-        $news->update(['is_featured' => !$news->is_featured]);
+        $news->update(['is_featured' => ! $news->is_featured]);
 
         $this->forgetCache();
 
@@ -151,8 +152,8 @@ final readonly class EloquentNewsRepository implements NewsRepositoryInterface
     {
         $news = $this->model->find($id);
 
-        if (!$news) {
-            throw new \Illuminate\Database\Eloquent\ModelNotFoundException("News item with ID {$id} not found.");
+        if (! $news) {
+            throw new ModelNotFoundException("News item with ID {$id} not found.");
         }
 
         return $news;

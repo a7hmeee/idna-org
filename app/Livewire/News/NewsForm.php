@@ -23,19 +23,33 @@ final class NewsForm extends Component
     public ?int $newsId = null;
 
     public string $titleAr = '';
+
     public string $titleEn = '';
+
     public string $category = '';
+
     public string $summary = '';
+
     public string $content = '';
+
     public $coverImage = null;
+
     public ?string $existingCoverImage = null;
+
     public string $author = '';
+
     public string $status = 'draft';
+
     public bool $isFeatured = false;
+
     public bool $isPublic = true;
+
     public string $publishAt = '';
+
     public string $metaTitle = '';
+
     public string $metaDescription = '';
+
     public string $metaKeywords = '';
 
     public function mount(?NewsItem $newsItem = null): void
@@ -72,12 +86,12 @@ final class NewsForm extends Component
         $data = $this->validate([
             'titleAr' => ['required', 'string', 'max:255'],
             'titleEn' => ['nullable', 'string', 'max:255'],
-            'category' => ['required', 'string', 'in:' . implode(',', array_map(fn ($c) => $c->value, NewsCategory::cases()))],
+            'category' => ['required', 'string', 'in:'.implode(',', array_map(fn ($c) => $c->value, NewsCategory::cases()))],
             'summary' => ['nullable', 'string', 'max:500'],
             'content' => ['nullable', 'string'],
             'coverImage' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'author' => ['nullable', 'string', 'max:255'],
-            'status' => ['required', 'string', 'in:' . implode(',', array_map(fn ($s) => $s->value, NewsStatus::cases()))],
+            'status' => ['required', 'string', 'in:'.implode(',', array_map(fn ($s) => $s->value, NewsStatus::cases()))],
             'isFeatured' => ['boolean'],
             'isPublic' => ['boolean'],
             'publishAt' => ['required', 'date'],

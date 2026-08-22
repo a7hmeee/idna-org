@@ -7,7 +7,6 @@ namespace App\Livewire\WaterSchedule;
 use App\Domains\WaterSchedule\Actions\CreateMaintenanceAction;
 use App\Domains\WaterSchedule\Actions\UpdateMaintenanceAction;
 use App\Domains\WaterSchedule\DTOs\WaterMaintenanceData;
-use App\Domains\WaterSchedule\Models\WaterArea;
 use App\Domains\WaterSchedule\Models\WaterMaintenance;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -16,12 +15,19 @@ use Livewire\Component;
 final class WaterMaintenanceForm extends Component
 {
     public ?int $maintenanceId = null;
+
     public string $title = '';
+
     public string $description = '';
+
     public string $startsAt = '';
+
     public string $endsAt = '';
+
     public string $status = 'active';
+
     public array $affectedAreas = [];
+
     public bool $isPublic = true;
 
     public function mount(?WaterMaintenance $maintenance = null): void

@@ -18,20 +18,35 @@ use Livewire\Component;
 final class EngineeringOfficeForm extends Component
 {
     public ?int $officeId = null;
+
     public string $office_name = '';
+
     public ?string $slug = null;
+
     public ?string $engineer_name = null;
+
     public ?string $license_number = null;
+
     public ?string $phone = null;
+
     public ?string $mobile = null;
+
     public ?string $email = null;
+
     public ?string $address = null;
+
     public array $specializations = [];
+
     public string $approval_status = 'approved';
+
     public string $status = 'active';
+
     public ?string $notes = null;
+
     public bool $is_public = false;
+
     public int $sort_order = 0;
+
     public ?string $expires_at = null;
 
     public function mount(?EngineeringOffice $office = null): void

@@ -9,6 +9,7 @@ use App\Domains\Department\Models\Department;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -79,26 +80,26 @@ final class ElectronicService extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function views(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function views(): HasMany
     {
         return $this->hasMany(ServiceView::class, 'electronic_service_id');
     }
 
-    public function portalClicks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function portalClicks(): HasMany
     {
         return $this->hasMany(ServicePortalClick::class, 'electronic_service_id');
     }
 
     protected static function booted(): void
     {
-        static::creating(function (ElectronicService $service): void {
+        self::creating(function (ElectronicService $service): void {
             if (empty($service->slug)) {
                 $base = Str::slug($service->name);
                 $slug = $base;
                 $counter = 1;
 
                 while (static::where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $counter++;
+                    $slug = $base.'-'.$counter++;
                 }
 
                 $service->slug = $slug;

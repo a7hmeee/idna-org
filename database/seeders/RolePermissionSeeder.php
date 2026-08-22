@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Domains\RoleManagement\Support\PermissionSynchronizer;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 final class RolePermissionSeeder extends Seeder
 {
@@ -42,6 +43,7 @@ final class RolePermissionSeeder extends Seeder
             'engineering_offices.view', 'engineering_offices.create', 'engineering_offices.update', 'engineering_offices.delete', 'engineering_offices.approve', 'engineering_offices.suspend', 'engineering_offices.publish',
             'announcements.view', 'announcements.create', 'announcements.update', 'announcements.delete', 'announcements.publish',
             'open_data.view', 'open_data.create', 'open_data.update', 'open_data.delete', 'open_data.publish',
+            'chatbot.view', 'chatbot.analytics', 'chatbot.search-terms', 'chatbot.unknown-questions', 'chatbot.performance',
         ]);
 
         $departmentManager = Role::findOrCreate('Department Manager');
@@ -59,6 +61,6 @@ final class RolePermissionSeeder extends Seeder
             'news.view', 'announcements.view', 'projects.view', 'tenders.view',
         ]);
 
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
     }
 }

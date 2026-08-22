@@ -3,6 +3,7 @@
 namespace App\Livewire\EngineeringOffices;
 
 use App\Domains\EngineeringOffices\Contracts\EngineeringOfficeRepositoryInterface;
+use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
 use App\Domains\Homepage\Enums\PageCarouselKey;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -14,6 +15,7 @@ final class PublicEngineeringOfficesIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $filter = 'all';
 
     public function updatedSearch(): void
@@ -33,7 +35,7 @@ final class PublicEngineeringOfficesIndex extends Component
         );
 
         // Get carousel slides using centralized Page Carousel system
-        $slidesRepo = app(\App\Domains\Homepage\Contracts\HomepageRepositoryInterface::class);
+        $slidesRepo = app(HomepageRepositoryInterface::class);
         $slides = $slidesRepo->getPageSlides($pageKey);
 
         // Get featured offices for sidebar

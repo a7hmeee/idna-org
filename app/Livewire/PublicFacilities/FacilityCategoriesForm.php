@@ -17,9 +17,13 @@ final class FacilityCategoriesForm extends Component
     public ?int $categoryId = null;
 
     public string $name = '';
+
     public string $icon = '';
+
     public string $description = '';
+
     public int $displayOrder = 0;
+
     public bool $isActive = true;
 
     public function mount(?FacilityCategory $category = null): void

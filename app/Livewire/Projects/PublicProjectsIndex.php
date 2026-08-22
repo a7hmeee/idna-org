@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Projects;
 
+use App\Domains\Municipality\Models\Municipality;
 use App\Domains\Projects\Contracts\ProjectRepositoryInterface;
 use App\Domains\Projects\Enums\ProjectCategory;
 use App\Domains\Projects\Enums\ProjectStatus;
@@ -15,7 +16,9 @@ final class PublicProjectsIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $category = '';
+
     public string $projectStatus = '';
 
     public function updatingSearch(): void
@@ -47,7 +50,7 @@ final class PublicProjectsIndex extends Component
 
         $municipalityName = 'بلدية إذنا';
         try {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+            $municipality = Municipality::first();
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
             }
@@ -61,7 +64,7 @@ final class PublicProjectsIndex extends Component
             'projectStatuses' => ProjectStatus::cases(),
             'municipalityName' => $municipalityName,
         ])->layout('layouts.home', [
-            'title' => 'المشاريع | ' . $municipalityName,
+            'title' => 'المشاريع | '.$municipalityName,
             'metaDescription' => 'تصفح جميع مشاريع بلدية إذنا، وتعرف على نسب الإنجاز والتفاصيل.',
         ]);
     }

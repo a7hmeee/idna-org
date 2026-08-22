@@ -23,27 +23,49 @@ final class ProjectForm extends Component
     public ?int $projectId = null;
 
     public string $nameAr = '';
+
     public string $nameEn = '';
+
     public string $category = 'infrastructure';
+
     public string $projectStatus = 'planned';
+
     public string $summary = '';
+
     public string $description = '';
+
     public string $startDate = '';
+
     public string $expectedCompletionDate = '';
+
     public string $actualCompletionDate = '';
+
     public string $location = '';
+
     public ?string $budget = null;
+
     public string $budgetCurrency = 'ILS';
+
     public int $implementationPercentage = 0;
+
     public string $contractor = '';
+
     public string $fundingEntity = '';
+
     public $coverImage = null;
+
     public ?string $existingCoverImage = null;
+
     public array $gallery = [];
+
     public array $existingGallery = [];
+
     public array $documents = [];
+
     public bool $isFeatured = false;
+
     public bool $isPublic = false;
+
     public string $status = 'planned';
 
     protected function rules(): array
@@ -51,8 +73,8 @@ final class ProjectForm extends Component
         return [
             'nameAr' => ['required', 'string', 'max:255'],
             'nameEn' => ['nullable', 'string', 'max:255'],
-            'category' => ['required', 'string', 'in:' . implode(',', array_map(fn($c) => $c->value, ProjectCategory::cases()))],
-            'projectStatus' => ['required', 'string', 'in:' . implode(',', array_map(fn($s) => $s->value, ProjectStatus::cases()))],
+            'category' => ['required', 'string', 'in:'.implode(',', array_map(fn ($c) => $c->value, ProjectCategory::cases()))],
+            'projectStatus' => ['required', 'string', 'in:'.implode(',', array_map(fn ($s) => $s->value, ProjectStatus::cases()))],
             'summary' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
             'startDate' => ['nullable', 'date'],
@@ -68,7 +90,7 @@ final class ProjectForm extends Component
             'gallery.*' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'isFeatured' => ['boolean'],
             'isPublic' => ['boolean'],
-            'status' => ['required', 'string', 'in:' . implode(',', array_map(fn($s) => $s->value, ProjectStatus::cases()))],
+            'status' => ['required', 'string', 'in:'.implode(',', array_map(fn ($s) => $s->value, ProjectStatus::cases()))],
         ];
     }
 
@@ -186,7 +208,7 @@ final class ProjectForm extends Component
             'contractor' => $this->contractor ?: null,
             'fundingEntity' => $this->fundingEntity ?: null,
             'coverImagePath' => $coverImagePath,
-            'gallery' => !empty($allGallery) ? $allGallery : null,
+            'gallery' => ! empty($allGallery) ? $allGallery : null,
             'isFeatured' => $this->isFeatured,
             'isPublic' => $this->isPublic,
             'createdBy' => auth()->id(),

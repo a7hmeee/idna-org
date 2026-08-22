@@ -67,7 +67,7 @@ final class Facility extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Facility $facility): void {
+        self::creating(function (Facility $facility): void {
             if (empty($facility->slug)) {
                 $facility->slug = Str::slug($facility->name);
             }
@@ -75,7 +75,7 @@ final class Facility extends Model
             $facility->views_count ??= 0;
         });
 
-        static::updating(function (Facility $facility): void {
+        self::updating(function (Facility $facility): void {
             if (empty($facility->slug) && $facility->name) {
                 $facility->slug = Str::slug($facility->name);
             }
@@ -101,7 +101,7 @@ final class Facility extends Model
 
     public function getCoverImageUrlAttribute(): ?string
     {
-        if (!$this->cover_image_path) {
+        if (! $this->cover_image_path) {
             return null;
         }
 
@@ -110,7 +110,7 @@ final class Facility extends Model
 
     public function getGalleryUrlsAttribute(): array
     {
-        if (!$this->gallery) {
+        if (! $this->gallery) {
             return [];
         }
 

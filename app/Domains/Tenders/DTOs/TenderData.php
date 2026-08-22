@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\Tenders\DTOs;
 
-use App\Domains\Tenders\Enums\TenderStatus;
-
 final readonly class TenderData
 {
     public function __construct(

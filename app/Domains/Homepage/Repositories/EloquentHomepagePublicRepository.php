@@ -4,23 +4,39 @@ declare(strict_types=1);
 
 namespace App\Domains\Homepage\Repositories;
 
+use App\Domains\Announcements\Enums\AnnouncementType;
+use App\Domains\Announcements\Models\Announcement;
+use App\Domains\Department\Models\Department;
+use App\Domains\ElectronicServices\Models\ElectronicService;
+use App\Domains\EngineeringOffices\Models\EngineeringOffice;
 use App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface;
+use App\Domains\Homepage\Models\HomepageQuickLink;
 use App\Domains\Homepage\Models\HomepageSection;
 use App\Domains\Homepage\Models\HomepageSetting;
 use App\Domains\Homepage\Models\HomepageSlide;
-use App\Domains\Homepage\Models\HomepageQuickLink;
 use App\Domains\Homepage\Models\HomepageStatistic;
+use App\Domains\Jobs\Models\Job;
+use App\Domains\Municipality\Enums\CouncilMemberPosition;
+use App\Domains\Municipality\Models\CouncilDecision;
+use App\Domains\Municipality\Models\CouncilMember;
 use App\Domains\Municipality\Models\Municipality;
-use App\Domains\Municipality\Models\MunicipalityContact;
-use App\Domains\Municipality\Models\MunicipalitySocialPlatform;
+use App\Domains\News\Enums\NewsCategory;
+use App\Domains\News\Models\NewsItem;
+use App\Domains\Projects\Enums\ProjectStatus;
+use App\Domains\Projects\Models\Project;
+use App\Domains\PublicFacilities\Models\Facility;
 use App\Domains\SharedKernel\Models\Media;
+use App\Domains\Tenders\Models\Tender;
+use App\Domains\WaterSchedule\Models\WaterArea;
+use App\Domains\WaterSchedule\Models\WaterSchedule;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 
 final class EloquentHomepagePublicRepository implements HomepagePublicRepositoryInterface
 {
     private const CACHE_KEY = 'homepage.public.data';
+
     private const CACHE_TTL = 600;
 
     public function getHomePageData(): array
@@ -101,7 +117,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getHeroSlides(): array
     {
-        return HomepageSlide::where('is_active', true)
+        return HomepageSlide::where('page_key', 'home')
+            ->where('is_active', true)
             ->where(function (Builder $query): void {
                 $query->whereNull('starts_at')->orWhere('starts_at', '<=', now());
             })
@@ -134,8 +151,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
         $stats = [];
 
         try {
-            if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
-                $count = \App\Domains\ElectronicServices\Models\ElectronicService::where('status', 'active')->where('is_public', true)->count();
+            if (class_exists(ElectronicService::class)) {
+                $count = ElectronicService::where('status', 'active')->where('is_public', true)->count();
                 if ($count > 0) {
                     $stats[] = [
                         'label' => 'خدمة إلكترونية',
@@ -150,8 +167,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
         }
 
         try {
-            if (class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
-                $count = \App\Domains\PublicFacilities\Models\Facility::where('status', 'active')->count();
+            if (class_exists(Facility::class)) {
+                $count = Facility::where('status', 'active')->count();
                 if ($count > 0) {
                     $stats[] = [
                         'label' => 'مرفق عام',
@@ -166,8 +183,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
         }
 
         try {
-            if (class_exists(\App\Domains\WaterSchedule\Models\WaterArea::class)) {
-                $count = \App\Domains\WaterSchedule\Models\WaterArea::where('is_active', true)->count();
+            if (class_exists(WaterArea::class)) {
+                $count = WaterArea::where('is_active', true)->count();
                 if ($count > 0) {
                     $stats[] = [
                         'label' => 'منطقة مياه',
@@ -182,8 +199,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
         }
 
         try {
-            if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
-                $count = \App\Domains\Jobs\Models\Job::published()->count();
+            if (class_exists(Job::class)) {
+                $count = Job::published()->count();
                 if ($count > 0) {
                     $stats[] = [
                         'label' => 'وظيفة شاغرة',
@@ -202,13 +219,13 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getMunicipalityInfo(): ?array
     {
-        if (!class_exists(Municipality::class)) {
+        if (! class_exists(Municipality::class)) {
             return null;
         }
 
         $municipality = Municipality::first();
 
-        if (!$municipality) {
+        if (! $municipality) {
             return null;
         }
 
@@ -240,10 +257,10 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
             'foundation_date' => $municipality->foundation_date?->toDateString(),
             'population' => $municipality->population,
             'area' => $municipality->area,
-            'logo_url' => $logo ? asset('storage/' . $logo->path) : null,
-            'mayor_image_url' => $mayorImg ? asset('storage/' . $mayorImg->path) : null,
+            'logo_url' => $logo ? asset('storage/'.$logo->path) : null,
+            'mayor_image_url' => $mayorImg ? asset('storage/'.$mayorImg->path) : null,
             'images' => $images->map(fn ($img) => [
-                'url' => asset('storage/' . $img->path),
+                'url' => asset('storage/'.$img->path),
                 'alt' => $img->alt,
             ])->toArray(),
             'contacts' => $municipality->contacts()
@@ -273,11 +290,11 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getFeaturedServices(int $limit = 6): array
     {
-        if (!class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
+        if (! class_exists(ElectronicService::class)) {
             return [];
         }
 
-        return \App\Domains\ElectronicServices\Models\ElectronicService::query()
+        return ElectronicService::query()
             ->where('status', 'active')
             ->where('is_public', true)
             ->where('is_featured', true)
@@ -290,11 +307,11 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getFeaturedDepartments(int $limit = 6): array
     {
-        if (!class_exists(\App\Domains\Department\Models\Department::class)) {
+        if (! class_exists(Department::class)) {
             return [];
         }
 
-        $departments = \App\Domains\Department\Models\Department::query()
+        $departments = Department::query()
             ->where('status', 'active')
             ->where('is_public', true)
             ->orderBy('is_featured', 'desc')
@@ -304,7 +321,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
         $departmentIds = $departments->pluck('id');
 
-        $serviceCounts = \App\Domains\ElectronicServices\Models\ElectronicService::whereIn('department_id', $departmentIds)
+        $serviceCounts = ElectronicService::whereIn('department_id', $departmentIds)
             ->where('is_public', true)
             ->where('status', 'active')
             ->selectRaw('department_id, COUNT(*) as count')
@@ -337,11 +354,11 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getFeaturedCouncilMembers(int $limit = 6): array
     {
-        if (!class_exists(\App\Domains\Municipality\Models\CouncilMember::class)) {
+        if (! class_exists(CouncilMember::class)) {
             return [];
         }
 
-        $members = \App\Domains\Municipality\Models\CouncilMember::query()
+        $members = CouncilMember::query()
             ->where('status', 'active')
             ->where('is_public', true)
             ->orderBy('is_featured', 'desc')
@@ -351,11 +368,11 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
             ->toArray();
 
         foreach ($members as &$member) {
-            if (!empty($member['photo_path'])) {
-                $member['photo_url'] = asset('storage/' . $member['photo_path']);
+            if (! empty($member['photo_path'])) {
+                $member['photo_url'] = asset('storage/'.$member['photo_path']);
             }
             try {
-                $member['position_label'] = \App\Domains\Municipality\Enums\CouncilMemberPosition::tryFrom($member['position'] ?? '')?->label() ?? ($member['position'] ?? '');
+                $member['position_label'] = CouncilMemberPosition::tryFrom($member['position'] ?? '')?->label() ?? ($member['position'] ?? '');
             } catch (\Throwable) {
                 $member['position_label'] = $member['position'] ?? '';
             }
@@ -366,12 +383,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getMayorData(): ?array
     {
-        if (!class_exists(\App\Domains\Municipality\Models\CouncilMember::class)) {
+        if (! class_exists(CouncilMember::class)) {
             return $this->getMayorFromSettings();
         }
 
         try {
-            $mayor = \App\Domains\Municipality\Models\CouncilMember::query()
+            $mayor = CouncilMember::query()
                 ->where('position', 'mayor')
                 ->where('status', 'active')
                 ->where('is_public', true)
@@ -379,8 +396,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
             if ($mayor) {
                 $data = $mayor->toArray();
-                if (!empty($data['photo_path'])) {
-                    $data['photo_url'] = asset('storage/' . $data['photo_path']);
+                if (! empty($data['photo_path'])) {
+                    $data['photo_url'] = asset('storage/'.$data['photo_path']);
                 }
 
                 return $data;
@@ -394,11 +411,11 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
     private function getMayorFromSettings(): ?array
     {
         $settings = HomepageSetting::first(['site_title', 'mayor_message', 'mayor_image_path', 'show_mayor_message']);
-        if (!$settings) {
+        if (! $settings) {
             return null;
         }
 
-        if (!$settings->show_mayor_message && !$settings->mayor_message) {
+        if (! $settings->show_mayor_message && ! $settings->mayor_message) {
             return null;
         }
 
@@ -408,18 +425,18 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
             'position_label' => 'رئيس المجلس البلدي',
             'bio' => $settings->mayor_message,
             'photo_url' => $settings->mayor_image_path
-                ? asset('storage/' . $settings->mayor_image_path)
+                ? asset('storage/'.$settings->mayor_image_path)
                 : null,
         ];
     }
 
     public function getLatestCouncilDecisions(int $limit = 5): array
     {
-        if (!class_exists(\App\Domains\Municipality\Models\CouncilDecision::class)) {
+        if (! class_exists(CouncilDecision::class)) {
             return [];
         }
 
-        return \App\Domains\Municipality\Models\CouncilDecision::query()
+        return CouncilDecision::query()
             ->where('status', 'published')
             ->where('is_public', true)
             ->whereNotNull('published_at')
@@ -431,14 +448,14 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getEngineeringOffices(int $limit = 6): array
     {
-        if (!class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
+        if (! class_exists(EngineeringOffice::class)) {
             return [];
         }
 
-        return \App\Domains\EngineeringOffices\Models\EngineeringOffice::query()
+        return EngineeringOffice::query()
             ->where(function (Builder $q): void {
                 $q->whereNull('expires_at')
-                  ->orWhere('expires_at', '>=', now()->toDateString());
+                    ->orWhere('expires_at', '>=', now()->toDateString());
             })
             ->where('approval_status', 'approved')
             ->where('status', 'active')
@@ -451,12 +468,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getLatestNews(int $limit = 3): array
     {
-        if (!class_exists(\App\Domains\News\Models\NewsItem::class)) {
+        if (! class_exists(NewsItem::class)) {
             return [];
         }
 
         try {
-            $news = \App\Domains\News\Models\NewsItem::query()
+            $news = NewsItem::query()
                 ->where('status', 'published')
                 ->where('is_public', true)
                 ->where('publish_at', '<=', now())
@@ -466,15 +483,15 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                 ->get(['id', 'title_ar', 'slug', 'category', 'summary', 'cover_image_path', 'publish_at', 'is_featured']);
 
             return $news->map(function ($n) {
-                $routeExists = \Illuminate\Support\Facades\Route::has('public.news.show');
+                $routeExists = Route::has('public.news.show');
 
                 return [
                     'id' => $n->id,
                     'title' => $n->title_ar,
                     'slug' => $n->slug,
                     'url' => $routeExists ? route('public.news.show', $n->slug) : '#',
-                    'image' => $n->cover_image_path ? asset('storage/' . $n->cover_image_path) : null,
-                    'category' => $n->category instanceof \App\Domains\News\Enums\NewsCategory ? $n->category->label() : $n->category,
+                    'image' => $n->cover_image_path ? asset('storage/'.$n->cover_image_path) : null,
+                    'category' => $n->category instanceof NewsCategory ? $n->category->label() : $n->category,
                     'summary' => $n->summary ?? '',
                     'date' => $n->publish_at?->format('Y-m-d') ?? '',
                 ];
@@ -486,12 +503,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getLatestProjects(int $limit = 3): array
     {
-        if (!class_exists(\App\Domains\Projects\Models\Project::class)) {
+        if (! class_exists(Project::class)) {
             return [];
         }
 
         try {
-            $projects = \App\Domains\Projects\Models\Project::query()
+            $projects = Project::query()
                 ->where('status', 'published')
                 ->where('is_public', true)
                 ->orderBy('is_featured', 'desc')
@@ -500,15 +517,15 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                 ->get(['id', 'name_ar', 'slug', 'project_status', 'summary', 'cover_image_path', 'implementation_percentage', 'is_featured']);
 
             return $projects->map(function ($p) {
-                $routeExists = \Illuminate\Support\Facades\Route::has('public.projects.show');
+                $routeExists = Route::has('public.projects.show');
 
                 return [
                     'id' => $p->id,
                     'title' => $p->name_ar,
                     'slug' => $p->slug,
                     'url' => $routeExists ? route('public.projects.show', $p->slug) : '#',
-                    'image' => $p->cover_image_path ? asset('storage/' . $p->cover_image_path) : null,
-                    'status' => $p->project_status instanceof \App\Domains\Projects\Enums\ProjectStatus ? $p->project_status->label() : $p->project_status,
+                    'image' => $p->cover_image_path ? asset('storage/'.$p->cover_image_path) : null,
+                    'status' => $p->project_status instanceof ProjectStatus ? $p->project_status->label() : $p->project_status,
                     'summary' => $p->summary ?? '',
                     'progress' => $p->implementation_percentage,
                 ];
@@ -520,12 +537,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getLatestAnnouncements(int $limit = 3): array
     {
-        if (!class_exists(\App\Domains\Announcements\Models\Announcement::class)) {
+        if (! class_exists(Announcement::class)) {
             return [];
         }
 
         try {
-            $announcements = \App\Domains\Announcements\Models\Announcement::query()
+            $announcements = Announcement::query()
                 ->where('status', 'published')
                 ->where('published_at', '<=', now())
                 ->orderBy('is_featured', 'desc')
@@ -534,7 +551,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                 ->get(['id', 'title', 'slug', 'type', 'priority', 'short_description', 'desktop_image_path', 'published_at', 'is_featured']);
 
             return $announcements->map(function ($a) {
-                $routeExists = \Illuminate\Support\Facades\Route::has('public.announcements.show');
+                $routeExists = Route::has('public.announcements.show');
                 $slug = $a->slug;
 
                 return [
@@ -542,8 +559,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                     'title' => $a->title,
                     'slug' => $slug,
                     'url' => $routeExists ? route('public.announcements.show', $slug) : '#',
-                    'image' => $a->desktop_image_path ? asset('storage/' . $a->desktop_image_path) : null,
-                    'type' => $a->type instanceof \App\Domains\Announcements\Enums\AnnouncementType ? $a->type->label() : $a->type,
+                    'image' => $a->desktop_image_path ? asset('storage/'.$a->desktop_image_path) : null,
+                    'type' => $a->type instanceof AnnouncementType ? $a->type->label() : $a->type,
                     'summary' => $a->short_description ?? '',
                     'date' => $a->published_at?->format('Y-m-d') ?? '',
                 ];
@@ -555,12 +572,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getLatestTenders(int $limit = 4): array
     {
-        if (!class_exists(\App\Domains\Tenders\Models\Tender::class)) {
+        if (! class_exists(Tender::class)) {
             return [];
         }
 
         try {
-            $tenders = \App\Domains\Tenders\Models\Tender::query()
+            $tenders = Tender::query()
                 ->where('status', 'published')
                 ->where('is_public', true)
                 ->where('submission_deadline', '>=', now()->toDateString())
@@ -570,7 +587,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                 ->get(['id', 'title_ar', 'slug', 'tender_number', 'summary', 'submission_deadline', 'budget', 'status', 'is_featured']);
 
             return $tenders->map(function ($t) {
-                $routeExists = \Illuminate\Support\Facades\Route::has('public.tenders.show');
+                $routeExists = Route::has('public.tenders.show');
 
                 return [
                     'id' => $t->id,
@@ -591,12 +608,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getLatestJobs(int $limit = 3): array
     {
-        if (!class_exists(\App\Domains\Jobs\Models\Job::class)) {
+        if (! class_exists(Job::class)) {
             return [];
         }
 
         try {
-            return \App\Domains\Jobs\Models\Job::query()
+            return Job::query()
                 ->where('status', 'published')
                 ->where('is_public', true)
                 ->where('publish_at', '<=', now()->toDateString())
@@ -613,14 +630,14 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getWaterSchedule(): array
     {
-        if (!class_exists(\App\Domains\WaterSchedule\Models\WaterSchedule::class)) {
+        if (! class_exists(WaterSchedule::class)) {
             return [];
         }
 
         try {
             $today = now()->toDateString();
 
-            $schedules = \App\Domains\WaterSchedule\Models\WaterSchedule::query()
+            $schedules = WaterSchedule::query()
                 ->with(['area:id,name'])
                 ->where('schedule_date', $today)
                 ->where('is_public', true)
@@ -628,13 +645,13 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                 ->get(['id', 'area_id', 'schedule_date', 'start_time', 'end_time', 'status', 'notes', 'display_order', 'is_public']);
 
             if ($schedules->isEmpty()) {
-                $latestDate = \App\Domains\WaterSchedule\Models\WaterSchedule::query()
+                $latestDate = WaterSchedule::query()
                     ->where('is_public', true)
                     ->where('schedule_date', '<', $today)
                     ->max('schedule_date');
 
                 if ($latestDate) {
-                    $schedules = \App\Domains\WaterSchedule\Models\WaterSchedule::query()
+                    $schedules = WaterSchedule::query()
                         ->with(['area:id,name'])
                         ->where('schedule_date', $latestDate)
                         ->where('is_public', true)
@@ -651,12 +668,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getWaterAreas(): array
     {
-        if (!class_exists(\App\Domains\WaterSchedule\Models\WaterArea::class)) {
+        if (! class_exists(WaterArea::class)) {
             return [];
         }
 
         try {
-            return \App\Domains\WaterSchedule\Models\WaterArea::query()
+            return WaterArea::query()
                 ->where('is_active', true)
                 ->orderBy('display_order')
                 ->get(['id', 'name', 'display_order'])
@@ -668,13 +685,13 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getStatisticsBackground(): ?string
     {
-        if (!class_exists(Municipality::class)) {
+        if (! class_exists(Municipality::class)) {
             return null;
         }
 
         $municipality = Municipality::first();
 
-        if (!$municipality) {
+        if (! $municipality) {
             return null;
         }
 
@@ -684,16 +701,16 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
             ->latest()
             ->first(['path']);
 
-        return $bg ? asset('storage/' . $bg->path) : null;
+        return $bg ? asset('storage/'.$bg->path) : null;
     }
 
     public function getDepartmentPublicServices(int $departmentId, int $limit = 4): array
     {
-        if (!class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
+        if (! class_exists(ElectronicService::class)) {
             return [];
         }
 
-        return \App\Domains\ElectronicServices\Models\ElectronicService::query()
+        return ElectronicService::query()
             ->where('department_id', $departmentId)
             ->where('status', 'active')
             ->where('is_public', true)
@@ -706,12 +723,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
 
     public function getFeaturedFacilities(int $limit = 4): array
     {
-        if (!class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
+        if (! class_exists(Facility::class)) {
             return [];
         }
 
         try {
-            $facilities = \App\Domains\PublicFacilities\Models\Facility::query()
+            $facilities = Facility::query()
                 ->with('category:id,name,slug,icon')
                 ->published()
                 ->orderBy('is_featured', 'desc')
@@ -762,7 +779,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                 ->get(['path', 'title', 'alt', 'display_order']);
 
             return $logos->map(fn ($media) => [
-                'url' => asset('storage/' . $media->path),
+                'url' => asset('storage/'.$media->path),
                 'title' => $media->title,
                 'alt' => $media->alt,
             ])->toArray();
@@ -775,7 +792,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
     {
         $settings = HomepageSetting::first();
 
-        if (!$settings) {
+        if (! $settings) {
             return [];
         }
 

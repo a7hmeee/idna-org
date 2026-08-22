@@ -24,7 +24,7 @@
             </span>
             <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-primary/10 text-primary">
                 <i data-lucide="folder" class="w-3 h-3"></i>
-                {{ $project->category->label() }}
+                {{ $project->category?->label() }}
             </span>
             @if ($project->location)
                 <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-surface-secondary text-text-secondary">
@@ -158,7 +158,7 @@
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <h3 class="text-sm font-bold text-text group-hover:text-primary transition-colors">{{ $related->name_ar }}</h3>
-                                            <p class="text-xs text-text-tertiary">{{ $related->category->label() }} · {{ $related->project_status->label() }}</p>
+                                            <p class="text-xs text-text-tertiary">{{ $related->category?->label() }} · {{ $related->project_status->label() }}</p>
                                         </div>
                                         <i data-lucide="chevron-left" class="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors shrink-0"></i>
                                     </a>
@@ -177,7 +177,7 @@
                         <div class="space-y-3 text-sm">
                             <div class="flex items-center justify-between">
                                 <span class="text-text-tertiary">التصنيف</span>
-                                <span class="text-text font-semibold">{{ $project->category->label() }}</span>
+                                <span class="text-text font-semibold">{{ $project->category?->label() }}</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-text-tertiary">حالة المشروع</span>

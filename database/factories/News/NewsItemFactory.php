@@ -8,6 +8,7 @@ use App\Domains\News\Enums\NewsCategory;
 use App\Domains\News\Enums\NewsStatus;
 use App\Domains\News\Models\NewsItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 final class NewsItemFactory extends Factory
 {
@@ -20,7 +21,7 @@ final class NewsItemFactory extends Factory
         return [
             'title_ar' => $titleAr,
             'title_en' => fake()->sentence(6),
-            'slug' => \Illuminate\Support\Str::slug($titleAr),
+            'slug' => Str::slug($titleAr),
             'category' => fake()->randomElement(NewsCategory::cases())->value,
             'status' => NewsStatus::Published->value,
             'summary' => fake()->paragraph(2),

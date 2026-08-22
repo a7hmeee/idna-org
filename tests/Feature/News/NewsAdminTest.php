@@ -13,15 +13,18 @@ use App\Domains\News\Enums\NewsStatus;
 use App\Domains\News\Models\NewsItem;
 use App\Livewire\News\NewsForm;
 use App\Livewire\News\NewsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================
@@ -269,7 +272,7 @@ it('auto-generates slug from title_ar on create', function (): void {
     $news->refresh();
 
     expect($news->slug)->not->toBeNull();
-    expect($news->slug)->toBe(\Illuminate\Support\Str::slug('خبر جديد جدا'));
+    expect($news->slug)->toBe(Str::slug('خبر جديد جدا'));
 });
 
 it('slug is unique in practice', function (): void {

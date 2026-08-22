@@ -16,15 +16,17 @@ use App\Domains\Complaints\Models\Complaint;
 use App\Domains\Department\Models\Department;
 use App\Livewire\Complaints\ComplaintForm;
 use App\Livewire\Complaints\ComplaintsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================
@@ -74,7 +76,7 @@ it('returns 403 for user without complaints.update permission', function (): voi
 });
 
 // ============================================
-# Admin View
+// Admin View
 // ============================================
 
 it('admin can view complaints dashboard', function (): void {

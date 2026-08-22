@@ -11,6 +11,10 @@ use App\Domains\UserManagement\Actions\DeleteUserAction;
 use App\Domains\UserManagement\Actions\ResetUserPasswordAction;
 use App\Domains\UserManagement\Actions\UpdateUserAction;
 use App\Domains\UserManagement\Contracts\UserManagementRepositoryInterface;
+use App\Domains\UserManagement\DTOs\CreateUserDTO;
+use App\Domains\UserManagement\DTOs\UpdateUserDTO;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,27 +26,43 @@ final class UserIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $filterRole = '';
+
     public string $filterStatus = '';
 
     public ?int $editingUserId = null;
+
     public bool $showCreateModal = false;
+
     public bool $showEditModal = false;
+
     public bool $showDeleteModal = false;
+
     public bool $showResetPasswordModal = false;
+
     public ?int $deletingUserId = null;
+
     public ?int $resetPasswordUserId = null;
 
     public string $name = '';
+
     public string $email = '';
+
     public string $phone = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
+
     public ?int $department_id = null;
+
     public string $role = '';
+
     public string $status = 'active';
 
     public string $newPassword = '';
+
     public string $newPasswordConfirmation = '';
 
     public array $selectedPermissions = [];
@@ -67,7 +87,7 @@ final class UserIndex extends Component
         $this->resetPage();
     }
 
-    public function getUsers(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getUsers(): LengthAwarePaginator
     {
         return app(UserManagementRepositoryInterface::class)->paginate(
             perPage: 15,
@@ -96,9 +116,9 @@ final class UserIndex extends Component
             'status' => ['required', 'in:active,inactive'],
         ]);
 
-        $user = $action->execute(\App\Domains\UserManagement\DTOs\CreateUserDTO::fromRequest($validated));
+        $user = $action->execute(CreateUserDTO::fromRequest($validated));
 
-        if (!empty($this->selectedPermissions)) {
+        if (! empty($this->selectedPermissions)) {
             app(UserManagementRepositoryInterface::class)->syncPermissions($user->id, $this->selectedPermissions);
         }
 
@@ -128,7 +148,7 @@ final class UserIndex extends Component
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users')->ignore($this->editingUserId)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->editingUserId)],
             'phone' => ['nullable', 'string', 'max:20'],
             'department_id' => ['nullable', 'exists:departments,id'],
             'role' => ['nullable', 'string', 'exists:roles,name'],
@@ -137,7 +157,7 @@ final class UserIndex extends Component
 
         $action->execute(
             $this->editingUserId,
-            \App\Domains\UserManagement\DTOs\UpdateUserDTO::fromRequest($validated),
+            UpdateUserDTO::fromRequest($validated),
         );
 
         app(UserManagementRepositoryInterface::class)->syncPermissions(
@@ -161,6 +181,7 @@ final class UserIndex extends Component
         if ($this->deletingUserId === auth()->id()) {
             session()->flash('error', 'لا يمكن حذف حسابك الخاص.');
             $this->showDeleteModal = false;
+
             return;
         }
 
@@ -169,6 +190,7 @@ final class UserIndex extends Component
         if ($user && $user->hasRole('Super Admin')) {
             session()->flash('error', 'لا يمكن حذف حساب المدير العام.');
             $this->showDeleteModal = false;
+
             return;
         }
 

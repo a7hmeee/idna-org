@@ -7,7 +7,6 @@ namespace App\Livewire\Announcements;
 use App\Domains\Announcements\Contracts\AnnouncementRepositoryInterface;
 use App\Domains\Announcements\Enums\AnnouncementPriority;
 use App\Domains\Announcements\Enums\AnnouncementType;
-use App\Domains\Homepage\Enums\PageCarouselKey;
 use App\Domains\Municipality\Models\Municipality;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,8 +16,11 @@ final class PublicAnnouncementsIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $type = '';
+
     public string $priority = '';
+
     public string $sort = 'latest';
 
     protected $queryString = ['search', 'type', 'priority', 'sort'];
@@ -69,7 +71,8 @@ final class PublicAnnouncementsIndex extends Component
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
             }
-        } catch (\Throwable $e) {}
+        } catch (\Throwable $e) {
+        }
 
         $types = AnnouncementType::cases();
         $priorities = AnnouncementPriority::cases();
@@ -81,8 +84,8 @@ final class PublicAnnouncementsIndex extends Component
             'types' => $types,
             'priorities' => $priorities,
         ])->layout('layouts.home', [
-            'title' => 'الإعلانات | ' . $municipalityName,
-            'metaDescription' => 'تصفح جميع الإعلانات الرسمية الصادرة عن ' . $municipalityName . '، واطلع على آخر المستجدات والتنبيهات.',
+            'title' => 'الإعلانات | '.$municipalityName,
+            'metaDescription' => 'تصفح جميع الإعلانات الرسمية الصادرة عن '.$municipalityName.'، واطلع على آخر المستجدات والتنبيهات.',
         ]);
     }
 }

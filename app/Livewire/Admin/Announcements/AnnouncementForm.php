@@ -24,22 +24,31 @@ final class AnnouncementForm extends Component
     public ?int $announcementId = null;
 
     public string $title = '';
+
     public string $type = 'general';
+
     public string $priority = 'normal';
+
     public string $status = 'draft';
+
     public string $summary = '';
+
     public string $content = '';
+
     public $image = null;
+
     public ?string $existingImage = null;
+
     public bool $isFeatured = false;
+
     public string $publishAt = '';
 
     protected function rules(): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'string', 'in:' . implode(',', array_map(fn($t) => $t->value, AnnouncementType::cases()))],
-            'priority' => ['required', 'string', 'in:' . implode(',', array_map(fn($p) => $p->value, AnnouncementPriority::cases()))],
+            'type' => ['required', 'string', 'in:'.implode(',', array_map(fn ($t) => $t->value, AnnouncementType::cases()))],
+            'priority' => ['required', 'string', 'in:'.implode(',', array_map(fn ($p) => $p->value, AnnouncementPriority::cases()))],
             'status' => ['required', 'string', 'in:draft,published,archived'],
             'summary' => ['required', 'string', 'max:500'],
             'content' => ['required', 'string'],

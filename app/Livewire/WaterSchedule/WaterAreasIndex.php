@@ -17,6 +17,7 @@ final class WaterAreasIndex extends Component
     use WithPagination;
 
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
 
     public function confirmDelete(int $id): void

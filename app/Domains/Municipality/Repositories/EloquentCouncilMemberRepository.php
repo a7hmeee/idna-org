@@ -19,9 +19,9 @@ final class EloquentCouncilMemberRepository implements CouncilMemberRepositoryIn
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('full_name', 'like', "%{$search}%")
-                  ->orWhere('position', 'like', "%{$search}%")
-                  ->orWhere('committee', 'like', "%{$search}%")
-                  ->orWhere('profession', 'like', "%{$search}%");
+                    ->orWhere('position', 'like', "%{$search}%")
+                    ->orWhere('committee', 'like', "%{$search}%")
+                    ->orWhere('profession', 'like', "%{$search}%");
             });
         }
 
@@ -82,7 +82,7 @@ final class EloquentCouncilMemberRepository implements CouncilMemberRepositoryIn
     {
         return DB::transaction(function () use ($id): CouncilMember {
             $member = CouncilMember::findOrFail($id);
-            $member->update(['is_public' => !$member->is_public]);
+            $member->update(['is_public' => ! $member->is_public]);
 
             return $member->fresh();
         });
@@ -92,7 +92,7 @@ final class EloquentCouncilMemberRepository implements CouncilMemberRepositoryIn
     {
         return DB::transaction(function () use ($id): CouncilMember {
             $member = CouncilMember::findOrFail($id);
-            $member->update(['is_featured' => !$member->is_featured]);
+            $member->update(['is_featured' => ! $member->is_featured]);
 
             return $member->fresh();
         });
@@ -149,11 +149,11 @@ final class EloquentCouncilMemberRepository implements CouncilMemberRepositoryIn
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('full_name', 'like', "%{$search}%")
-                  ->orWhere('position', 'like', "%{$search}%")
-                  ->orWhere('committee', 'like', "%{$search}%")
-                  ->orWhere('profession', 'like', "%{$search}%")
-                  ->orWhere('bio', 'like', "%{$search}%")
-                  ->orWhere('qualification', 'like', "%{$search}%");
+                    ->orWhere('position', 'like', "%{$search}%")
+                    ->orWhere('committee', 'like', "%{$search}%")
+                    ->orWhere('profession', 'like', "%{$search}%")
+                    ->orWhere('bio', 'like', "%{$search}%")
+                    ->orWhere('qualification', 'like', "%{$search}%");
             });
         }
 

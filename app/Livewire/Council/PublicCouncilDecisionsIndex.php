@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Council;
 
+use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
+use App\Domains\Homepage\Enums\PageCarouselKey;
 use App\Domains\Municipality\Contracts\CouncilDecisionRepositoryInterface;
 use App\Domains\Municipality\Enums\CouncilDecisionType;
-use App\Domains\Homepage\Enums\PageCarouselKey;
 use App\Domains\Municipality\Models\Municipality;
+use App\Domains\SharedKernel\Models\Media;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,16 +18,20 @@ final class PublicCouncilDecisionsIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $type = '';
+
     public string $year = '';
+
     public string $sort = 'latest';
+
     public bool $showFilters = true;
 
     protected $queryString = ['search', 'type', 'year', 'sort'];
 
     public function toggleFilters(): void
     {
-        $this->showFilters = !$this->showFilters;
+        $this->showFilters = ! $this->showFilters;
     }
 
     public function updatedSearch(): void
@@ -83,7 +89,7 @@ final class PublicCouncilDecisionsIndex extends Component
         if ($municipality) {
             $municipalityName = $municipality->name_ar ?? $municipalityName;
 
-            $heroMedia = \App\Domains\SharedKernel\Models\Media::where('mediable_type', $municipality->getMorphClass())
+            $heroMedia = Media::where('mediable_type', $municipality->getMorphClass())
                 ->where('mediable_id', $municipality->getKey())
                 ->where('collection', 'decisions-hero')
                 ->where('is_active', true)
@@ -91,11 +97,11 @@ final class PublicCouncilDecisionsIndex extends Component
                 ->first();
 
             if ($heroMedia) {
-                $heroImageUrl = asset('storage/' . $heroMedia->path);
+                $heroImageUrl = asset('storage/'.$heroMedia->path);
             }
 
             // Fetch carousel slides using centralized Page Carousel system
-            $slidesRepo = app(\App\Domains\Homepage\Contracts\HomepageRepositoryInterface::class);
+            $slidesRepo = app(HomepageRepositoryInterface::class);
             $slides = $slidesRepo->getPageSlides($pageKey);
         }
 
@@ -111,8 +117,8 @@ final class PublicCouncilDecisionsIndex extends Component
             'carouselImages' => $slides->pluck('image_url'),
             'hasActiveFilters' => $hasActiveFilters,
         ])->layout('layouts.home', [
-            'title' => 'قرارات المجلس البلدي | ' . $municipalityName,
-            'metaDescription' => 'تصفح قرارات المجلس البلدي في ' . $municipalityName . '، واطلع على القرارات الإدارية والمالية والتنظيمية.',
+            'title' => 'قرارات المجلس البلدي | '.$municipalityName,
+            'metaDescription' => 'تصفح قرارات المجلس البلدي في '.$municipalityName.'، واطلع على القرارات الإدارية والمالية والتنظيمية.',
         ]);
     }
 }

@@ -81,7 +81,7 @@ final class Job extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Job $job): void {
+        self::creating(function (Job $job): void {
             if (empty($job->slug)) {
                 $job->slug = Str::slug($job->title);
             }
@@ -89,7 +89,7 @@ final class Job extends Model
             $job->views_count ??= 0;
         });
 
-        static::updating(function (Job $job): void {
+        self::updating(function (Job $job): void {
             if (empty($job->slug) && $job->title) {
                 $job->slug = Str::slug($job->title);
             }
@@ -115,11 +115,11 @@ final class Job extends Model
 
     public function getAttachmentUrlAttribute(): ?string
     {
-        if (!$this->attachment_path) {
+        if (! $this->attachment_path) {
             return null;
         }
 
-        return asset('storage/' . $this->attachment_path);
+        return asset('storage/'.$this->attachment_path);
     }
 
     public function scopePublished($query)

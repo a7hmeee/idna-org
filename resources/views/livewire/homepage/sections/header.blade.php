@@ -339,6 +339,11 @@
 
                 {{-- Portal button --}}
                 <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <a href="{{ route('chatbot') }}" wire:navigate
+                       style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:white;background:rgba(255,255,255,0.15);border:none;cursor:pointer;flex-shrink:0;text-decoration:none;"
+                       aria-label="المساعد الذكي">
+                        <i data-lucide="bot" style="width:18px;height:18px;"></i>
+                    </a>
                     @if ($portalUrl)
                         <a href="{{ $portalUrl }}" target="_blank" rel="noopener noreferrer" class="ih-portal-btn">
                             <i data-lucide="external-link" style="width:14px;height:14px;flex-shrink:0;"></i>
@@ -375,6 +380,11 @@
                 </nav>
 
                 <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <a href="{{ route('chatbot') }}" wire:navigate
+                       style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:white;background:rgba(255,255,255,0.15);border:none;cursor:pointer;flex-shrink:0;text-decoration:none;"
+                       aria-label="المساعد الذكي">
+                        <i data-lucide="bot" style="width:18px;height:18px;"></i>
+                    </a>
                     @if ($portalUrl)
                         <a href="{{ $portalUrl }}" target="_blank" rel="noopener noreferrer"
                            style="display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;border-radius:8px;background:white;color:#176B32;font-size:10px;font-weight:700;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,0.1);white-space:nowrap;flex-shrink:0;">
@@ -458,6 +468,10 @@
             </div>
 
             <div style="padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:0.625rem;margin-top:2rem;">
+                <a href="{{ route('chatbot') }}" wire:navigate style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem;border-radius:8px;background:rgba(255,255,255,0.12);color:white;font-size:0.875rem;font-weight:700;text-decoration:none;">
+                    <i data-lucide="bot" style="width:16px;height:16px;"></i>
+                    المساعد الذكي
+                </a>
                 <button style="width:100%;padding:0.75rem;border-radius:8px;font-size:0.875rem;font-weight:700;color:rgba(255,255,255,0.85);background:none;border:1px solid rgba(255,255,255,0.3);cursor:pointer;">EN</button>
                 @if ($portalUrl)
                     <a href="{{ $portalUrl }}" target="_blank" rel="noopener noreferrer" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem;border-radius:8px;background:white;color:#176B32;font-size:0.875rem;font-weight:700;text-decoration:none;">

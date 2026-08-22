@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Domains\Authentication\Models\User;
 use App\Domains\WaterSchedule\Enums\WaterScheduleStatus;
 use App\Domains\WaterSchedule\Models\WaterArea;
 use App\Domains\WaterSchedule\Models\WaterMaintenance;
 use App\Domains\WaterSchedule\Models\WaterSchedule;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 final class WaterScheduleSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = \App\Domains\Authentication\Models\User::first();
+        $user = User::first();
 
         // ==========================================
         // Water Areas
@@ -31,7 +33,7 @@ final class WaterScheduleSeeder extends Seeder
         ];
 
         foreach ($areas as $area) {
-            $slug = \Illuminate\Support\Str::slug($area['name']);
+            $slug = Str::slug($area['name']);
             WaterArea::firstOrCreate(
                 ['slug' => $slug],
                 [

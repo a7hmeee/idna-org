@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\PublicFacilities\Models;
 
-use App\Domains\PublicFacilities\Models\Facility;
 use Database\Factories\PublicFacilities\FacilityCategoryFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,7 +40,7 @@ final class FacilityCategory extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (FacilityCategory $category): void {
+        self::creating(function (FacilityCategory $category): void {
             if (empty($category->slug)) {
                 $category->slug = Str::slug($category->name);
             }
@@ -50,7 +49,7 @@ final class FacilityCategory extends Model
             }
         });
 
-        static::updating(function (FacilityCategory $category): void {
+        self::updating(function (FacilityCategory $category): void {
             if (empty($category->slug) && $category->name) {
                 $category->slug = Str::slug($category->name);
             }

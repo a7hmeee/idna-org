@@ -14,15 +14,17 @@ use App\Domains\PublicFacilities\Models\Facility;
 use App\Domains\PublicFacilities\Models\FacilityCategory;
 use App\Livewire\PublicFacilities\PublicFacilitiesIndex;
 use App\Livewire\PublicFacilities\PublicFacilityShow;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================

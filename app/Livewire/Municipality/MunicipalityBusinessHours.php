@@ -11,6 +11,7 @@ use App\Domains\SharedKernel\Actions\SaveBusinessHourAction;
 use App\Domains\SharedKernel\Contracts\BusinessHourRepositoryInterface;
 use App\Domains\SharedKernel\DTOs\BusinessHourDTO;
 use App\Domains\SharedKernel\Enums\BusinessDay;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -18,14 +19,21 @@ use Livewire\Component;
 final class MunicipalityBusinessHours extends Component
 {
     public bool $showForm = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $editingId = null;
+
     public ?int $deletingId = null;
 
     public string $day = 'saturday';
+
     public ?string $openingTime = null;
+
     public ?string $closingTime = null;
+
     public bool $isClosed = false;
+
     public int $displayOrder = 0;
 
     public function mount(): void
@@ -63,7 +71,7 @@ final class MunicipalityBusinessHours extends Component
         $this->authorize($this->editingId ? 'updateBusinessHours' : 'manageBusinessHours', Municipality::class);
 
         $validated = $this->validate([
-            'day' => ['required', 'string', \Illuminate\Validation\Rule::in(BusinessDay::values())],
+            'day' => ['required', 'string', Rule::in(BusinessDay::values())],
             'openingTime' => ['nullable', 'string', 'date_format:H:i'],
             'closingTime' => ['nullable', 'string', 'date_format:H:i', 'after:openingTime'],
             'isClosed' => ['required', 'boolean'],

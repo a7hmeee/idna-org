@@ -17,10 +17,10 @@ final readonly class ToggleHomepageSectionAction
     {
         $section = $this->repository->getSections()->firstWhere('key', $key);
 
-        if (!$section) {
+        if (! $section) {
             throw new \RuntimeException("Section with key '{$key}' not found.");
         }
 
-        return $this->repository->updateSection($key, ['is_enabled' => !$section->is_enabled]);
+        return $this->repository->updateSection($key, ['is_enabled' => ! $section->is_enabled]);
     }
 }

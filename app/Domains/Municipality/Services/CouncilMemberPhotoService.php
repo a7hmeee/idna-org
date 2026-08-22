@@ -13,14 +13,14 @@ final readonly class CouncilMemberPhotoService
     public function upload(UploadedFile $file): string
     {
         $extension = $file->getClientOriginalExtension();
-        $filename = Str::uuid()->toString() . '.' . $extension;
+        $filename = Str::uuid()->toString().'.'.$extension;
 
         return $file->storeAs('council/members', $filename, 'public');
     }
 
     public function delete(?string $path): bool
     {
-        if (!$path) {
+        if (! $path) {
             return false;
         }
 

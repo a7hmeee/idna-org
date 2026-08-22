@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 use App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface;
 use App\Domains\Homepage\Models\HomepageSection;
+use App\Domains\Homepage\Models\HomepageSetting;
 use App\Domains\PublicFacilities\Models\Facility;
 use App\Domains\PublicFacilities\Models\FacilityCategory;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 
     // Ensure home route exists
-    if (!Route::has('home')) {
+    if (! Route::has('home')) {
         $this->markTestSkipped('Home route not defined');
     }
 
     // Seed homepage sections if not present (including facilities)
-    if (!HomepageSection::where('key', 'facilities')->exists()) {
+    if (! HomepageSection::where('key', 'facilities')->exists()) {
         $sections = [
             ['key' => 'hero', 'title' => 'البانر الرئيسي', 'is_enabled' => true, 'sort_order' => 1],
             ['key' => 'quick_links', 'title' => 'الروابط السريعة', 'is_enabled' => true, 'sort_order' => 2],
@@ -41,7 +44,7 @@ beforeEach(function (): void {
     }
 
     // Ensure at least one setting exists for the homepage to render
-    \App\Domains\Homepage\Models\HomepageSetting::create([
+    HomepageSetting::create([
         'site_title' => 'بلدية إذنا',
         'site_subtitle' => 'Municipality of Idna',
         'portal_url' => 'https://i.palexpand.ps/portal',

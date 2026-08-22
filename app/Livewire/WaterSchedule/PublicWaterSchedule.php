@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\WaterSchedule;
 
-use App\Domains\WaterSchedule\Contracts\WaterScheduleRepositoryInterface;
+use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
 use App\Domains\Homepage\Enums\PageCarouselKey;
-use Livewire\Attributes\Computed;
+use App\Domains\WaterSchedule\Contracts\WaterScheduleRepositoryInterface;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -15,57 +15,57 @@ final class PublicWaterSchedule extends Component
 {
     public string $selectedAreaId = '';
 
-    public function updatedSelectedAreaId(): void
-    {
-        $this->resetPage();
-    }
-
-    #[Computed]
-    public function currentSchedule(): ?\App\Domains\WaterSchedule\Models\WaterSchedule
-    {
-        if (!$this->selectedAreaId) {
-            return null;
-        }
-
-        return app(WaterScheduleRepositoryInterface::class)->getCurrentSchedule((int) $this->selectedAreaId);
-    }
-
-    #[Computed]
-    public function todayDayName(): string
-    {
-        $days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-        return $days[now()->dayOfWeek];
-    }
-
-    #[Computed]
-    public function latestUpdate(): ?string
-    {
-        return now()->format('Y-m-d h:i A');
-    }
-
     public function render()
     {
         $repo = app(WaterScheduleRepositoryInterface::class);
         $pageKey = PageCarouselKey::WaterSchedule->value;
 
-        $slidesRepo = app(\App\Domains\Homepage\Contracts\HomepageRepositoryInterface::class);
+        $slidesRepo = app(HomepageRepositoryInterface::class);
         $slides = $slidesRepo->getPageSlides($pageKey);
 
         $areas = $repo->getAreas();
-        $activeMaintenance = null;
 
-        if ($this->selectedAreaId) {
-            $areaId = (int) $this->selectedAreaId;
-            $activeMaintenance = $repo->getCurrentMaintenance($areaId);
+        $areaSchedules = [];
+        foreach ($areas as $area) {
+            $current = $repo->getCurrentSchedule($area->id);
+            if ($current === null) {
+                $current = $repo->getLatestScheduleForArea($area->id);
+            }
+            $history = $repo->getScheduleHistory($area->id)->take(7)->toArray();
+            $areaSchedules[$area->id] = [
+                'area' => $area,
+                'current' => $current,
+                'history' => $history,
+            ];
         }
+
+        $activeMaintenance = null;
+        foreach ($areas as $area) {
+            $m = $repo->getCurrentMaintenance($area->id);
+            if ($m !== null) {
+                $activeMaintenance = $m;
+                break;
+            }
+        }
+
+        $todayDayName = $this->getDayName(now()->dayOfWeek);
 
         return view('livewire.water-schedule.public-water-schedule', [
             'areas' => $areas,
+            'areaSchedules' => $areaSchedules,
             'activeMaintenance' => $activeMaintenance,
             'slides' => $slides,
+            'todayDayName' => $todayDayName,
         ])->layout('layouts.home', [
-            'title' => 'جدول المياه',
-            'metaDescription' => 'تفقد جدول الضخ الأسبوعي للمياه في مختلف مناطق بلدية إذنا.',
+            'title' => 'جدول توزيع المياه | بلدية إذنا',
+            'metaDescription' => 'تفقد جدول ضخ المياه الأسبوعي في مختلف مناطق بلدية إذنا.',
         ]);
+    }
+
+    private function getDayName(int $dayOfWeek): string
+    {
+        $days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+        return $days[$dayOfWeek];
     }
 }

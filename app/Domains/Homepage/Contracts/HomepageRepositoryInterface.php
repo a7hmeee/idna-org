@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Homepage\Contracts;
 
+use App\Domains\Homepage\Models\HomepageQuickLink;
+use App\Domains\Homepage\Models\HomepageSection;
 use App\Domains\Homepage\Models\HomepageSetting;
 use App\Domains\Homepage\Models\HomepageSlide;
-use App\Domains\Homepage\Models\HomepageSection;
-use App\Domains\Homepage\Models\HomepageQuickLink;
 use App\Domains\Homepage\Models\HomepageStatistic;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;

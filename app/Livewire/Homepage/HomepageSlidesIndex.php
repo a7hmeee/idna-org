@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Homepage;
 
-use App\Domains\Homepage\Actions\CacheForgetHomepageDataAction;
 use App\Domains\Homepage\Actions\DeleteHomepageSlideAction;
 use App\Domains\Homepage\Actions\ToggleHomepageSlideAction;
 use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
@@ -19,8 +18,11 @@ final class HomepageSlidesIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $status = '';
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
 
     public function mount(): void

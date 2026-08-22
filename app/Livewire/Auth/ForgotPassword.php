@@ -7,7 +7,6 @@ namespace App\Livewire\Auth;
 use App\Domains\Authentication\Actions\ForgotPasswordAction;
 use App\Domains\Authentication\DTOs\ForgotPasswordDTO;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -19,6 +18,7 @@ final class ForgotPassword extends Component
     public string $email = '';
 
     public ?string $statusMessage = null;
+
     public ?string $errorMessage = null;
 
     public function submit(ForgotPasswordAction $forgotPasswordAction): void

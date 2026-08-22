@@ -4,9 +4,28 @@ declare(strict_types=1);
 
 namespace App\Domains\Dashboard\Repositories;
 
+use App\Domains\Authentication\Models\User;
 use App\Domains\Dashboard\Contracts\DashboardRepositoryInterface;
-use Illuminate\Support\Collection;
+use App\Domains\Department\Models\Department;
+use App\Domains\ElectronicServices\Models\ElectronicService;
+use App\Domains\ElectronicServices\Models\ServiceCategory;
+use App\Domains\EngineeringOffices\Models\EngineeringOffice;
+use App\Domains\Homepage\Models\HomepageQuickLink;
+use App\Domains\Homepage\Models\HomepageSection;
+use App\Domains\Homepage\Models\HomepageSetting;
+use App\Domains\Homepage\Models\HomepageSlide;
+use App\Domains\Homepage\Models\HomepageStatistic;
+use App\Domains\Jobs\Models\Job;
+use App\Domains\Municipality\Models\CouncilDecision;
+use App\Domains\Municipality\Models\CouncilMember;
+use App\Domains\Municipality\Models\Municipality;
+use App\Domains\PublicFacilities\Models\Facility;
+use App\Domains\WaterSchedule\Models\WaterArea;
+use App\Domains\WaterSchedule\Models\WaterMaintenance;
+use App\Domains\WaterSchedule\Models\WaterSchedule;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 final readonly class ExecutiveDashboardRepository implements DashboardRepositoryInterface
 {
@@ -40,16 +59,16 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     private function getModulesAvailable(): array
     {
         return [
-            'electronic_services' => class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class),
-            'departments' => class_exists(\App\Domains\Department\Models\Department::class),
-            'council_decisions' => class_exists(\App\Domains\Municipality\Models\CouncilDecision::class),
-            'council_members' => class_exists(\App\Domains\Municipality\Models\CouncilMember::class),
-            'engineering_offices' => class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class),
-            'jobs' => class_exists(\App\Domains\Jobs\Models\Job::class),
-            'public_facilities' => class_exists(\App\Domains\PublicFacilities\Models\Facility::class),
-            'water_schedule' => class_exists(\App\Domains\WaterSchedule\Models\WaterSchedule::class),
-            'homepage' => class_exists(\App\Domains\Homepage\Models\HomepageSetting::class),
-            'municipality' => class_exists(\App\Domains\Municipality\Models\Municipality::class),
+            'electronic_services' => class_exists(ElectronicService::class),
+            'departments' => class_exists(Department::class),
+            'council_decisions' => class_exists(CouncilDecision::class),
+            'council_members' => class_exists(CouncilMember::class),
+            'engineering_offices' => class_exists(EngineeringOffice::class),
+            'jobs' => class_exists(Job::class),
+            'public_facilities' => class_exists(Facility::class),
+            'water_schedule' => class_exists(WaterSchedule::class),
+            'homepage' => class_exists(HomepageSetting::class),
+            'municipality' => class_exists(Municipality::class),
         ];
     }
 
@@ -57,8 +76,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     {
         $municipalityName = 'بلدية إذنا';
 
-        if (class_exists(\App\Domains\Municipality\Models\Municipality::class)) {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+        if (class_exists(Municipality::class)) {
+            $municipality = Municipality::first();
             if ($municipality) {
                 $municipalityName = $municipality->name_ar;
             }
@@ -76,78 +95,78 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     {
         $stats = [];
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
+        if (class_exists(ElectronicService::class)) {
             $stats[] = [
                 'key' => 'services',
                 'label' => 'خدمة إلكترونية',
-                'count' => \App\Domains\ElectronicServices\Models\ElectronicService::count(),
+                'count' => ElectronicService::count(),
                 'icon' => 'laptop',
                 'color' => 'primary',
             ];
         }
 
-        if (class_exists(\App\Domains\Department\Models\Department::class)) {
+        if (class_exists(Department::class)) {
             $stats[] = [
                 'key' => 'departments',
                 'label' => 'دائرة',
-                'count' => \App\Domains\Department\Models\Department::count(),
+                'count' => Department::count(),
                 'icon' => 'building-2',
                 'color' => 'blue',
             ];
         }
 
-        if (class_exists(\App\Domains\Municipality\Models\CouncilMember::class)) {
+        if (class_exists(CouncilMember::class)) {
             $stats[] = [
                 'key' => 'council_members',
                 'label' => 'عضو مجلس',
-                'count' => \App\Domains\Municipality\Models\CouncilMember::count(),
+                'count' => CouncilMember::count(),
                 'icon' => 'users',
                 'color' => 'amber',
             ];
         }
 
-        if (class_exists(\App\Domains\Municipality\Models\CouncilDecision::class)) {
+        if (class_exists(CouncilDecision::class)) {
             $stats[] = [
                 'key' => 'council_decisions',
                 'label' => 'قرار مجلس',
-                'count' => \App\Domains\Municipality\Models\CouncilDecision::count(),
+                'count' => CouncilDecision::count(),
                 'icon' => 'file-text',
                 'color' => 'purple',
             ];
         }
 
-        if (class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
+        if (class_exists(EngineeringOffice::class)) {
             $stats[] = [
                 'key' => 'engineering_offices',
                 'label' => 'مكتب هندسي',
-                'count' => \App\Domains\EngineeringOffices\Models\EngineeringOffice::count(),
+                'count' => EngineeringOffice::count(),
                 'icon' => 'hard-hat',
                 'color' => 'cyan',
             ];
         }
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
+        if (class_exists(Job::class)) {
             $stats[] = [
                 'key' => 'jobs',
                 'label' => 'وظيفة',
-                'count' => \App\Domains\Jobs\Models\Job::count(),
+                'count' => Job::count(),
                 'icon' => 'briefcase',
                 'color' => 'green',
             ];
         }
 
-        if (class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
+        if (class_exists(Facility::class)) {
             $stats[] = [
                 'key' => 'facilities',
                 'label' => 'مرفق عام',
-                'count' => \App\Domains\PublicFacilities\Models\Facility::count(),
+                'count' => Facility::count(),
                 'icon' => 'building-2',
                 'color' => 'rose',
             ];
         }
 
-        if (class_exists(\App\Domains\WaterSchedule\Models\WaterSchedule::class)) {
-            $scheduleCount = \App\Domains\WaterSchedule\Models\WaterSchedule::where('schedule_date', now()->toDateString())->count();
+        if (class_exists(WaterSchedule::class)) {
+            $scheduleCount = WaterSchedule::where('schedule_date', now()->toDateString())->count();
             $stats[] = [
                 'key' => 'water_schedules',
                 'label' => 'جدول مياه اليوم',
@@ -165,8 +184,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
         $today = now()->toDateString();
         $activities = [];
 
-        if (class_exists(\App\Domains\Municipality\Models\CouncilDecision::class)) {
-            $todayDecision = \App\Domains\Municipality\Models\CouncilDecision::whereDate('created_at', $today)
+        if (class_exists(CouncilDecision::class)) {
+            $todayDecision = CouncilDecision::whereDate('created_at', $today)
                 ->latest()->first();
             if ($todayDecision) {
                 $activities[] = [
@@ -178,8 +197,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         }
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
-            $todayService = \App\Domains\ElectronicServices\Models\ElectronicService::whereDate('created_at', $today)
+        if (class_exists(ElectronicService::class)) {
+            $todayService = ElectronicService::whereDate('created_at', $today)
                 ->latest()->first();
             if ($todayService) {
                 $activities[] = [
@@ -191,8 +210,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         }
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
-            $todayJob = \App\Domains\Jobs\Models\Job::whereDate('created_at', $today)
+        if (class_exists(Job::class)) {
+            $todayJob = Job::whereDate('created_at', $today)
                 ->latest()->first();
             if ($todayJob) {
                 $activities[] = [
@@ -204,8 +223,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         }
 
-        if (class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
-            $todayFacility = \App\Domains\PublicFacilities\Models\Facility::whereDate('created_at', $today)
+        if (class_exists(Facility::class)) {
+            $todayFacility = Facility::whereDate('created_at', $today)
                 ->latest()->first();
             if ($todayFacility) {
                 $activities[] = [
@@ -217,8 +236,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         }
 
-        if (class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
-            $todayOffice = \App\Domains\EngineeringOffices\Models\EngineeringOffice::whereDate('created_at', $today)
+        if (class_exists(EngineeringOffice::class)) {
+            $todayOffice = EngineeringOffice::whereDate('created_at', $today)
                 ->latest()->first();
             if ($todayOffice) {
                 $activities[] = [
@@ -252,57 +271,57 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         };
 
-        if (class_exists(\App\Domains\Municipality\Models\CouncilDecision::class)) {
+        if (class_exists(CouncilDecision::class)) {
             $addTimelineItems(
-                \App\Domains\Municipality\Models\CouncilDecision::latest()->take(5)->get(),
+                CouncilDecision::latest()->take(5)->get(),
                 'قرار مجلس', 'title', 'file-text', 'bg-purple-100', 'text-purple-600'
             );
         }
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
+        if (class_exists(ElectronicService::class)) {
             $addTimelineItems(
-                \App\Domains\ElectronicServices\Models\ElectronicService::latest()->take(5)->get(),
+                ElectronicService::latest()->take(5)->get(),
                 'خدمة إلكترونية', 'name', 'laptop', 'bg-blue-100', 'text-blue-600'
             );
         }
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
+        if (class_exists(Job::class)) {
             $addTimelineItems(
-                \App\Domains\Jobs\Models\Job::latest()->take(5)->get(),
+                Job::latest()->take(5)->get(),
                 'وظيفة', 'title', 'briefcase', 'bg-green-100', 'text-green-600'
             );
         }
 
-        if (class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
+        if (class_exists(Facility::class)) {
             $addTimelineItems(
-                \App\Domains\PublicFacilities\Models\Facility::latest()->take(5)->get(),
+                Facility::latest()->take(5)->get(),
                 'مرفق عام', 'name', 'building-2', 'bg-rose-100', 'text-rose-600'
             );
         }
 
-        if (class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
+        if (class_exists(EngineeringOffice::class)) {
             $addTimelineItems(
-                \App\Domains\EngineeringOffices\Models\EngineeringOffice::latest()->take(5)->get(),
+                EngineeringOffice::latest()->take(5)->get(),
                 'مكتب هندسي', 'office_name', 'hard-hat', 'bg-cyan-100', 'text-cyan-600'
             );
         }
 
-        usort($items, fn($a, $b) => $b['_sort'] - $a['_sort']);
+        usort($items, fn ($a, $b) => $b['_sort'] - $a['_sort']);
         $items = array_slice($items, 0, 15);
 
-        return array_map(fn($item) => array_diff_key($item, ['_sort' => null]), $items);
+        return array_map(fn ($item) => array_diff_key($item, ['_sort' => null]), $items);
     }
 
     private function getAnalytics(): array
     {
         $analytics = [];
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
-            $totalViews = \App\Domains\ElectronicServices\Models\ElectronicService::sum('views_count');
-            $totalClicks = \App\Domains\ElectronicServices\Models\ElectronicService::sum('portal_clicks_count');
-            $mostViewed = \App\Domains\ElectronicServices\Models\ElectronicService::where('is_public', true)
+        if (class_exists(ElectronicService::class)) {
+            $totalViews = ElectronicService::sum('views_count');
+            $totalClicks = ElectronicService::sum('portal_clicks_count');
+            $mostViewed = ElectronicService::where('is_public', true)
                 ->orderBy('views_count', 'desc')->take(5)->get(['name', 'views_count'])->toArray();
-            $mostClicked = \App\Domains\ElectronicServices\Models\ElectronicService::where('is_public', true)
+            $mostClicked = ElectronicService::where('is_public', true)
                 ->orderBy('portal_clicks_count', 'desc')->take(5)->get(['name', 'portal_clicks_count'])->toArray();
 
             $analytics['serviceViews'] = $totalViews;
@@ -311,19 +330,19 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             $analytics['mostClickedServices'] = $mostClicked;
         }
 
-        if (class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
-            $mostViewedFacilities = \App\Domains\PublicFacilities\Models\Facility::where('is_public', true)
+        if (class_exists(Facility::class)) {
+            $mostViewedFacilities = Facility::where('is_public', true)
                 ->orderBy('views_count', 'desc')->take(5)->get(['name', 'views_count'])->toArray();
             $analytics['mostViewedFacilities'] = $mostViewedFacilities;
         }
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
-            $mostViewedJobs = \App\Domains\Jobs\Models\Job::orderBy('views_count', 'desc')->take(5)->get(['title', 'views_count'])->toArray();
+        if (class_exists(Job::class)) {
+            $mostViewedJobs = Job::orderBy('views_count', 'desc')->take(5)->get(['title', 'views_count'])->toArray();
             $analytics['mostViewedJobs'] = $mostViewedJobs;
         }
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ServiceCategory::class)) {
-            $servicesByCategory = \App\Domains\ElectronicServices\Models\ServiceCategory::withCount('services')
+        if (class_exists(ServiceCategory::class)) {
+            $servicesByCategory = ServiceCategory::withCount('services')
                 ->where('is_public', true)->orderBy('services_count', 'desc')->take(10)->get(['name', 'services_count'])->toArray();
             $analytics['servicesByCategory'] = $servicesByCategory;
         }
@@ -335,24 +354,24 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     {
         $overview = [];
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
-            $overview['published_services'] = \App\Domains\ElectronicServices\Models\ElectronicService::where('is_public', true)->where('status', 'active')->count();
-            $overview['hidden_services'] = \App\Domains\ElectronicServices\Models\ElectronicService::where(function ($q) {
+        if (class_exists(ElectronicService::class)) {
+            $overview['published_services'] = ElectronicService::where('is_public', true)->where('status', 'active')->count();
+            $overview['hidden_services'] = ElectronicService::where(function ($q) {
                 $q->where('is_public', false)->orWhere('status', '!=', 'active');
             })->count();
         }
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
-            $overview['open_jobs'] = \App\Domains\Jobs\Models\Job::where('status', 'published')
+        if (class_exists(Job::class)) {
+            $overview['open_jobs'] = Job::where('status', 'published')
                 ->where('closing_at', '>=', now()->toDateString())->count();
-            $overview['closed_jobs'] = \App\Domains\Jobs\Models\Job::where('status', 'closed')->count();
+            $overview['closed_jobs'] = Job::where('status', 'closed')->count();
         }
 
-        if (class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
-            $overview['approved_offices'] = \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'approved')->count();
-            $overview['suspended_offices'] = \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'suspended')->count();
-            $overview['pending_offices'] = \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'pending')->count();
-            $overview['expired_offices'] = \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'expired')->count();
+        if (class_exists(EngineeringOffice::class)) {
+            $overview['approved_offices'] = EngineeringOffice::where('approval_status', 'approved')->count();
+            $overview['suspended_offices'] = EngineeringOffice::where('approval_status', 'suspended')->count();
+            $overview['pending_offices'] = EngineeringOffice::where('approval_status', 'pending')->count();
+            $overview['expired_offices'] = EngineeringOffice::where('approval_status', 'expired')->count();
         }
 
         return $overview;
@@ -360,31 +379,31 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
 
     private function getWaterStats(): array
     {
-        if (!class_exists(\App\Domains\WaterSchedule\Models\WaterSchedule::class)) {
+        if (! class_exists(WaterSchedule::class)) {
             return [];
         }
 
         $today = now()->toDateString();
 
-        $todaySchedules = \App\Domains\WaterSchedule\Models\WaterSchedule::where('schedule_date', $today);
+        $todaySchedules = WaterSchedule::where('schedule_date', $today);
 
         return [
-            'total_areas' => \App\Domains\WaterSchedule\Models\WaterArea::count(),
+            'total_areas' => WaterArea::count(),
             'today_schedules' => (clone $todaySchedules)->count(),
             'available' => (clone $todaySchedules)->where('status', 'available')->count(),
             'low_pressure' => (clone $todaySchedules)->where('status', 'low_pressure')->count(),
             'maintenance' => (clone $todaySchedules)->where('status', 'maintenance')->count(),
             'emergency' => (clone $todaySchedules)->where('status', 'emergency')->count(),
             'no_water' => (clone $todaySchedules)->where('status', 'no_water')->count(),
-            'active_maintenance' => \App\Domains\WaterSchedule\Models\WaterMaintenance::where('status', 'active')->count(),
-            'upcoming_maintenance' => \App\Domains\WaterSchedule\Models\WaterMaintenance::where('status', 'active')
+            'active_maintenance' => WaterMaintenance::where('status', 'active')->count(),
+            'upcoming_maintenance' => WaterMaintenance::where('status', 'active')
                 ->where('starts_at', '>', now())->count(),
         ];
     }
 
     private function getJobStats(): array
     {
-        if (!class_exists(\App\Domains\Jobs\Models\Job::class)) {
+        if (! class_exists(Job::class)) {
             return [];
         }
 
@@ -392,41 +411,41 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
         $weekFromNow = now()->addWeek()->toDateString();
 
         return [
-            'total' => \App\Domains\Jobs\Models\Job::count(),
-            'open' => \App\Domains\Jobs\Models\Job::where('status', 'published')
+            'total' => Job::count(),
+            'open' => Job::where('status', 'published')
                 ->where('closing_at', '>=', $today)->count(),
-            'closing_this_week' => \App\Domains\Jobs\Models\Job::where('status', 'published')
+            'closing_this_week' => Job::where('status', 'published')
                 ->where('closing_at', '>=', $today)
                 ->where('closing_at', '<=', $weekFromNow)->count(),
-            'closed' => \App\Domains\Jobs\Models\Job::where('status', 'closed')->count(),
-            'draft' => \App\Domains\Jobs\Models\Job::where('status', 'draft')->count(),
-            'archived' => \App\Domains\Jobs\Models\Job::where('status', 'archived')->count(),
-            'total_views' => \App\Domains\Jobs\Models\Job::sum('views_count'),
+            'closed' => Job::where('status', 'closed')->count(),
+            'draft' => Job::where('status', 'draft')->count(),
+            'archived' => Job::where('status', 'archived')->count(),
+            'total_views' => Job::sum('views_count'),
         ];
     }
 
     private function getEngineeringStats(): array
     {
-        if (!class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
+        if (! class_exists(EngineeringOffice::class)) {
             return [];
         }
 
         return [
-            'total' => \App\Domains\EngineeringOffices\Models\EngineeringOffice::count(),
-            'pending' => \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'pending')->count(),
-            'approved' => \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'approved')->count(),
-            'suspended' => \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'suspended')->count(),
-            'expired' => \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'expired')->count(),
+            'total' => EngineeringOffice::count(),
+            'pending' => EngineeringOffice::where('approval_status', 'pending')->count(),
+            'approved' => EngineeringOffice::where('approval_status', 'approved')->count(),
+            'suspended' => EngineeringOffice::where('approval_status', 'suspended')->count(),
+            'expired' => EngineeringOffice::where('approval_status', 'expired')->count(),
         ];
     }
 
     private function getServiceStats(): array
     {
-        if (!class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
+        if (! class_exists(ElectronicService::class)) {
             return [];
         }
 
-        $model = \App\Domains\ElectronicServices\Models\ElectronicService::class;
+        $model = ElectronicService::class;
 
         return [
             'total' => $model::count(),
@@ -435,7 +454,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             'archived' => $model::where('status', 'archived')->count(),
             'total_views' => $model::sum('views_count'),
             'total_clicks' => $model::sum('portal_clicks_count'),
-            'categories_count' => \App\Domains\ElectronicServices\Models\ServiceCategory::count(),
+            'categories_count' => ServiceCategory::count(),
         ];
     }
 
@@ -443,26 +462,26 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     {
         $stats = [];
 
-        if (class_exists(\App\Domains\Homepage\Models\HomepageSlide::class)) {
-            $stats['slides_count'] = \App\Domains\Homepage\Models\HomepageSlide::count();
-            $stats['active_slides'] = \App\Domains\Homepage\Models\HomepageSlide::where('is_active', true)->count();
-            $stats['expired_slides'] = \App\Domains\Homepage\Models\HomepageSlide::where('is_active', true)
+        if (class_exists(HomepageSlide::class)) {
+            $stats['slides_count'] = HomepageSlide::count();
+            $stats['active_slides'] = HomepageSlide::where('is_active', true)->count();
+            $stats['expired_slides'] = HomepageSlide::where('is_active', true)
                 ->where('ends_at', '<', now())->count();
         }
 
-        if (class_exists(\App\Domains\Homepage\Models\HomepageQuickLink::class)) {
-            $stats['quick_links_count'] = \App\Domains\Homepage\Models\HomepageQuickLink::count();
-            $stats['active_quick_links'] = \App\Domains\Homepage\Models\HomepageQuickLink::where('is_active', true)->count();
+        if (class_exists(HomepageQuickLink::class)) {
+            $stats['quick_links_count'] = HomepageQuickLink::count();
+            $stats['active_quick_links'] = HomepageQuickLink::where('is_active', true)->count();
         }
 
-        if (class_exists(\App\Domains\Homepage\Models\HomepageSection::class)) {
-            $stats['sections_count'] = \App\Domains\Homepage\Models\HomepageSection::count();
-            $stats['enabled_sections'] = \App\Domains\Homepage\Models\HomepageSection::where('is_enabled', true)->count();
+        if (class_exists(HomepageSection::class)) {
+            $stats['sections_count'] = HomepageSection::count();
+            $stats['enabled_sections'] = HomepageSection::where('is_enabled', true)->count();
         }
 
-        if (class_exists(\App\Domains\Homepage\Models\HomepageStatistic::class)) {
-            $stats['statistics_count'] = \App\Domains\Homepage\Models\HomepageStatistic::count();
-            $stats['active_statistics'] = \App\Domains\Homepage\Models\HomepageStatistic::where('is_active', true)->count();
+        if (class_exists(HomepageStatistic::class)) {
+            $stats['statistics_count'] = HomepageStatistic::count();
+            $stats['active_statistics'] = HomepageStatistic::where('is_active', true)->count();
         }
 
         return $stats;
@@ -470,16 +489,16 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
 
     private function getSystemHealth(): array
     {
-        $userCount = \App\Domains\Authentication\Models\User::count();
-        $activeUsers = \App\Domains\Authentication\Models\User::where('status', 'active')->count();
+        $userCount = User::count();
+        $activeUsers = User::where('status', 'active')->count();
 
         $permissionCount = 0;
         $roleCount = 0;
-        if (class_exists(\Spatie\Permission\Models\Permission::class)) {
-            $permissionCount = \Spatie\Permission\Models\Permission::count();
+        if (class_exists(Permission::class)) {
+            $permissionCount = Permission::count();
         }
-        if (class_exists(\Spatie\Permission\Models\Role::class)) {
-            $roleCount = \Spatie\Permission\Models\Role::count();
+        if (class_exists(Role::class)) {
+            $roleCount = Role::count();
         }
 
         $storagePath = storage_path('app/public');
@@ -510,7 +529,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     {
         $actions = [];
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
+        if (class_exists(ElectronicService::class)) {
             $actions[] = [
                 'label' => 'إضافة خدمة إلكترونية',
                 'route' => 'dashboard.electronic-services.services.create',
@@ -519,7 +538,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             ];
         }
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
+        if (class_exists(Job::class)) {
             $actions[] = [
                 'label' => 'إضافة وظيفة',
                 'route' => 'dashboard.jobs.create',
@@ -528,7 +547,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             ];
         }
 
-        if (class_exists(\App\Domains\Municipality\Models\CouncilDecision::class)) {
+        if (class_exists(CouncilDecision::class)) {
             $actions[] = [
                 'label' => 'إضافة قرار مجلس',
                 'route' => 'dashboard.municipality.council-decisions.create',
@@ -537,7 +556,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             ];
         }
 
-        if (class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
+        if (class_exists(Facility::class)) {
             $actions[] = [
                 'label' => 'إضافة مرفق عام',
                 'route' => 'dashboard.facilities.create',
@@ -546,7 +565,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             ];
         }
 
-        if (class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
+        if (class_exists(EngineeringOffice::class)) {
             $actions[] = [
                 'label' => 'إضافة مكتب هندسي',
                 'route' => 'dashboard.engineering-offices.create',
@@ -555,7 +574,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             ];
         }
 
-        if (class_exists(\App\Domains\Department\Models\Department::class)) {
+        if (class_exists(Department::class)) {
             $actions[] = [
                 'label' => 'إضافة دائرة',
                 'route' => 'dashboard.departments.create',
@@ -571,8 +590,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     {
         $events = collect();
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
-            \App\Domains\Jobs\Models\Job::where('status', 'published')
+        if (class_exists(Job::class)) {
+            Job::where('status', 'published')
                 ->where('closing_at', '>=', now()->toDateString())
                 ->where('closing_at', '<=', now()->addWeek()->toDateString())
                 ->orderBy('closing_at')
@@ -590,8 +609,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
                 });
         }
 
-        if (class_exists(\App\Domains\WaterSchedule\Models\WaterMaintenance::class)) {
-            \App\Domains\WaterSchedule\Models\WaterMaintenance::where('status', 'active')
+        if (class_exists(WaterMaintenance::class)) {
+            WaterMaintenance::where('status', 'active')
                 ->where('starts_at', '>=', now())
                 ->orderBy('starts_at')
                 ->take(5)
@@ -608,8 +627,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
                 });
         }
 
-        if (class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
-            \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'approved')
+        if (class_exists(EngineeringOffice::class)) {
+            EngineeringOffice::where('approval_status', 'approved')
                 ->where('expires_at', '<=', now()->addMonth()->toDateString())
                 ->where('expires_at', '>=', now()->toDateString())
                 ->orderBy('expires_at')
@@ -618,7 +637,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
                 ->each(function ($office) use ($events) {
                     $events->push([
                         'type' => 'expiry',
-                        'title' => $office->office_name . ' - انتهاء اعتماد',
+                        'title' => $office->office_name.' - انتهاء اعتماد',
                         'date' => $office->expires_at->format('Y-m-d'),
                         'dateFormatted' => $office->expires_at->diffForHumans(),
                         'icon' => 'hard-hat',
@@ -634,8 +653,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
     {
         $notifications = [];
 
-        if (class_exists(\App\Domains\EngineeringOffices\Models\EngineeringOffice::class)) {
-            $pendingOffices = \App\Domains\EngineeringOffices\Models\EngineeringOffice::where('approval_status', 'pending')->count();
+        if (class_exists(EngineeringOffice::class)) {
+            $pendingOffices = EngineeringOffice::where('approval_status', 'pending')->count();
             if ($pendingOffices > 0) {
                 $notifications[] = [
                     'message' => "يوجد {$pendingOffices} مكتب هندسي بانتظار الاعتماد",
@@ -645,8 +664,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         }
 
-        if (class_exists(\App\Domains\Jobs\Models\Job::class)) {
-            $draftJobs = \App\Domains\Jobs\Models\Job::where('status', 'draft')->count();
+        if (class_exists(Job::class)) {
+            $draftJobs = Job::where('status', 'draft')->count();
             if ($draftJobs > 0) {
                 $notifications[] = [
                     'message' => "يوجد {$draftJobs} وظيفة في المسودة",
@@ -655,7 +674,7 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
                 ];
             }
 
-            $closingSoon = \App\Domains\Jobs\Models\Job::where('status', 'published')
+            $closingSoon = Job::where('status', 'published')
                 ->where('closing_at', '>=', now()->toDateString())
                 ->where('closing_at', '<=', now()->addDays(3)->toDateString())
                 ->count();
@@ -668,8 +687,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         }
 
-        if (class_exists(\App\Domains\PublicFacilities\Models\Facility::class)) {
-            $draftFacilities = \App\Domains\PublicFacilities\Models\Facility::where('status', 'draft')->count();
+        if (class_exists(Facility::class)) {
+            $draftFacilities = Facility::where('status', 'draft')->count();
             if ($draftFacilities > 0) {
                 $notifications[] = [
                     'message' => "يوجد {$draftFacilities} مرفق عام في المسودة",
@@ -679,8 +698,8 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
             }
         }
 
-        if (class_exists(\App\Domains\ElectronicServices\Models\ElectronicService::class)) {
-            $draftServices = \App\Domains\ElectronicServices\Models\ElectronicService::where('status', 'draft')->count();
+        if (class_exists(ElectronicService::class)) {
+            $draftServices = ElectronicService::where('status', 'draft')->count();
             if ($draftServices > 0) {
                 $notifications[] = [
                     'message' => "يوجد {$draftServices} خدمة إلكترونية في المسودة",
@@ -703,6 +722,6 @@ final readonly class ExecutiveDashboardRepository implements DashboardRepository
 
         $i = (int) floor(log($bytes, 1024));
 
-        return round($bytes / (1024 ** $i), $precision) . ' ' . $units[$i];
+        return round($bytes / (1024 ** $i), $precision).' '.$units[$i];
     }
 }

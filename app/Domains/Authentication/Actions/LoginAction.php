@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 final class LoginAction
 {
     private const int MAX_ATTEMPTS = 5;
+
     private const int LOCKOUT_MINUTES = 15;
 
     public function __construct(
@@ -36,7 +37,7 @@ final class LoginAction
                 reason: 'account_not_found',
             ));
 
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException;
         }
 
         if ($user->isLocked()) {
@@ -72,7 +73,7 @@ final class LoginAction
                 userId: $user->id,
             ));
 
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException;
         }
 
         DB::transaction(function () use ($user, $dto): void {

@@ -110,7 +110,7 @@ final readonly class EloquentTenderRepository implements TenderRepositoryInterfa
     public function toggleFeatured(int $id): Tender
     {
         $tender = $this->model->findOrFail($id);
-        $tender->update(['is_featured' => !$tender->is_featured]);
+        $tender->update(['is_featured' => ! $tender->is_featured]);
 
         $this->forgetCache();
 
@@ -131,9 +131,9 @@ final readonly class EloquentTenderRepository implements TenderRepositoryInterfa
         if ($search) {
             $query->where(function (Builder $q) use ($search): void {
                 $q->where('title_ar', 'like', "%{$search}%")
-                  ->orWhere('title_en', 'like', "%{$search}%")
-                  ->orWhere('summary', 'like', "%{$search}%")
-                  ->orWhere('tender_number', 'like', "%{$search}%");
+                    ->orWhere('title_en', 'like', "%{$search}%")
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('tender_number', 'like', "%{$search}%");
             });
         }
 

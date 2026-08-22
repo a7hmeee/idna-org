@@ -8,7 +8,6 @@ use App\Domains\Jobs\Contracts\JobRepositoryInterface;
 use App\Domains\Jobs\Enums\JobStatus;
 use App\Domains\Jobs\Models\Job;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -100,7 +99,7 @@ final readonly class EloquentJobRepository implements JobRepositoryInterface
     public function toggleFeatured(int $id): Job
     {
         $job = $this->model->findOrFail($id);
-        $job->update(['is_featured' => !$job->is_featured]);
+        $job->update(['is_featured' => ! $job->is_featured]);
 
         $this->forgetCache();
 
@@ -121,8 +120,8 @@ final readonly class EloquentJobRepository implements JobRepositoryInterface
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('summary', 'like', "%{$search}%")
-                  ->orWhere('location', 'like', "%{$search}%");
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%");
             });
         }
 

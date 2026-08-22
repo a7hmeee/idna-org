@@ -23,7 +23,7 @@ final class StoreCustomFieldRequest extends FormRequest
         return [
             'key' => ['required', 'string', 'max:255'],
             'value' => ['required', 'string'],
-            'type' => ['required', 'string', 'in:' . implode(',', CustomFieldType::values())],
+            'type' => ['required', 'string', 'in:'.implode(',', CustomFieldType::values())],
             'display_order' => ['nullable', 'integer', 'min:0', 'max:32767'],
             'is_active' => ['nullable', 'boolean'],
         ];

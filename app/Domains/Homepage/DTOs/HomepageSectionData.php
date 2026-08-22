@@ -38,6 +38,6 @@ final readonly class HomepageSectionData
             'sort_order' => $this->sortOrder,
             'items_limit' => $this->itemsLimit,
             'settings' => $this->settings,
-        ], fn ($value) => !is_null($value));
+        ], fn ($value) => ! is_null($value));
     }
 }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Livewire\Jobs;
 
 use App\Domains\Jobs\Contracts\JobRepositoryInterface;
+use App\Domains\Municipality\Models\Municipality;
+use App\Domains\SharedKernel\Models\Media;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,6 +15,7 @@ final class PublicJobsIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $filter = 'all';
 
     public function updatingSearch(): void
@@ -39,10 +42,10 @@ final class PublicJobsIndex extends Component
         $carouselImages = [];
         $municipalityName = 'بلدية إذنا';
         try {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+            $municipality = Municipality::first();
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
-                $heroMedia = \App\Domains\SharedKernel\Models\Media::where('mediable_type', $municipality->getMorphClass())
+                $heroMedia = Media::where('mediable_type', $municipality->getMorphClass())
                     ->where('mediable_id', $municipality->getKey())
                     ->where('collection', 'jobs-hero')
                     ->where('is_active', true)
@@ -50,16 +53,16 @@ final class PublicJobsIndex extends Component
                     ->get();
 
                 if ($heroMedia->isNotEmpty()) {
-                    $carouselImages = $heroMedia->map(fn ($m) => asset('storage/' . $m->path))->toArray();
+                    $carouselImages = $heroMedia->map(fn ($m) => asset('storage/'.$m->path))->toArray();
                 } else {
-                    $fallback = \App\Domains\SharedKernel\Models\Media::where('mediable_type', $municipality->getMorphClass())
+                    $fallback = Media::where('mediable_type', $municipality->getMorphClass())
                         ->where('mediable_id', $municipality->getKey())
                         ->where('collection', 'images')
                         ->where('is_active', true)
                         ->orderBy('display_order')
                         ->first();
                     if ($fallback) {
-                        $carouselImages[] = asset('storage/' . $fallback->path);
+                        $carouselImages[] = asset('storage/'.$fallback->path);
                     }
                 }
             }
@@ -72,8 +75,8 @@ final class PublicJobsIndex extends Component
             'carouselImages' => $carouselImages,
             'municipalityName' => $municipalityName,
         ])->layout('layouts.home', [
-            'title' => 'الوظائف | ' . $municipalityName,
-            'metaDescription' => 'تصفح جميع الوظائف الشاغرة في ' . $municipalityName . '، وتقدم للوظائف المناسبة لك.',
+            'title' => 'الوظائف | '.$municipalityName,
+            'metaDescription' => 'تصفح جميع الوظائف الشاغرة في '.$municipalityName.'، وتقدم للوظائف المناسبة لك.',
         ]);
     }
 }

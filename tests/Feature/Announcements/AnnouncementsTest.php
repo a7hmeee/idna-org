@@ -11,20 +11,22 @@ use App\Domains\Announcements\Enums\AnnouncementPriority;
 use App\Domains\Announcements\Enums\AnnouncementStatus;
 use App\Domains\Announcements\Enums\AnnouncementType;
 use App\Domains\Announcements\Models\Announcement;
+use App\Domains\Authentication\Models\User;
 use App\Livewire\Admin\Announcements\AnnouncementForm;
 use App\Livewire\Admin\Announcements\AnnouncementsIndex;
-use App\Livewire\Announcements\PublicAnnouncementsIndex;
 use App\Livewire\Announcements\PublicAnnouncementShow;
-use App\Domains\Authentication\Models\User;
+use App\Livewire\Announcements\PublicAnnouncementsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================

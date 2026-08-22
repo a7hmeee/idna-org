@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\ElectronicServices;
 
-use App\Domains\ElectronicServices\Contracts\ServiceCategoryRepositoryInterface;
 use App\Domains\ElectronicServices\Models\ServiceCategory;
 use Livewire\Attributes\Layout;
 use Livewire\Component;

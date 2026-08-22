@@ -6,10 +6,9 @@ namespace App\Livewire\PageCarousels;
 
 use App\Domains\Homepage\Actions\DeleteHomepageSlideAction;
 use App\Domains\Homepage\Actions\ToggleHomepageSlideAction;
-use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
-use App\Domains\Homepage\Enums\PageCarouselKey;
 use App\Domains\Homepage\Models\HomepageSetting;
-use Illuminate\Support\Facades\DB;
+use App\Domains\Homepage\Models\HomepageSlide;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,8 +19,11 @@ final class PageCarouselsIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $status = '';
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
 
     public function mount(): void
@@ -70,14 +72,14 @@ final class PageCarouselsIndex extends Component
 
     public function render()
     {
-        $allSlides = \App\Domains\Homepage\Models\HomepageSlide::orderBy('sort_order')->get();
+        $allSlides = HomepageSlide::orderBy('sort_order')->get();
 
         $currentPage = (int) request()->input('page', 1);
         $perPage = 10;
         $offset = ($currentPage - 1) * $perPage;
         $items = $allSlides->slice($offset, $perPage);
 
-        $slides = new \Illuminate\Pagination\LengthAwarePaginator(
+        $slides = new LengthAwarePaginator(
             $items,
             $allSlides->count(),
             $perPage,
@@ -85,7 +87,7 @@ final class PageCarouselsIndex extends Component
             ['path' => request()->url(), 'query' => request()->query()]
         );
 
-        $debug = 'allSlides=' . $allSlides->count() . ' | items=' . $items->count();
+        $debug = 'allSlides='.$allSlides->count().' | items='.$items->count();
 
         session()->flash('debug', $debug);
 

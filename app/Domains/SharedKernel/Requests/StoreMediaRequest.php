@@ -26,7 +26,7 @@ final class StoreMediaRequest extends FormRequest
         };
 
         return [
-            'collection' => ['required', 'string', 'in:' . implode(',', MediaCollection::values())],
+            'collection' => ['required', 'string', 'in:'.implode(',', MediaCollection::values())],
             'file' => ['required', 'file', "max:{$maxSize}", "mimes:{$allowedMimes}"],
             'title' => ['nullable', 'string', 'max:255'],
             'alt' => ['nullable', 'string', 'max:255'],

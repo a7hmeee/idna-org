@@ -10,6 +10,6 @@ final readonly class CacheForgetPageCarouselAction
 {
     public static function execute(string $pageKey): void
     {
-        Cache::forget('page-carousel:' . $pageKey);
+        Cache::forget('page-carousel:'.$pageKey);
     }
 }

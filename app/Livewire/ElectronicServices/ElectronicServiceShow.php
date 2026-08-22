@@ -6,7 +6,6 @@ namespace App\Livewire\ElectronicServices;
 
 use App\Domains\ElectronicServices\Actions\ArchiveElectronicServiceAction;
 use App\Domains\ElectronicServices\Actions\PublishElectronicServiceAction;
-use App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface;
 use App\Domains\ElectronicServices\Enums\ElectronicServiceStatus;
 use App\Domains\ElectronicServices\Models\ElectronicService;
 use Livewire\Attributes\Layout;

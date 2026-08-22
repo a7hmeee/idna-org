@@ -65,14 +65,14 @@ final class ServiceCategory extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (ServiceCategory $category): void {
+        self::creating(function (ServiceCategory $category): void {
             if (empty($category->slug)) {
                 $base = Str::slug($category->name);
                 $slug = $base;
                 $counter = 1;
 
                 while (static::where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $counter++;
+                    $slug = $base.'-'.$counter++;
                 }
 
                 $category->slug = $slug;

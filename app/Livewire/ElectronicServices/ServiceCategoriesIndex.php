@@ -19,8 +19,11 @@ final class ServiceCategoriesIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $status = '';
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
 
     public function mount(): void

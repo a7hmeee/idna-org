@@ -17,13 +17,21 @@ use Livewire\Component;
 final class HomepageQuickLinkForm extends Component
 {
     public ?int $linkId = null;
+
     public string $title = '';
+
     public ?string $description = null;
+
     public ?string $icon = null;
+
     public ?string $url = null;
+
     public ?string $type = null;
+
     public bool $isExternal = false;
+
     public bool $isActive = true;
+
     public ?int $sortOrder = null;
 
     public function mount(?int $quickLink = null): void
@@ -33,7 +41,7 @@ final class HomepageQuickLinkForm extends Component
 
             $link = app(HomepageRepositoryInterface::class)->findQuickLink($quickLink);
 
-            if (!$link) {
+            if (! $link) {
                 abort(404);
             }
 

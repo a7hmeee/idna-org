@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire\Complaints;
 
-use App\Domains\Complaints\Actions\DeleteComplaintAction;
+use App\Domains\Authentication\Models\User;
 use App\Domains\Complaints\Actions\AssignComplaintAction;
 use App\Domains\Complaints\Actions\ChangeStatusAction;
+use App\Domains\Complaints\Actions\DeleteComplaintAction;
 use App\Domains\Complaints\Contracts\ComplaintRepositoryInterface;
 use App\Domains\Complaints\Enums\ComplaintPriority;
 use App\Domains\Complaints\Enums\ComplaintStatus;
@@ -22,16 +23,27 @@ final class ComplaintsIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $statusFilter = '';
+
     public string $departmentFilter = '';
+
     public string $priorityFilter = '';
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
+
     public bool $showAssignModal = false;
+
     public ?int $assigningId = null;
+
     public ?int $assignedUserId = null;
+
     public bool $showStatusModal = false;
+
     public ?int $statusChangeId = null;
+
     public string $newStatus = '';
 
     public function updatingSearch(): void
@@ -109,7 +121,7 @@ final class ComplaintsIndex extends Component
     {
         $this->authorize('changeStatus', Complaint::class);
 
-        $this->validate(['newStatus' => ['required', 'string', 'in:' . implode(',', array_map(fn($s) => $s->value, ComplaintStatus::cases()))]]);
+        $this->validate(['newStatus' => ['required', 'string', 'in:'.implode(',', array_map(fn ($s) => $s->value, ComplaintStatus::cases()))]]);
 
         $action->execute($this->statusChangeId, ComplaintStatus::from($this->newStatus));
 
@@ -151,7 +163,7 @@ final class ComplaintsIndex extends Component
         $departments = Department::where('is_public', true)->orderBy('name')->get();
         $statuses = ComplaintStatus::cases();
         $priorities = ComplaintPriority::cases();
-        $employees = \App\Domains\Authentication\Models\User::where('status', 'active')->orderBy('name')->get();
+        $employees = User::where('status', 'active')->orderBy('name')->get();
 
         return view('livewire.complaints.complaints-index', compact(
             'complaints', 'departments', 'statuses', 'priorities', 'employees'

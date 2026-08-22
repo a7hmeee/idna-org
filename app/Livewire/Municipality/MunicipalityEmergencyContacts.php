@@ -17,15 +17,23 @@ use Livewire\Component;
 final class MunicipalityEmergencyContacts extends Component
 {
     public bool $showForm = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $editingId = null;
+
     public ?int $deletingId = null;
 
     public string $name = '';
+
     public ?string $department = null;
+
     public string $phone = '';
+
     public ?string $icon = null;
+
     public int $displayOrder = 0;
+
     public bool $isActive = true;
 
     public function mount(): void

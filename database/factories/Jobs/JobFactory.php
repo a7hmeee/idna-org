@@ -23,8 +23,8 @@ final class JobFactory extends Factory
         return [
             'department_id' => Department::factory(),
             'title' => $title,
-            'slug' => Str::slug($title) . '-' . fake()->unique()->randomNumber(4),
-            'job_number' => 'ج-' . fake()->year() . '-' . fake()->unique()->randomNumber(3),
+            'slug' => Str::slug($title).'-'.fake()->unique()->randomNumber(4),
+            'job_number' => 'ج-'.fake()->year().'-'.fake()->unique()->randomNumber(3),
             'employment_type' => fake()->randomElement(EmploymentType::cases())->value,
             'location' => 'إذنا',
             'salary' => fake()->randomElement(['3000-5000 شيكل', 'حسب المؤهلات', null]),

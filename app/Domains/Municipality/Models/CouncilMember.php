@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -39,9 +40,9 @@ use Illuminate\Support\Str;
  * @property bool $is_featured
  * @property int|null $created_by
  * @property int|null $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  */
 final class CouncilMember extends Model
 {
@@ -99,12 +100,12 @@ final class CouncilMember extends Model
 
     public function getPhotoUrlAttribute(): ?string
     {
-        if (!$this->photo_path) {
+        if (! $this->photo_path) {
             return null;
         }
 
         if (Storage::disk('public')->exists($this->photo_path)) {
-            return asset('storage/' . $this->photo_path);
+            return asset('storage/'.$this->photo_path);
         }
 
         return null;
@@ -112,14 +113,14 @@ final class CouncilMember extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (CouncilMember $member): void {
+        self::creating(function (CouncilMember $member): void {
             if (empty($member->slug)) {
                 $base = Str::slug($member->full_name);
                 $slug = $base;
                 $counter = 1;
 
                 while (static::where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $counter++;
+                    $slug = $base.'-'.$counter++;
                 }
 
                 $member->slug = $slug;

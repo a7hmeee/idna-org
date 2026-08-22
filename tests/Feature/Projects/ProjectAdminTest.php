@@ -13,15 +13,17 @@ use App\Domains\Projects\Enums\ProjectStatus;
 use App\Domains\Projects\Models\Project;
 use App\Livewire\Projects\ProjectForm;
 use App\Livewire\Projects\ProjectsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================

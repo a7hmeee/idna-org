@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Domains\Authentication\Models\User;
 use App\Domains\Homepage\Models\HomepageQuickLink;
 use App\Domains\Homepage\Models\HomepageSection;
 use App\Domains\Homepage\Models\HomepageSetting;
@@ -15,7 +16,7 @@ final class HomepageSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminId = \App\Domains\Authentication\Models\User::first()?->id;
+        $adminId = User::first()?->id;
 
         $this->seedSettings($adminId);
         $this->seedSlides($adminId);

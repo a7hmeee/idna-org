@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\ElectronicServices;
 
+use App\Domains\Department\Models\Department;
 use App\Domains\ElectronicServices\Actions\CreateElectronicServiceAction;
 use App\Domains\ElectronicServices\Actions\PublishElectronicServiceAction;
 use App\Domains\ElectronicServices\Actions\UpdateElectronicServiceAction;
@@ -12,7 +13,6 @@ use App\Domains\ElectronicServices\Enums\ElectronicServiceStatus;
 use App\Domains\ElectronicServices\Models\ElectronicService;
 use App\Domains\ElectronicServices\Models\ServiceCategory;
 use App\Domains\ElectronicServices\Requests\StoreElectronicServiceRequest;
-use App\Domains\Department\Models\Department;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -20,23 +20,41 @@ use Livewire\Component;
 final class ElectronicServiceForm extends Component
 {
     public ?int $serviceId = null;
+
     public string $service_category_id = '';
+
     public string $department_id = '';
+
     public string $name = '';
+
     public ?string $slug = null;
+
     public ?string $summary = null;
+
     public ?string $description = null;
+
     public ?string $eligibility = null;
+
     public array $requirements = [];
+
     public array $documents = [];
+
     public array $steps = [];
+
     public array $fees = [];
+
     public ?string $processing_time = null;
+
     public ?string $portal_url = null;
+
     public bool $requires_login = true;
+
     public string $status = 'draft';
+
     public bool $is_public = true;
+
     public bool $is_featured = false;
+
     public int $sort_order = 0;
 
     protected function rules(): array
@@ -119,7 +137,7 @@ final class ElectronicServiceForm extends Component
 
     public function publish(PublishElectronicServiceAction $action): void
     {
-        if (!$this->serviceId) {
+        if (! $this->serviceId) {
             return;
         }
 

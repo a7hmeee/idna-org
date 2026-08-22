@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 use App\Domains\Authentication\Models\User;
 use App\Domains\Homepage\Enums\PageCarouselKey;
-use App\Domains\Homepage\Models\HomepageSlide;
 use App\Livewire\PageCarousels\PageCarouselForm;
-use App\Livewire\PageCarousels\PageCarouselsIndex;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 it('admin can view page carousels index', function (): void {

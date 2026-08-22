@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domains\RoleManagement\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 final class StoreRoleRequest extends FormRequest
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\ElectronicServices;
 
+use App\Domains\Department\Models\Department;
 use App\Domains\ElectronicServices\Actions\DeleteElectronicServiceAction;
 use App\Domains\ElectronicServices\Actions\ToggleElectronicServiceFeaturedAction;
 use App\Domains\ElectronicServices\Actions\ToggleElectronicServicePublicAction;
@@ -11,7 +12,6 @@ use App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterfac
 use App\Domains\ElectronicServices\Enums\ElectronicServiceStatus;
 use App\Domains\ElectronicServices\Models\ElectronicService;
 use App\Domains\ElectronicServices\Models\ServiceCategory;
-use App\Domains\Department\Models\Department;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,10 +22,15 @@ final class ElectronicServicesIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $status = '';
+
     public string $categoryId = '';
+
     public string $departmentId = '';
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
 
     public function mount(): void

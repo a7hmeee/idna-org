@@ -2,15 +2,16 @@
 
 namespace App\Domains\WaterSchedule\Contracts;
 
-use App\Domains\WaterSchedule\Models\WaterSchedule;
 use App\Domains\WaterSchedule\Models\WaterArea;
 use App\Domains\WaterSchedule\Models\WaterMaintenance;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Domains\WaterSchedule\Models\WaterSchedule;
 use Illuminate\Support\Collection;
 
 interface WaterScheduleRepositoryInterface
 {
     public function getCurrentSchedule(int $areaId): ?WaterSchedule;
+
+    public function getLatestScheduleForArea(int $areaId): ?WaterSchedule;
 
     public function getAreas(): Collection;
 

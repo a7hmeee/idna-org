@@ -3,8 +3,11 @@
 declare(strict_types=1);
 
 use App\Domains\EngineeringOffices\Contracts\EngineeringOfficeRepositoryInterface;
+use App\Domains\EngineeringOffices\Repositories\EloquentEngineeringOfficeRepository;
 use App\Domains\OpenData\Contracts\OpenDataRepositoryInterface;
+use App\Domains\OpenData\Repositories\EloquentOpenDataRepository;
 use App\Domains\WaterSchedule\Contracts\WaterScheduleRepositoryInterface;
+use App\Domains\WaterSchedule\Repositories\EloquentWaterScheduleRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -12,19 +15,19 @@ uses(RefreshDatabase::class);
 it('engineering office repository binding resolves', function (): void {
     $repo = app(EngineeringOfficeRepositoryInterface::class);
 
-    expect($repo)->toBeInstanceOf(\App\Domains\EngineeringOffices\Repositories\EloquentEngineeringOfficeRepository::class);
+    expect($repo)->toBeInstanceOf(EloquentEngineeringOfficeRepository::class);
 });
 
 it('open data repository binding resolves', function (): void {
     $repo = app(OpenDataRepositoryInterface::class);
 
-    expect($repo)->toBeInstanceOf(\App\Domains\OpenData\Repositories\EloquentOpenDataRepository::class);
+    expect($repo)->toBeInstanceOf(EloquentOpenDataRepository::class);
 });
 
 it('water schedule repository binding resolves', function (): void {
     $repo = app(WaterScheduleRepositoryInterface::class);
 
-    expect($repo)->toBeInstanceOf(\App\Domains\WaterSchedule\Repositories\EloquentWaterScheduleRepository::class);
+    expect($repo)->toBeInstanceOf(EloquentWaterScheduleRepository::class);
 });
 
 it('engineering office repository has all required methods', function (): void {

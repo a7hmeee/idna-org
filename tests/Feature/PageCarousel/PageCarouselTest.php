@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Domains\Homepage\Enums\PageCarouselKey;
 use App\Domains\Homepage\Models\HomepageSlide;
 use App\Livewire\PublicPageCarousel;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 it('loads slides for engineering offices page', function (): void {

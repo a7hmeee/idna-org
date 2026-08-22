@@ -8,6 +8,7 @@ use App\Domains\Authentication\Models\User;
 use App\Domains\Department\Models\Department;
 use App\Domains\Jobs\Models\Job;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 final class JobSeeder extends Seeder
 {
@@ -57,7 +58,7 @@ final class JobSeeder extends Seeder
                 'salary' => '2000 شيكل',
                 'vacancies' => 5,
                 'summary' => 'مطلوب عمال نظافة للعمل في قسم الصحة والبيئة.',
-                'description' => "عمال النظافة مسؤولون عن الحفاظ على نظافة المدينة.",
+                'description' => 'عمال النظافة مسؤولون عن الحفاظ على نظافة المدينة.',
                 'requirements' => ['خبرة في مجال النظافة', 'قدرة على العمل الميداني'],
                 'responsibilities' => ['كنس الشوارع', 'جمع النفايات', 'تنظيف المرافق العامة'],
                 'required_documents' => ['صورة الهوية', 'شهادة خلو أطراف'],
@@ -72,7 +73,7 @@ final class JobSeeder extends Seeder
                 'salary' => '3000-4000 شيكل',
                 'vacancies' => 1,
                 'summary' => 'مطلوب سكرتير للعمل في مكتب رئيس البلدية.',
-                'description' => "السكرتير مسؤول عن تنظيم المواعيد وإدارة المراسلات.",
+                'description' => 'السكرتير مسؤول عن تنظيم المواعيد وإدارة المراسلات.',
                 'requirements' => ['دبلوم سكرتارية', 'إجادة استخدام الحاسوب', 'مهارات تواصل عالية'],
                 'responsibilities' => ['تنظيم المواعيد', 'إدارة المراسلات', 'استقبال الزوار', 'تنظيم الملفات'],
                 'required_documents' => ['السيرة الذاتية', 'صورة الهوية', 'الشهادات العلمية'],
@@ -88,7 +89,7 @@ final class JobSeeder extends Seeder
                 'salary' => '6000-8000 شيكل',
                 'vacancies' => 1,
                 'summary' => 'مطلوب مهندس كهرباء للعمل على مشاريع الإنارة البلدية.',
-                'description' => "مهندس كهرباء مسؤول عن الإشراف على مشاريع الإنارة والكهرباء.",
+                'description' => 'مهندس كهرباء مسؤول عن الإشراف على مشاريع الإنارة والكهرباء.',
                 'requirements' => ['بكالوريوس هندسة كهرباء', 'خبرة 5 سنوات', 'رخصة مزاولة مهنة'],
                 'responsibilities' => ['الإشراف على مشاريع الإنارة', 'صيانة الشبكات الكهربائية', 'إعداد الدراسات الفنية'],
                 'benefits' => ['تأمين صحي', 'بدل نقل'],
@@ -183,13 +184,13 @@ final class JobSeeder extends Seeder
         foreach ($jobs as $jobData) {
             $departmentId = null;
             if (isset($jobData['department_key'])) {
-                $dept = Department::where('name', 'like', '%' . $jobData['department_key'] . '%')->first();
+                $dept = Department::where('name', 'like', '%'.$jobData['department_key'].'%')->first();
                 $departmentId = $dept?->id ?? $defaultDepartment?->id;
             }
 
-            $slug = \Illuminate\Support\Str::slug($jobData['title']);
+            $slug = Str::slug($jobData['title']);
             if ($jobData['job_number'] ?? null) {
-                $slug .= '-' . \Illuminate\Support\Str::slug($jobData['job_number']);
+                $slug .= '-'.Str::slug($jobData['job_number']);
             }
 
             Job::firstOrCreate(

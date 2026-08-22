@@ -21,31 +21,55 @@ final class TenderForm extends Component
     public ?int $tenderId = null;
 
     public string $tenderNumber = '';
+
     public string $titleAr = '';
+
     public string $titleEn = '';
+
     public string $summary = '';
+
     public string $description = '';
+
     public string $category = '';
+
     public string $issuingDepartment = '';
+
     public string $publicationDate = '';
+
     public string $submissionDeadline = '';
+
     public string $openingDate = '';
+
     public string $status = 'draft';
+
     public array $eligibilityRequirements = [''];
+
     public array $applicationInstructions = [''];
+
     public string $contactInfo = '';
+
     public string $contactPhone = '';
+
     public string $contactEmail = '';
+
     public array $tenderDocuments = [''];
+
     public array $resultDocuments = [];
+
     public string $budget = '';
+
     public string $budgetCurrency = 'ILS';
+
     public bool $isFeatured = false;
+
     public bool $isPublic = false;
 
     public $tenderDocumentUpload = null;
+
     public $resultDocumentUpload = null;
+
     public ?string $existingTenderDocumentPath = null;
+
     public ?string $existingResultDocumentPath = null;
 
     public function mount(?Tender $tender = null): void

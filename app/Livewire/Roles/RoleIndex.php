@@ -8,6 +8,10 @@ use App\Domains\RoleManagement\Actions\CreateRoleAction;
 use App\Domains\RoleManagement\Actions\DeleteRoleAction;
 use App\Domains\RoleManagement\Actions\UpdateRoleAction;
 use App\Domains\RoleManagement\Contracts\RoleRepositoryInterface;
+use App\Domains\RoleManagement\DTOs\CreateRoleDTO;
+use App\Domains\RoleManagement\DTOs\UpdateRoleDTO;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,12 +24,17 @@ final class RoleIndex extends Component
     public string $search = '';
 
     public bool $showCreateModal = false;
+
     public bool $showEditModal = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $editingRoleId = null;
+
     public ?int $deletingRoleId = null;
 
     public string $name = '';
+
     public array $selectedPermissions = [];
 
     public function updatedSearch(): void
@@ -33,7 +42,7 @@ final class RoleIndex extends Component
         $this->resetPage();
     }
 
-    public function getRoles(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getRoles(): LengthAwarePaginator
     {
         return app(RoleRepositoryInterface::class)->paginate(
             perPage: 15,
@@ -58,7 +67,7 @@ final class RoleIndex extends Component
         $validated['permissions'] = $validated['selectedPermissions'] ?? [];
         unset($validated['selectedPermissions']);
 
-        $action->execute(\App\Domains\RoleManagement\DTOs\CreateRoleDTO::fromRequest($validated));
+        $action->execute(CreateRoleDTO::fromRequest($validated));
 
         $this->showCreateModal = false;
         $this->resetForm();
@@ -80,7 +89,7 @@ final class RoleIndex extends Component
     public function updateRole(UpdateRoleAction $action): void
     {
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('roles')->ignore($this->editingRoleId)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('roles')->ignore($this->editingRoleId)],
             'selectedPermissions' => ['nullable', 'array'],
             'selectedPermissions.*' => ['string', 'exists:permissions,name'],
         ]);
@@ -90,7 +99,7 @@ final class RoleIndex extends Component
 
         $action->execute(
             $this->editingRoleId,
-            \App\Domains\RoleManagement\DTOs\UpdateRoleDTO::fromRequest($validated),
+            UpdateRoleDTO::fromRequest($validated),
         );
 
         $this->showEditModal = false;
@@ -111,6 +120,7 @@ final class RoleIndex extends Component
         if ($role && $role->name === 'Super Admin') {
             session()->flash('error', 'لا يمكن حذف دور المدير العام.');
             $this->showDeleteModal = false;
+
             return;
         }
 

@@ -61,14 +61,14 @@ final class EngineeringOffice extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (EngineeringOffice $office): void {
+        self::creating(function (EngineeringOffice $office): void {
             if (empty($office->slug)) {
                 $base = Str::slug($office->office_name);
                 $slug = $base;
                 $counter = 1;
 
                 while (static::where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $counter++;
+                    $slug = $base.'-'.$counter++;
                 }
 
                 $office->slug = $slug;

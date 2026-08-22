@@ -20,8 +20,8 @@ final class EloquentCouncilDecisionRepository implements CouncilDecisionReposito
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('decision_number', 'like', "%{$search}%")
-                  ->orWhere('summary', 'like', "%{$search}%");
+                    ->orWhere('decision_number', 'like', "%{$search}%")
+                    ->orWhere('summary', 'like', "%{$search}%");
             });
         }
 
@@ -113,9 +113,9 @@ final class EloquentCouncilDecisionRepository implements CouncilDecisionReposito
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('decision_number', 'like', "%{$search}%")
-                  ->orWhere('summary', 'like', "%{$search}%")
-                  ->orWhere('session_number', 'like', "%{$search}%");
+                    ->orWhere('decision_number', 'like', "%{$search}%")
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('session_number', 'like', "%{$search}%");
             });
         }
 
@@ -177,10 +177,10 @@ final class EloquentCouncilDecisionRepository implements CouncilDecisionReposito
             ->whereNotNull('published_at')
             ->where(function ($q) use ($decisionId, $dateString): void {
                 $q->where('decision_date', '<', $dateString)
-                  ->orWhere(function ($q2) use ($decisionId, $dateString): void {
-                      $q2->where('decision_date', $dateString)
-                          ->where('id', '<', $decisionId);
-                  });
+                    ->orWhere(function ($q2) use ($decisionId, $dateString): void {
+                        $q2->where('decision_date', $dateString)
+                            ->where('id', '<', $decisionId);
+                    });
             })
             ->orderBy('decision_date', 'desc')
             ->orderBy('id', 'desc')
@@ -198,10 +198,10 @@ final class EloquentCouncilDecisionRepository implements CouncilDecisionReposito
             ->whereNotNull('published_at')
             ->where(function ($q) use ($decisionId, $dateString): void {
                 $q->where('decision_date', '>', $dateString)
-                  ->orWhere(function ($q2) use ($decisionId, $dateString): void {
-                      $q2->where('decision_date', $dateString)
-                          ->where('id', '>', $decisionId);
-                  });
+                    ->orWhere(function ($q2) use ($decisionId, $dateString): void {
+                        $q2->where('decision_date', $dateString)
+                            ->where('id', '>', $decisionId);
+                    });
             })
             ->orderBy('decision_date', 'asc')
             ->orderBy('id', 'asc')
@@ -291,5 +291,17 @@ final class EloquentCouncilDecisionRepository implements CouncilDecisionReposito
             'featured' => $featured[0] ?? null,
             'recent' => $recent,
         ];
+    }
+
+    public function getLatestPublished(int $limit = 5): array
+    {
+        return CouncilDecision::query()
+            ->where('status', CouncilDecisionStatus::Published->value)
+            ->where('is_public', true)
+            ->whereNotNull('published_at')
+            ->orderBy('decision_date', 'desc')
+            ->limit($limit)
+            ->get()
+            ->toArray();
     }
 }

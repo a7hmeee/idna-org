@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Domains\RoleManagement\Contracts;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 interface RoleRepositoryInterface
 {
     public function paginate(int $perPage = 15, ?string $search = null): LengthAwarePaginator;
 
-    public function all(): \Illuminate\Database\Eloquent\Collection;
+    public function all(): Collection;
 
     public function findById(int $id): ?Role;
 
@@ -28,7 +30,7 @@ interface RoleRepositoryInterface
     public function countUsers(int $roleId): int;
 
     /**
-     * @return array<string, array<int, \Spatie\Permission\Models\Permission>>
+     * @return array<string, array<int, Permission>>
      */
     public function getPermissionsGrouped(): array;
 }

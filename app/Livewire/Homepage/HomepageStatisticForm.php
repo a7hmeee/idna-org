@@ -16,12 +16,19 @@ use Livewire\Component;
 final class HomepageStatisticForm extends Component
 {
     public ?int $statisticId = null;
+
     public string $label = '';
+
     public string $value = '';
+
     public ?string $suffix = null;
+
     public ?string $icon = null;
+
     public ?string $description = null;
+
     public bool $isActive = true;
+
     public ?int $sortOrder = null;
 
     public function mount(?int $statistic = null): void
@@ -31,7 +38,7 @@ final class HomepageStatisticForm extends Component
 
             $stat = app(HomepageRepositoryInterface::class)->findStatistic($statistic);
 
-            if (!$stat) {
+            if (! $stat) {
                 abort(404);
             }
 

@@ -13,7 +13,7 @@ final readonly class MediaUploadService
     public function upload(UploadedFile $file, string $collection): array
     {
         $extension = $file->getClientOriginalExtension();
-        $filename = Str::uuid()->toString() . '.' . $extension;
+        $filename = Str::uuid()->toString().'.'.$extension;
         $path = $file->storeAs("municipality/media/{$collection}", $filename, 'public');
 
         $mimeType = $file->getMimeType();

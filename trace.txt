@@ -1,0 +1,898 @@
+=== DATABASE COUNTS (verified live) ===
+  service_categories: 9
+  electronic_services (active+public): 30
+  service_search_terms (active): 175
+  water_areas (active): 8
+  water_schedules (public): 16
+  public_facilities: 8
+  jobs: 83
+  council_members: 8
+  council_decisions: 5
+  municipality_contacts: 6
+
+=== ACCEPTANCE FLOW A: بدي خدمة → الشؤون الإدارية ===
+  Expected: category resolution success, show services for category 2 (5 services)
+  PASS if: no 'ما لقيت هذا التصنيف'
+
+>>> USER (session=trace-A-7d03b95c): بدي خدمة
+TURN 1
+  session_id: trace-A-7d03b95c
+  conversation_id: 139
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-A-7d03b95c): الشؤون الإدارية
+TURN 2
+  session_id: trace-A-7d03b95c
+  conversation_id: 139
+  raw_user_text: الشؤون الإدارية
+  normalized_user_text: الشوون الادارية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 5
+  stored_options: [{"position":1,"label":"طلب صرف مكافأة نهاية الخدمة","normalized_label":"طلب صرف مكافاة نهاية الخدمة","key":"service:7","entity_type":"electronic_service","entity_id":7},{"position":2,"label":"طلب إجازة استثنائية","normalized_label":"طلب اجازة استثنايية","key":"service:8","entity_type":"electronic_service","entity_id":8},{"position":3,"label":"طلب شهادة عمل","normalized_label":"طلب شهادة عمل","key":"service:9","entity_type":"electronic_service","entity_id":9},{"position":4,"label":"طلب صرف راتب","normalized_label":"طلب صرف راتب","key":"service:10","entity_type":"electronic_service","entity_id":10},{"position":5,"label":"طلب تدريب مهني","normalized_label":"طلب تدريب مهني","key":"service:11","entity_type":"electronic_service","entity_id":11}]
+  current_category_id: 2
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الشؤون الإدارية":
+  bot_actions_count: 5
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+=== ACCEPTANCE FLOW B: بدي خدمة → 2 (numeric) ===
+  Expected: category 2 (الشؤون الإدارية) selected by number
+
+>>> USER (session=trace-B-2a0de82c): بدي خدمة
+TURN 3
+  session_id: trace-B-2a0de82c
+  conversation_id: 140
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-B-2a0de82c): 2
+TURN 4
+  session_id: trace-B-2a0de82c
+  conversation_id: 140
+  raw_user_text: 2
+  normalized_user_text: 2
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 5
+  stored_options: [{"position":1,"label":"طلب صرف مكافأة نهاية الخدمة","normalized_label":"طلب صرف مكافاة نهاية الخدمة","key":"service:7","entity_type":"electronic_service","entity_id":7},{"position":2,"label":"طلب إجازة استثنائية","normalized_label":"طلب اجازة استثنايية","key":"service:8","entity_type":"electronic_service","entity_id":8},{"position":3,"label":"طلب شهادة عمل","normalized_label":"طلب شهادة عمل","key":"service:9","entity_type":"electronic_service","entity_id":9},{"position":4,"label":"طلب صرف راتب","normalized_label":"طلب صرف راتب","key":"service:10","entity_type":"electronic_service","entity_id":10},{"position":5,"label":"طلب تدريب مهني","normalized_label":"طلب تدريب مهني","key":"service:11","entity_type":"electronic_service","entity_id":11}]
+  current_category_id: 2
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الشؤون الإدارية":
+  bot_actions_count: 5
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+=== ACCEPTANCE FLOW C: جدول توزيع المياه → حي البلد ===
+  Expected: water schedule shown (falls back to latest if no today schedule)
+  PASS if: shows schedule data from DB (date 2026-08-11, 08:00-16:00)
+
+>>> USER (session=trace-C-7792de91): جدول توزيع المياه
+TURN 5
+  session_id: trace-C-7792de91
+  conversation_id: 141
+  raw_user_text: جدول توزيع المياه
+  normalized_user_text: جدول توزيع المياة
+  stored_state: waiting_for_clarification
+  stored_clarification_type: water_area
+  stored_needs_clarification: false
+  stored_options_count: 8
+  stored_options: [{"position":1,"label":"حي البلد","normalized_label":null,"key":"water-area:1","entity_type":"water_area","entity_id":1},{"position":2,"label":"حي الشرقية","normalized_label":null,"key":"water-area:2","entity_type":"water_area","entity_id":2},{"position":3,"label":"حي الغربية","normalized_label":null,"key":"water-area:3","entity_type":"water_area","entity_id":3},{"position":4,"label":"حي الشمالية","normalized_label":null,"key":"water-area:4","entity_type":"water_area","entity_id":4},{"position":5,"label":"حي الجنوبية","normalized_label":null,"key":"water-area:5","entity_type":"water_area","entity_id":5},{"position":6,"label":"شارع القدس","normalized_label":null,"key":"water-area:6","entity_type":"water_area","entity_id":6},{"position":7,"label":"شارع الخليل","normalized_label":null,"key":"water-area:7","entity_type":"water_area","entity_id":7},{"position":8,"label":"منطقة الصناعية","normalized_label":null,"key":"water-area:8","entity_type":"water_area","entity_id":8}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: لأي منطقة تريد معرفة موعد المياه؟
+1. حي البلد
+2. حي الشرقية
+3. حي الغربية
+4. حي الشمالية
+5. حي الجنوبية
+6. شارع القدس
+
+  bot_actions_count: 8
+  bot_items_count: 8
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-C-7792de91): حي البلد
+TURN 6
+  session_id: trace-C-7792de91
+  conversation_id: 141
+  raw_user_text: حي البلد
+  normalized_user_text: حي البلد
+  stored_state: normal
+  stored_clarification_type: NULL
+  stored_needs_clarification: false
+  stored_options_count: 0
+  stored_options: []
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: schedule
+  bot_response_message: جدول المياه لمنطقة حي البلد:
+آخر جدول متاح (التاريخ: 2026-08-11):
+الوقت: 08:00 - 16:00
+ملاحظات: الضخ منتظم
+الحالة: متوفر
+  bot_actions_count: 1
+  bot_items_count: 1
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+=== ACCEPTANCE FLOW D: جدول توزيع المياه → 1 (numeric) ===
+  Expected: same result as حي البلد
+
+>>> USER (session=trace-D-74f8f431): جدول توزيع المياه
+TURN 7
+  session_id: trace-D-74f8f431
+  conversation_id: 142
+  raw_user_text: جدول توزيع المياه
+  normalized_user_text: جدول توزيع المياة
+  stored_state: waiting_for_clarification
+  stored_clarification_type: water_area
+  stored_needs_clarification: false
+  stored_options_count: 8
+  stored_options: [{"position":1,"label":"حي البلد","normalized_label":null,"key":"water-area:1","entity_type":"water_area","entity_id":1},{"position":2,"label":"حي الشرقية","normalized_label":null,"key":"water-area:2","entity_type":"water_area","entity_id":2},{"position":3,"label":"حي الغربية","normalized_label":null,"key":"water-area:3","entity_type":"water_area","entity_id":3},{"position":4,"label":"حي الشمالية","normalized_label":null,"key":"water-area:4","entity_type":"water_area","entity_id":4},{"position":5,"label":"حي الجنوبية","normalized_label":null,"key":"water-area:5","entity_type":"water_area","entity_id":5},{"position":6,"label":"شارع القدس","normalized_label":null,"key":"water-area:6","entity_type":"water_area","entity_id":6},{"position":7,"label":"شارع الخليل","normalized_label":null,"key":"water-area:7","entity_type":"water_area","entity_id":7},{"position":8,"label":"منطقة الصناعية","normalized_label":null,"key":"water-area:8","entity_type":"water_area","entity_id":8}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: لأي منطقة تريد معرفة موعد المياه؟
+1. حي البلد
+2. حي الشرقية
+3. حي الغربية
+4. حي الشمالية
+5. حي الجنوبية
+6. شارع القدس
+
+  bot_actions_count: 8
+  bot_items_count: 8
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-D-74f8f431): 1
+TURN 8
+  session_id: trace-D-74f8f431
+  conversation_id: 142
+  raw_user_text: 1
+  normalized_user_text: 1
+  stored_state: normal
+  stored_clarification_type: NULL
+  stored_needs_clarification: false
+  stored_options_count: 0
+  stored_options: []
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: schedule
+  bot_response_message: جدول المياه لمنطقة حي البلد:
+آخر جدول متاح (التاريخ: 2026-08-11):
+الوقت: 08:00 - 16:00
+ملاحظات: الضخ منتظم
+الحالة: متوفر
+  bot_actions_count: 1
+  bot_items_count: 1
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+=== ACCEPTANCE FLOW E: gpk → 3 ===
+  Expected: gpk → main menu, 3 = تقديم شكوى (complaint workflow)
+
+>>> USER (session=trace-E-d56873d9): gpk
+TURN 9
+  session_id: trace-E-d56873d9
+  conversation_id: 143
+  raw_user_text: gpk
+  normalized_user_text: gpk
+  stored_state: waiting_for_selection
+  stored_clarification_type: municipality_main_menu
+  stored_needs_clarification: true
+  stored_options_count: 11
+  stored_options: [{"position":1,"label":"خدمات البلدية","normalized_label":null,"key":"main-menu:services","entity_type":"municipality_main_menu","entity_id":null},{"position":2,"label":"الخدمات الإلكترونية","normalized_label":null,"key":"main-menu:electronic-services","entity_type":"municipality_main_menu","entity_id":null},{"position":3,"label":"تقديم شكوى","normalized_label":null,"key":"main-menu:complaint","entity_type":"municipality_main_menu","entity_id":null},{"position":4,"label":"طلب اتصال","normalized_label":null,"key":"main-menu:contact-request","entity_type":"municipality_main_menu","entity_id":null},{"position":5,"label":"متابعة طلب","normalized_label":null,"key":"main-menu:tracking","entity_type":"municipality_main_menu","entity_id":null},{"position":6,"label":"جدول توزيع المياه","normalized_label":null,"key":"main-menu:water","entity_type":"municipality_main_menu","entity_id":null},{"position":7,"label":"المرافق العامة","normalized_label":null,"key":"main-menu:facilities","entity_type":"municipality_main_menu","entity_id":null},{"position":8,"label":"الوظائف","normalized_label":null,"key":"main-menu:jobs","entity_type":"municipality_main_menu","entity_id":null},{"position":9,"label":"أعضاء المجلس البلدي","normalized_label":null,"key":"main-menu:council-members","entity_type":"municipality_main_menu","entity_id":null},{"position":10,"label":"قرارات المجلس","normalized_label":null,"key":"main-menu:council-decisions","entity_type":"municipality_main_menu","entity_id":null},{"position":11,"label":"تواصل مع البلدية","normalized_label":null,"key":"main-menu:municipality-contact","entity_type":"municipality_main_menu","entity_id":null}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: ما قدرت أحدد طلبك بالضبط. اختر من الخيارات أدناه:
+  bot_actions_count: 11
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-E-d56873d9): 3
+TURN 10
+  session_id: trace-E-d56873d9
+  conversation_id: 143
+  raw_user_text: 3
+  normalized_user_text: 3
+  stored_state: normal
+  stored_clarification_type: NULL
+  stored_needs_clarification: false
+  stored_options_count: 0
+  stored_options: []
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: workflow_question
+  bot_response_message: أهلاً بك في خدمة تقديم الشكوى.
+للبدء، ما هو اسمك الكامل؟
+  bot_actions_count: 0
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+=== ACCEPTANCE FLOW F: مرحبا → 6 ===
+  Expected: 6 = جدول توزيع المياه → water areas
+
+>>> USER (session=trace-F-9bef8ec5): مرحبا
+TURN 11
+  session_id: trace-F-9bef8ec5
+  conversation_id: 144
+  raw_user_text: مرحبا
+  normalized_user_text: مرحبا
+  stored_state: waiting_for_selection
+  stored_clarification_type: municipality_main_menu
+  stored_needs_clarification: true
+  stored_options_count: 11
+  stored_options: [{"position":1,"label":"خدمات البلدية","normalized_label":null,"key":"main-menu:services","entity_type":"municipality_main_menu","entity_id":null},{"position":2,"label":"الخدمات الإلكترونية","normalized_label":null,"key":"main-menu:electronic-services","entity_type":"municipality_main_menu","entity_id":null},{"position":3,"label":"تقديم شكوى","normalized_label":null,"key":"main-menu:complaint","entity_type":"municipality_main_menu","entity_id":null},{"position":4,"label":"طلب اتصال","normalized_label":null,"key":"main-menu:contact-request","entity_type":"municipality_main_menu","entity_id":null},{"position":5,"label":"متابعة طلب","normalized_label":null,"key":"main-menu:tracking","entity_type":"municipality_main_menu","entity_id":null},{"position":6,"label":"جدول توزيع المياه","normalized_label":null,"key":"main-menu:water","entity_type":"municipality_main_menu","entity_id":null},{"position":7,"label":"المرافق العامة","normalized_label":null,"key":"main-menu:facilities","entity_type":"municipality_main_menu","entity_id":null},{"position":8,"label":"الوظائف","normalized_label":null,"key":"main-menu:jobs","entity_type":"municipality_main_menu","entity_id":null},{"position":9,"label":"أعضاء المجلس البلدي","normalized_label":null,"key":"main-menu:council-members","entity_type":"municipality_main_menu","entity_id":null},{"position":10,"label":"قرارات المجلس","normalized_label":null,"key":"main-menu:council-decisions","entity_type":"municipality_main_menu","entity_id":null},{"position":11,"label":"تواصل مع البلدية","normalized_label":null,"key":"main-menu:municipality-contact","entity_type":"municipality_main_menu","entity_id":null}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: مرحباً بك في المساعد الذكي لبلدية إذنا. إذا حابب تتكلم معي، اكتب سؤالك أو اختر أحد الخيارات السريعة.
+  bot_actions_count: 11
+  bot_items_count: 11
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-F-9bef8ec5): 6
+TURN 12
+  session_id: trace-F-9bef8ec5
+  conversation_id: 144
+  raw_user_text: 6
+  normalized_user_text: 6
+  stored_state: waiting_for_clarification
+  stored_clarification_type: water_area
+  stored_needs_clarification: true
+  stored_options_count: 8
+  stored_options: [{"position":1,"label":"حي البلد","normalized_label":null,"key":"water-area:1","entity_type":"water_area","entity_id":1},{"position":2,"label":"حي الشرقية","normalized_label":null,"key":"water-area:2","entity_type":"water_area","entity_id":2},{"position":3,"label":"حي الغربية","normalized_label":null,"key":"water-area:3","entity_type":"water_area","entity_id":3},{"position":4,"label":"حي الشمالية","normalized_label":null,"key":"water-area:4","entity_type":"water_area","entity_id":4},{"position":5,"label":"حي الجنوبية","normalized_label":null,"key":"water-area:5","entity_type":"water_area","entity_id":5},{"position":6,"label":"شارع القدس","normalized_label":null,"key":"water-area:6","entity_type":"water_area","entity_id":6},{"position":7,"label":"شارع الخليل","normalized_label":null,"key":"water-area:7","entity_type":"water_area","entity_id":7},{"position":8,"label":"منطقة الصناعية","normalized_label":null,"key":"water-area:8","entity_type":"water_area","entity_id":8}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: لأي منطقة تريد معرفة موعد المياه؟
+1. حي البلد
+2. حي الشرقية
+3. حي الغربية
+4. حي الشمالية
+5. حي الجنوبية
+6. شارع القدس
+
+  bot_actions_count: 8
+  bot_items_count: 8
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+
+=== ADDITIONAL CATEGORY TESTS (all via برنامج بدي خدمة) ===
+--- Category: الشؤون الإدارية (expected id=2) ---
+>>> USER (session=trace-cat-e861f7f7): بدي خدمة
+TURN 13
+  session_id: trace-cat-e861f7f7
+  conversation_id: 145
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-e861f7f7): الشؤون الإدارية
+TURN 14
+  session_id: trace-cat-e861f7f7
+  conversation_id: 145
+  raw_user_text: الشؤون الإدارية
+  normalized_user_text: الشوون الادارية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 5
+  stored_options: [{"position":1,"label":"طلب صرف مكافأة نهاية الخدمة","normalized_label":"طلب صرف مكافاة نهاية الخدمة","key":"service:7","entity_type":"electronic_service","entity_id":7},{"position":2,"label":"طلب إجازة استثنائية","normalized_label":"طلب اجازة استثنايية","key":"service:8","entity_type":"electronic_service","entity_id":8},{"position":3,"label":"طلب شهادة عمل","normalized_label":"طلب شهادة عمل","key":"service:9","entity_type":"electronic_service","entity_id":9},{"position":4,"label":"طلب صرف راتب","normalized_label":"طلب صرف راتب","key":"service:10","entity_type":"electronic_service","entity_id":10},{"position":5,"label":"طلب تدريب مهني","normalized_label":"طلب تدريب مهني","key":"service:11","entity_type":"electronic_service","entity_id":11}]
+  current_category_id: 2
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الشؤون الإدارية":
+  bot_actions_count: 5
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: الخدمات المالية (expected id=5) ---
+>>> USER (session=trace-cat-87debe99): بدي خدمة
+TURN 15
+  session_id: trace-cat-87debe99
+  conversation_id: 146
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-87debe99): الخدمات المالية
+TURN 16
+  session_id: trace-cat-87debe99
+  conversation_id: 146
+  raw_user_text: الخدمات المالية
+  normalized_user_text: الخدمات المالية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 3
+  stored_options: [{"position":1,"label":"طلب صرف شيك بلدي","normalized_label":"طلب صرف شيك بلدي","key":"service:19","entity_type":"electronic_service","entity_id":19},{"position":2,"label":"طلب دفع رسوم بلدية","normalized_label":"طلب دفع رسوم بلدية","key":"service:20","entity_type":"electronic_service","entity_id":20},{"position":3,"label":"طلب استعلام عن رصيد","normalized_label":"طلب استعلام عن رصيد","key":"service:21","entity_type":"electronic_service","entity_id":21}]
+  current_category_id: 5
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الخدمات المالية":
+  bot_actions_count: 3
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: الخدمات الاجتماعية (expected id=6) ---
+>>> USER (session=trace-cat-372cbf03): بدي خدمة
+TURN 17
+  session_id: trace-cat-372cbf03
+  conversation_id: 147
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-372cbf03): الخدمات الاجتماعية
+TURN 18
+  session_id: trace-cat-372cbf03
+  conversation_id: 147
+  raw_user_text: الخدمات الاجتماعية
+  normalized_user_text: الخدمات الاجتماعية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 2
+  stored_options: [{"position":1,"label":"طلب مساعدة اجتماعية","normalized_label":"طلب مساعدة اجتماعية","key":"service:22","entity_type":"electronic_service","entity_id":22},{"position":2,"label":"طلب دعم تعليمي","normalized_label":"طلب دعم تعليمي","key":"service:23","entity_type":"electronic_service","entity_id":23}]
+  current_category_id: 6
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الخدمات الاجتماعية":
+  bot_actions_count: 2
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: الخدمات التخطيطية (expected id=8) ---
+>>> USER (session=trace-cat-b9f348f9): بدي خدمة
+TURN 19
+  session_id: trace-cat-b9f348f9
+  conversation_id: 148
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-b9f348f9): الخدمات التخطيطية
+TURN 20
+  session_id: trace-cat-b9f348f9
+  conversation_id: 148
+  raw_user_text: الخدمات التخطيطية
+  normalized_user_text: الخدمات التخطيطية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 2
+  stored_options: [{"position":1,"label":"طلب مخطط موقع","normalized_label":"طلب مخطط موقع","key":"service:27","entity_type":"electronic_service","entity_id":27},{"position":2,"label":"طلب شهادة مطابقة","normalized_label":"طلب شهادة مطابقة","key":"service:28","entity_type":"electronic_service","entity_id":28}]
+  current_category_id: 8
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الخدمات التخطيطية":
+  bot_actions_count: 2
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: الخدمات الإلكترونية (expected id=9) ---
+>>> USER (session=trace-cat-a4e2d98e): بدي خدمة
+TURN 21
+  session_id: trace-cat-a4e2d98e
+  conversation_id: 149
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-a4e2d98e): الخدمات الإلكترونية
+TURN 22
+  session_id: trace-cat-a4e2d98e
+  conversation_id: 149
+  raw_user_text: الخدمات الإلكترونية
+  normalized_user_text: الخدمات الالكترونية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 2
+  stored_options: [{"position":1,"label":"طلب خدمة رقمية","normalized_label":"طلب خدمة رقمية","key":"service:29","entity_type":"electronic_service","entity_id":29},{"position":2,"label":"طلب دعم فني","normalized_label":"طلب دعم فني","key":"service:30","entity_type":"electronic_service","entity_id":30}]
+  current_category_id: 9
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الخدمات الإلكترونية":
+  bot_actions_count: 2
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: رخص البناء (expected id=1) ---
+>>> USER (session=trace-cat-8c4a8d18): بدي خدمة
+TURN 23
+  session_id: trace-cat-8c4a8d18
+  conversation_id: 150
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-8c4a8d18): رخص البناء
+TURN 24
+  session_id: trace-cat-8c4a8d18
+  conversation_id: 150
+  raw_user_text: رخص البناء
+  normalized_user_text: رخص البناء
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 6
+  stored_options: [{"position":1,"label":"طلب رخصة بناء جديد","normalized_label":"طلب رخصة بناء جديد","key":"service:1","entity_type":"electronic_service","entity_id":1},{"position":2,"label":"طلب تجديد رخصة بناء","normalized_label":"طلب تجديد رخصة بناء","key":"service:2","entity_type":"electronic_service","entity_id":2},{"position":3,"label":"طلب تعديل رخصة بناء","normalized_label":"طلب تعديل رخصة بناء","key":"service:3","entity_type":"electronic_service","entity_id":3},{"position":4,"label":"طلب شهادة إتمام بناء","normalized_label":"طلب شهادة اتمام بناء","key":"service:4","entity_type":"electronic_service","entity_id":4},{"position":5,"label":"طلب هدم مبنى","normalized_label":"طلب هدم مبني","key":"service:5","entity_type":"electronic_service","entity_id":5},{"position":6,"label":"طلب ترخيص محل تجاري","normalized_label":"طلب ترخيص محل تجاري","key":"service:6","entity_type":"electronic_service","entity_id":6}]
+  current_category_id: 1
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "رخص البناء":
+  bot_actions_count: 6
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: الشؤون القانونية (expected id=3) ---
+>>> USER (session=trace-cat-ba90bab9): بدي خدمة
+TURN 25
+  session_id: trace-cat-ba90bab9
+  conversation_id: 151
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-ba90bab9): الشؤون القانونية
+TURN 26
+  session_id: trace-cat-ba90bab9
+  conversation_id: 151
+  raw_user_text: الشؤون القانونية
+  normalized_user_text: الشوون القانونية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 3
+  stored_options: [{"position":1,"label":"طلب استشارة قانونية","normalized_label":"طلب استشارة قانونية","key":"service:12","entity_type":"electronic_service","entity_id":12},{"position":2,"label":"طلب توثيق عقد","normalized_label":"طلب توثيق عقد","key":"service:13","entity_type":"electronic_service","entity_id":13},{"position":3,"label":"طلب إصدار شهادة إخلال طرف","normalized_label":"طلب اصدار شهادة اخلال طرف","key":"service:14","entity_type":"electronic_service","entity_id":14}]
+  current_category_id: 3
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الشؤون القانونية":
+  bot_actions_count: 3
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: الخدمات الصحية (expected id=4) ---
+>>> USER (session=trace-cat-a87be5e8): بدي خدمة
+TURN 27
+  session_id: trace-cat-a87be5e8
+  conversation_id: 152
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-a87be5e8): الخدمات الصحية
+TURN 28
+  session_id: trace-cat-a87be5e8
+  conversation_id: 152
+  raw_user_text: الخدمات الصحية
+  normalized_user_text: الخدمات الصحية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 4
+  stored_options: [{"position":1,"label":"طلب ترخيص مطبخ منزلي","normalized_label":"طلب ترخيص مطبخ منزلي","key":"service:15","entity_type":"electronic_service","entity_id":15},{"position":2,"label":"طلب فحص صحي لمحل","normalized_label":"طلب فحص صحي لمحل","key":"service:16","entity_type":"electronic_service","entity_id":16},{"position":3,"label":"طلب مكافحة حشرات","normalized_label":"طلب مكافحة حشرات","key":"service:17","entity_type":"electronic_service","entity_id":17},{"position":4,"label":"طلب شهادة صحية","normalized_label":"طلب شهادة صحية","key":"service:18","entity_type":"electronic_service","entity_id":18}]
+  current_category_id: 4
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الخدمات الصحية":
+  bot_actions_count: 4
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+--- Category: الخدمات البيئية (expected id=7) ---
+>>> USER (session=trace-cat-1b9753ee): بدي خدمة
+TURN 29
+  session_id: trace-cat-1b9753ee
+  conversation_id: 153
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-cat-1b9753ee): الخدمات البيئية
+TURN 30
+  session_id: trace-cat-1b9753ee
+  conversation_id: 153
+  raw_user_text: الخدمات البيئية
+  normalized_user_text: الخدمات البييية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 3
+  stored_options: [{"position":1,"label":"طلب نقل نفايات","normalized_label":"طلب نقل نفايات","key":"service:24","entity_type":"electronic_service","entity_id":24},{"position":2,"label":"طلب زراعة أشجار","normalized_label":"طلب زراعة اشجار","key":"service:25","entity_type":"electronic_service","entity_id":25},{"position":3,"label":"طلب تصريح حفر","normalized_label":"طلب تصريح حفر","key":"service:26","entity_type":"electronic_service","entity_id":26}]
+  current_category_id: 7
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الخدمات البيئية":
+  bot_actions_count: 3
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+
+=== ARABIC-INDIC DIGITS: مرحبا → ٦ (Arabic-Indic 6) ===
+>>> USER (session=trace-G-b8f89baf): مرحبا
+TURN 31
+  session_id: trace-G-b8f89baf
+  conversation_id: 154
+  raw_user_text: مرحبا
+  normalized_user_text: مرحبا
+  stored_state: waiting_for_selection
+  stored_clarification_type: municipality_main_menu
+  stored_needs_clarification: true
+  stored_options_count: 11
+  stored_options: [{"position":1,"label":"خدمات البلدية","normalized_label":null,"key":"main-menu:services","entity_type":"municipality_main_menu","entity_id":null},{"position":2,"label":"الخدمات الإلكترونية","normalized_label":null,"key":"main-menu:electronic-services","entity_type":"municipality_main_menu","entity_id":null},{"position":3,"label":"تقديم شكوى","normalized_label":null,"key":"main-menu:complaint","entity_type":"municipality_main_menu","entity_id":null},{"position":4,"label":"طلب اتصال","normalized_label":null,"key":"main-menu:contact-request","entity_type":"municipality_main_menu","entity_id":null},{"position":5,"label":"متابعة طلب","normalized_label":null,"key":"main-menu:tracking","entity_type":"municipality_main_menu","entity_id":null},{"position":6,"label":"جدول توزيع المياه","normalized_label":null,"key":"main-menu:water","entity_type":"municipality_main_menu","entity_id":null},{"position":7,"label":"المرافق العامة","normalized_label":null,"key":"main-menu:facilities","entity_type":"municipality_main_menu","entity_id":null},{"position":8,"label":"الوظائف","normalized_label":null,"key":"main-menu:jobs","entity_type":"municipality_main_menu","entity_id":null},{"position":9,"label":"أعضاء المجلس البلدي","normalized_label":null,"key":"main-menu:council-members","entity_type":"municipality_main_menu","entity_id":null},{"position":10,"label":"قرارات المجلس","normalized_label":null,"key":"main-menu:council-decisions","entity_type":"municipality_main_menu","entity_id":null},{"position":11,"label":"تواصل مع البلدية","normalized_label":null,"key":"main-menu:municipality-contact","entity_type":"municipality_main_menu","entity_id":null}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: مرحباً بك في المساعد الذكي لبلدية إذنا. إذا حابب تتكلم معي، اكتب سؤالك أو اختر أحد الخيارات السريعة.
+  bot_actions_count: 11
+  bot_items_count: 11
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-G-b8f89baf): ٦
+TURN 32
+  session_id: trace-G-b8f89baf
+  conversation_id: 154
+  raw_user_text: ٦
+  normalized_user_text: ٦
+  stored_state: waiting_for_clarification
+  stored_clarification_type: water_area
+  stored_needs_clarification: true
+  stored_options_count: 8
+  stored_options: [{"position":1,"label":"حي البلد","normalized_label":null,"key":"water-area:1","entity_type":"water_area","entity_id":1},{"position":2,"label":"حي الشرقية","normalized_label":null,"key":"water-area:2","entity_type":"water_area","entity_id":2},{"position":3,"label":"حي الغربية","normalized_label":null,"key":"water-area:3","entity_type":"water_area","entity_id":3},{"position":4,"label":"حي الشمالية","normalized_label":null,"key":"water-area:4","entity_type":"water_area","entity_id":4},{"position":5,"label":"حي الجنوبية","normalized_label":null,"key":"water-area:5","entity_type":"water_area","entity_id":5},{"position":6,"label":"شارع القدس","normalized_label":null,"key":"water-area:6","entity_type":"water_area","entity_id":6},{"position":7,"label":"شارع الخليل","normalized_label":null,"key":"water-area:7","entity_type":"water_area","entity_id":7},{"position":8,"label":"منطقة الصناعية","normalized_label":null,"key":"water-area:8","entity_type":"water_area","entity_id":8}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: لأي منطقة تريد معرفة موعد المياه؟
+1. حي البلد
+2. حي الشرقية
+3. حي الغربية
+4. حي الشمالية
+5. حي الجنوبية
+6. شارع القدس
+
+  bot_actions_count: 8
+  bot_items_count: 8
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+
+=== WATER AREA BY NUMBER: جدول توزيع المياه → 1 ===
+>>> USER (session=trace-H-17d86928): جدول توزيع المياه
+TURN 33
+  session_id: trace-H-17d86928
+  conversation_id: 155
+  raw_user_text: جدول توزيع المياه
+  normalized_user_text: جدول توزيع المياة
+  stored_state: waiting_for_clarification
+  stored_clarification_type: water_area
+  stored_needs_clarification: false
+  stored_options_count: 8
+  stored_options: [{"position":1,"label":"حي البلد","normalized_label":null,"key":"water-area:1","entity_type":"water_area","entity_id":1},{"position":2,"label":"حي الشرقية","normalized_label":null,"key":"water-area:2","entity_type":"water_area","entity_id":2},{"position":3,"label":"حي الغربية","normalized_label":null,"key":"water-area:3","entity_type":"water_area","entity_id":3},{"position":4,"label":"حي الشمالية","normalized_label":null,"key":"water-area:4","entity_type":"water_area","entity_id":4},{"position":5,"label":"حي الجنوبية","normalized_label":null,"key":"water-area:5","entity_type":"water_area","entity_id":5},{"position":6,"label":"شارع القدس","normalized_label":null,"key":"water-area:6","entity_type":"water_area","entity_id":6},{"position":7,"label":"شارع الخليل","normalized_label":null,"key":"water-area:7","entity_type":"water_area","entity_id":7},{"position":8,"label":"منطقة الصناعية","normalized_label":null,"key":"water-area:8","entity_type":"water_area","entity_id":8}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: لأي منطقة تريد معرفة موعد المياه؟
+1. حي البلد
+2. حي الشرقية
+3. حي الغربية
+4. حي الشمالية
+5. حي الجنوبية
+6. شارع القدس
+
+  bot_actions_count: 8
+  bot_items_count: 8
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-H-17d86928): 1
+TURN 34
+  session_id: trace-H-17d86928
+  conversation_id: 155
+  raw_user_text: 1
+  normalized_user_text: 1
+  stored_state: normal
+  stored_clarification_type: NULL
+  stored_needs_clarification: false
+  stored_options_count: 0
+  stored_options: []
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: schedule
+  bot_response_message: جدول المياه لمنطقة حي البلد:
+آخر جدول متاح (التاريخ: 2026-08-11):
+الوقت: 08:00 - 16:00
+ملاحظات: الضخ منتظم
+الحالة: متوفر
+  bot_actions_count: 1
+  bot_items_count: 1
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+
+=== REPEATED INVALID INPUT: مرحبا → invalid → invalid ===
+>>> USER (session=trace-I-24ee1fb7): مرحبا
+TURN 35
+  session_id: trace-I-24ee1fb7
+  conversation_id: 156
+  raw_user_text: مرحبا
+  normalized_user_text: مرحبا
+  stored_state: waiting_for_selection
+  stored_clarification_type: municipality_main_menu
+  stored_needs_clarification: true
+  stored_options_count: 11
+  stored_options: [{"position":1,"label":"خدمات البلدية","normalized_label":null,"key":"main-menu:services","entity_type":"municipality_main_menu","entity_id":null},{"position":2,"label":"الخدمات الإلكترونية","normalized_label":null,"key":"main-menu:electronic-services","entity_type":"municipality_main_menu","entity_id":null},{"position":3,"label":"تقديم شكوى","normalized_label":null,"key":"main-menu:complaint","entity_type":"municipality_main_menu","entity_id":null},{"position":4,"label":"طلب اتصال","normalized_label":null,"key":"main-menu:contact-request","entity_type":"municipality_main_menu","entity_id":null},{"position":5,"label":"متابعة طلب","normalized_label":null,"key":"main-menu:tracking","entity_type":"municipality_main_menu","entity_id":null},{"position":6,"label":"جدول توزيع المياه","normalized_label":null,"key":"main-menu:water","entity_type":"municipality_main_menu","entity_id":null},{"position":7,"label":"المرافق العامة","normalized_label":null,"key":"main-menu:facilities","entity_type":"municipality_main_menu","entity_id":null},{"position":8,"label":"الوظائف","normalized_label":null,"key":"main-menu:jobs","entity_type":"municipality_main_menu","entity_id":null},{"position":9,"label":"أعضاء المجلس البلدي","normalized_label":null,"key":"main-menu:council-members","entity_type":"municipality_main_menu","entity_id":null},{"position":10,"label":"قرارات المجلس","normalized_label":null,"key":"main-menu:council-decisions","entity_type":"municipality_main_menu","entity_id":null},{"position":11,"label":"تواصل مع البلدية","normalized_label":null,"key":"main-menu:municipality-contact","entity_type":"municipality_main_menu","entity_id":null}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: مرحباً بك في المساعد الذكي لبلدية إذنا. إذا حابب تتكلم معي، اكتب سؤالك أو اختر أحد الخيارات السريعة.
+  bot_actions_count: 11
+  bot_items_count: 11
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-I-24ee1fb7): xyz123
+TURN 36
+  session_id: trace-I-24ee1fb7
+  conversation_id: 156
+  raw_user_text: xyz123
+  normalized_user_text: xyz123
+  stored_state: waiting_for_selection
+  stored_clarification_type: municipality_main_menu
+  stored_needs_clarification: true
+  stored_options_count: 11
+  stored_options: [{"position":1,"label":"خدمات البلدية","normalized_label":null,"key":"main-menu:services","entity_type":"municipality_main_menu","entity_id":null},{"position":2,"label":"الخدمات الإلكترونية","normalized_label":null,"key":"main-menu:electronic-services","entity_type":"municipality_main_menu","entity_id":null},{"position":3,"label":"تقديم شكوى","normalized_label":null,"key":"main-menu:complaint","entity_type":"municipality_main_menu","entity_id":null},{"position":4,"label":"طلب اتصال","normalized_label":null,"key":"main-menu:contact-request","entity_type":"municipality_main_menu","entity_id":null},{"position":5,"label":"متابعة طلب","normalized_label":null,"key":"main-menu:tracking","entity_type":"municipality_main_menu","entity_id":null},{"position":6,"label":"جدول توزيع المياه","normalized_label":null,"key":"main-menu:water","entity_type":"municipality_main_menu","entity_id":null},{"position":7,"label":"المرافق العامة","normalized_label":null,"key":"main-menu:facilities","entity_type":"municipality_main_menu","entity_id":null},{"position":8,"label":"الوظائف","normalized_label":null,"key":"main-menu:jobs","entity_type":"municipality_main_menu","entity_id":null},{"position":9,"label":"أعضاء المجلس البلدي","normalized_label":null,"key":"main-menu:council-members","entity_type":"municipality_main_menu","entity_id":null},{"position":10,"label":"قرارات المجلس","normalized_label":null,"key":"main-menu:council-decisions","entity_type":"municipality_main_menu","entity_id":null},{"position":11,"label":"تواصل مع البلدية","normalized_label":null,"key":"main-menu:municipality-contact","entity_type":"municipality_main_menu","entity_id":null}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: ما قدرت أحدد طلبك بالضبط. اختر من الخيارات أدناه:
+  bot_actions_count: 11
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-I-24ee1fb7): xyz123
+TURN 37
+  session_id: trace-I-24ee1fb7
+  conversation_id: 156
+  raw_user_text: xyz123
+  normalized_user_text: xyz123
+  stored_state: waiting_for_selection
+  stored_clarification_type: municipality_main_menu
+  stored_needs_clarification: true
+  stored_options_count: 11
+  stored_options: [{"position":1,"label":"خدمات البلدية","normalized_label":null,"key":"main-menu:services","entity_type":"municipality_main_menu","entity_id":null},{"position":2,"label":"الخدمات الإلكترونية","normalized_label":null,"key":"main-menu:electronic-services","entity_type":"municipality_main_menu","entity_id":null},{"position":3,"label":"تقديم شكوى","normalized_label":null,"key":"main-menu:complaint","entity_type":"municipality_main_menu","entity_id":null},{"position":4,"label":"طلب اتصال","normalized_label":null,"key":"main-menu:contact-request","entity_type":"municipality_main_menu","entity_id":null},{"position":5,"label":"متابعة طلب","normalized_label":null,"key":"main-menu:tracking","entity_type":"municipality_main_menu","entity_id":null},{"position":6,"label":"جدول توزيع المياه","normalized_label":null,"key":"main-menu:water","entity_type":"municipality_main_menu","entity_id":null},{"position":7,"label":"المرافق العامة","normalized_label":null,"key":"main-menu:facilities","entity_type":"municipality_main_menu","entity_id":null},{"position":8,"label":"الوظائف","normalized_label":null,"key":"main-menu:jobs","entity_type":"municipality_main_menu","entity_id":null},{"position":9,"label":"أعضاء المجلس البلدي","normalized_label":null,"key":"main-menu:council-members","entity_type":"municipality_main_menu","entity_id":null},{"position":10,"label":"قرارات المجلس","normalized_label":null,"key":"main-menu:council-decisions","entity_type":"municipality_main_menu","entity_id":null},{"position":11,"label":"تواصل مع البلدية","normalized_label":null,"key":"main-menu:municipality-contact","entity_type":"municipality_main_menu","entity_id":null}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: clarification
+  bot_response_message: ما قدرت أحدد طلبك بالضبط. اختر من الخيارات أدناه:
+  bot_actions_count: 11
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+
+=== SERVICE SELECTION: بدي خدمة → الشؤون الإدارية → طلب صرف مكافأة نهاية الخدمة ===
+>>> USER (session=trace-J-f90928b2): بدي خدمة
+TURN 38
+  session_id: trace-J-f90928b2
+  conversation_id: 157
+  raw_user_text: بدي خدمة
+  normalized_user_text: بدي خدمة
+  stored_state: waiting_for_service_category
+  stored_clarification_type: service_category
+  stored_needs_clarification: false
+  stored_options_count: 9
+  stored_options: [{"position":1,"label":"رخص البناء","normalized_label":"رخص البناء","key":"service-category:1","entity_type":"service_category","entity_id":1},{"position":2,"label":"الشؤون الإدارية","normalized_label":"الشوون الادارية","key":"service-category:2","entity_type":"service_category","entity_id":2},{"position":3,"label":"الشؤون القانونية","normalized_label":"الشوون القانونية","key":"service-category:3","entity_type":"service_category","entity_id":3},{"position":4,"label":"الخدمات الصحية","normalized_label":"الخدمات الصحية","key":"service-category:4","entity_type":"service_category","entity_id":4},{"position":5,"label":"الخدمات المالية","normalized_label":"الخدمات المالية","key":"service-category:5","entity_type":"service_category","entity_id":5},{"position":6,"label":"الخدمات الاجتماعية","normalized_label":"الخدمات الاجتماعية","key":"service-category:6","entity_type":"service_category","entity_id":6},{"position":7,"label":"الخدمات البيئية","normalized_label":"الخدمات البييية","key":"service-category:7","entity_type":"service_category","entity_id":7},{"position":8,"label":"الخدمات التخطيطية","normalized_label":"الخدمات التخطيطية","key":"service-category:8","entity_type":"service_category","entity_id":8},{"position":9,"label":"الخدمات الإلكترونية","normalized_label":"الخدمات الالكترونية","key":"service-category:9","entity_type":"service_category","entity_id":9}]
+  current_category_id: NULL
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: أكيد، شو نوع الخدمة اللي بدك إياها؟
+  bot_actions_count: 9
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-J-f90928b2): الشؤون الإدارية
+TURN 39
+  session_id: trace-J-f90928b2
+  conversation_id: 157
+  raw_user_text: الشؤون الإدارية
+  normalized_user_text: الشوون الادارية
+  stored_state: waiting_for_service_selection
+  stored_clarification_type: service_selection
+  stored_needs_clarification: false
+  stored_options_count: 5
+  stored_options: [{"position":1,"label":"طلب صرف مكافأة نهاية الخدمة","normalized_label":"طلب صرف مكافاة نهاية الخدمة","key":"service:7","entity_type":"electronic_service","entity_id":7},{"position":2,"label":"طلب إجازة استثنائية","normalized_label":"طلب اجازة استثنايية","key":"service:8","entity_type":"electronic_service","entity_id":8},{"position":3,"label":"طلب شهادة عمل","normalized_label":"طلب شهادة عمل","key":"service:9","entity_type":"electronic_service","entity_id":9},{"position":4,"label":"طلب صرف راتب","normalized_label":"طلب صرف راتب","key":"service:10","entity_type":"electronic_service","entity_id":10},{"position":5,"label":"طلب تدريب مهني","normalized_label":"طلب تدريب مهني","key":"service:11","entity_type":"electronic_service","entity_id":11}]
+  current_category_id: 2
+  current_service_id: NULL
+  bot_response_type: text
+  bot_response_message: الخدمات في تصنيف "الشؤون الإدارية":
+  bot_actions_count: 5
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO
+
+>>> USER (session=trace-J-f90928b2): طلب صرف مكافأة نهاية الخدمة
+TURN 40
+  session_id: trace-J-f90928b2
+  conversation_id: 157
+  raw_user_text: طلب صرف مكافأة نهاية الخدمة
+  normalized_user_text: طلب صرف مكافاة نهاية الخدمة
+  stored_state: normal
+  stored_clarification_type: NULL
+  stored_needs_clarification: false
+  stored_options_count: 0
+  stored_options: []
+  current_category_id: 2
+  current_service_id: 7
+  bot_response_type: text
+  bot_response_message: تم تحديد الخدمة. شو بتحب تعرف عنها؟
+  bot_actions_count: 6
+  bot_items_count: 0
+  resolved_method: (see bot response)
+  fallback_reached: NO

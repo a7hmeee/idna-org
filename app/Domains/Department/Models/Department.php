@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -39,9 +40,9 @@ use Illuminate\Support\Str;
  * @property bool $is_featured
  * @property int|null $created_by
  * @property int|null $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  */
 final class Department extends Model
 {
@@ -99,12 +100,12 @@ final class Department extends Model
 
     public function getCoverImageUrlAttribute(): ?string
     {
-        if (!$this->cover_image_path) {
+        if (! $this->cover_image_path) {
             return null;
         }
 
         if (Storage::disk('public')->exists($this->cover_image_path)) {
-            return asset('storage/' . $this->cover_image_path);
+            return asset('storage/'.$this->cover_image_path);
         }
 
         return null;
@@ -112,14 +113,14 @@ final class Department extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Department $department): void {
+        self::creating(function (Department $department): void {
             if (empty($department->slug)) {
                 $base = Str::slug($department->name);
                 $slug = $base;
                 $counter = 1;
 
                 while (static::where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $counter++;
+                    $slug = $base.'-'.$counter++;
                 }
 
                 $department->slug = $slug;
@@ -130,7 +131,7 @@ final class Department extends Model
             }
         });
 
-        static::updating(function (Department $department): void {
+        self::updating(function (Department $department): void {
             if (empty($department->slug) && $department->name) {
                 $department->slug = Str::slug($department->name);
             }

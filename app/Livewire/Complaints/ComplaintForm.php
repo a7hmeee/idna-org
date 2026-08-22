@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Complaints;
 
+use App\Domains\Authentication\Models\User;
 use App\Domains\Complaints\Actions\CreateComplaintAction;
 use App\Domains\Complaints\Actions\UpdateComplaintAction;
 use App\Domains\Complaints\DTOs\ComplaintData;
@@ -25,22 +26,39 @@ final class ComplaintForm extends Component
     public ?int $complaintId = null;
 
     public string $citizenName = '';
+
     public string $phone = '';
+
     public string $email = '';
+
     public string $category = '';
+
     public ?int $departmentId = null;
+
     public string $subject = '';
+
     public string $description = '';
+
     public string $location = '';
+
     public ?float $latitude = null;
+
     public ?float $longitude = null;
+
     public string $priority = 'medium';
+
     public string $status = 'submitted';
+
     public string $internalNotes = '';
+
     public string $publicResponse = '';
+
     public ?int $assignedTo = null;
+
     public $attachments = [];
+
     public array $existingAttachments = [];
+
     public bool $removeAttachments = false;
 
     protected function rules(): array
@@ -49,15 +67,15 @@ final class ComplaintForm extends Component
             'citizenName' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
-            'category' => ['required', 'string', 'in:' . implode(',', array_map(fn($c) => $c->value, ComplaintCategory::cases()))],
+            'category' => ['required', 'string', 'in:'.implode(',', array_map(fn ($c) => $c->value, ComplaintCategory::cases()))],
             'departmentId' => ['nullable', 'integer', 'exists:departments,id'],
             'subject' => ['required', 'string', 'max:500'],
             'description' => ['required', 'string'],
             'location' => ['nullable', 'string', 'max:500'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
-            'priority' => ['required', 'string', 'in:' . implode(',', array_map(fn($p) => $p->value, ComplaintPriority::cases()))],
-            'status' => ['required', 'string', 'in:' . implode(',', array_map(fn($s) => $s->value, ComplaintStatus::cases()))],
+            'priority' => ['required', 'string', 'in:'.implode(',', array_map(fn ($p) => $p->value, ComplaintPriority::cases()))],
+            'status' => ['required', 'string', 'in:'.implode(',', array_map(fn ($s) => $s->value, ComplaintStatus::cases()))],
             'internalNotes' => ['nullable', 'string'],
             'publicResponse' => ['nullable', 'string'],
             'assignedTo' => ['nullable', 'integer', 'exists:users,id'],
@@ -140,7 +158,7 @@ final class ComplaintForm extends Component
             'internalNotes' => $this->internalNotes ?: null,
             'publicResponse' => $this->publicResponse ?: null,
             'assignedTo' => $this->assignedTo,
-            'attachments' => !empty($attachmentPaths) ? $attachmentPaths : null,
+            'attachments' => ! empty($attachmentPaths) ? $attachmentPaths : null,
             'createdBy' => auth()->id(),
             'updatedBy' => auth()->id(),
         ]);
@@ -162,7 +180,7 @@ final class ComplaintForm extends Component
         $priorities = ComplaintPriority::cases();
         $statuses = ComplaintStatus::cases();
         $departments = Department::where('is_public', true)->orderBy('name')->get();
-        $employees = \App\Domains\Authentication\Models\User::where('status', 'active')->orderBy('name')->get();
+        $employees = User::where('status', 'active')->orderBy('name')->get();
 
         return view('livewire.complaints.complaint-form', compact(
             'categories', 'priorities', 'statuses', 'departments', 'employees'

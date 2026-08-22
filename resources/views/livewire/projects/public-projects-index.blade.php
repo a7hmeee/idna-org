@@ -77,7 +77,7 @@
                                 @endif
                                 {{-- Category Badge --}}
                                 <span class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-white/90 text-xs font-semibold text-text shadow-sm">
-                                    {{ $project->category->label() }}
+                                    {{ $project->category?->label() }}
                                 </span>
                                 @if ($project->is_featured)
                                     <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-yellow-100/90 text-xs font-semibold text-yellow-700 shadow-sm inline-flex items-center gap-1">
@@ -116,7 +116,7 @@
                                 <div class="flex items-center gap-3 text-xs text-text-tertiary flex-wrap">
                                     <span class="inline-flex items-center gap-1">
                                         <i data-lucide="folder" class="w-3 h-3"></i>
-                                        {{ $project->category->label() }}
+                                        {{ $project->category?->label() }}
                                     </span>
                                     @if ($project->location)
                                         <span class="inline-flex items-center gap-1">

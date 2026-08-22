@@ -3,22 +3,32 @@
 declare(strict_types=1);
 
 use App\Domains\Authentication\Models\User;
-use App\Domains\Homepage\Models\HomepageSetting;
-use App\Domains\Homepage\Models\HomepageSlide;
-use App\Domains\Homepage\Models\HomepageQuickLink;
-use App\Domains\Homepage\Models\HomepageStatistic;
+use App\Domains\ElectronicServices\Models\ElectronicService;
 use App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface;
 use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
-use App\Domains\Homepage\Repositories\EloquentHomepagePublicRepository;
+use App\Domains\Homepage\Models\HomepageQuickLink;
+use App\Domains\Homepage\Models\HomepageSection;
+use App\Domains\Homepage\Models\HomepageSetting;
+use App\Domains\Homepage\Models\HomepageSlide;
+use App\Domains\Homepage\Models\HomepageStatistic;
+use App\Domains\Jobs\Models\Job;
 use App\Domains\Municipality\Models\Municipality;
+use App\Livewire\Homepage\HomepageQuickLinkForm;
+use App\Livewire\Homepage\HomepageSettingsForm;
+use App\Livewire\Homepage\HomepageSlideForm;
+use App\Livewire\Homepage\HomepageSlidesIndex;
+use App\Livewire\Homepage\HomepageStatisticForm;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================
@@ -82,7 +92,7 @@ it('portal URL comes from homepage settings', function (): void {
 });
 
 it('hidden section is not displayed', function (): void {
-    \App\Domains\Homepage\Models\HomepageSection::where('key', 'statistics')
+    HomepageSection::where('key', 'statistics')
         ->update(['is_enabled' => false]);
 
     HomepageStatistic::factory()->create([
@@ -118,7 +128,7 @@ it('expired slide does not appear', function (): void {
 });
 
 it('services limit is respected', function (): void {
-    \App\Domains\ElectronicServices\Models\ElectronicService::factory()
+    ElectronicService::factory()
         ->count(10)
         ->create(['status' => 'active', 'is_public' => true, 'is_featured' => true]);
 
@@ -127,7 +137,7 @@ it('services limit is respected', function (): void {
 });
 
 it('hidden service does not appear', function (): void {
-    \App\Domains\ElectronicServices\Models\ElectronicService::factory()->create([
+    ElectronicService::factory()->create([
         'name' => 'خدمة مخفية',
         'status' => 'active',
         'is_public' => false,
@@ -153,7 +163,7 @@ it('municipality intro uses backend data', function (): void {
 });
 
 it('expired jobs do not appear', function (): void {
-    $job = \App\Domains\Jobs\Models\Job::factory()->create([
+    $job = Job::factory()->create([
         'title' => 'وظيفة منتهية',
         'status' => 'published',
         'is_public' => true,
@@ -173,9 +183,9 @@ it('missing projects module does not break page', function (): void {
 });
 
 it('sections respect sort_order', function (): void {
-    \App\Domains\Homepage\Models\HomepageSection::where('key', 'services')
+    HomepageSection::where('key', 'services')
         ->update(['sort_order' => 1]);
-    \App\Domains\Homepage\Models\HomepageSection::where('key', 'municipality_intro')
+    HomepageSection::where('key', 'municipality_intro')
         ->update(['sort_order' => 2]);
 
     $data = app(HomepagePublicRepositoryInterface::class)->getHomePageData();
@@ -201,7 +211,7 @@ it('no hardcoded municipality name in Blade', function (): void {
     $blade = file_get_contents(resource_path('views/livewire/homepage/public-home-page.blade.php'));
 
     // The only hardcoded reference should be for fallback
-    $hasHardcoded = str_contains($blade, "بلدية إذنا") && !str_contains($blade, '?? \'بلدية إذنا\'') && !str_contains($blade, "?? 'بلدية إذنا'");
+    $hasHardcoded = str_contains($blade, 'بلدية إذنا') && ! str_contains($blade, '?? \'بلدية إذنا\'') && ! str_contains($blade, "?? 'بلدية إذنا'");
 
     // This is a soft check - we allow the fallback
     expect(true)->toBeTrue();
@@ -248,7 +258,7 @@ it('active slides only returned', function (): void {
 });
 
 it('enabled sections only returned', function (): void {
-    \App\Domains\Homepage\Models\HomepageSection::where('key', 'statistics')
+    HomepageSection::where('key', 'statistics')
         ->update(['is_enabled' => false]);
 
     $repo = app(HomepagePublicRepositoryInterface::class);
@@ -304,7 +314,7 @@ it('admin can update homepage settings', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageSettingsForm::class)
+    Livewire::test(HomepageSettingsForm::class)
         ->set('siteTitle', 'عنوان تجريبي')
         ->set('portalUrl', 'https://portal.example.com')
         ->call('save')
@@ -334,7 +344,7 @@ it('admin can create slide', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageSlideForm::class)
+    Livewire::test(HomepageSlideForm::class)
         ->set('title', 'شريحة جديدة')
         ->set('subtitle', 'عنوان فرعي')
         ->set('badgeText', 'جديد')
@@ -354,7 +364,7 @@ it('admin can update slide', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageSlideForm::class, ['slideId' => $slide->id])
+    Livewire::test(HomepageSlideForm::class, ['slideId' => $slide->id])
         ->set('title', 'العنوان الجديد')
         ->call('save')
         ->assertRedirect(route('dashboard.homepage.slides'));
@@ -372,7 +382,7 @@ it('admin can toggle slide', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageSlidesIndex::class)
+    Livewire::test(HomepageSlidesIndex::class)
         ->call('toggle', $slide->id)
         ->assertSessionHas('success');
 
@@ -388,7 +398,7 @@ it('admin can delete slide', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageSlidesIndex::class)
+    Livewire::test(HomepageSlidesIndex::class)
         ->call('confirmDelete', $slide->id)
         ->assertSet('showDeleteModal', true)
         ->call('delete')
@@ -407,7 +417,7 @@ it('admin can create quick link', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageQuickLinkForm::class)
+    Livewire::test(HomepageQuickLinkForm::class)
         ->set('title', 'خدمات جديدة')
         ->set('icon', 'laptop')
         ->set('type', 'service')
@@ -423,7 +433,7 @@ it('admin can create statistic', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageStatisticForm::class)
+    Livewire::test(HomepageStatisticForm::class)
         ->set('label', 'عدد الموظفين')
         ->set('value', '150')
         ->set('suffix', 'موظف')
@@ -456,7 +466,7 @@ it('unauthorized user cannot manage homepage', function (): void {
 
     actingAs($user);
 
-    \Livewire\Livewire::test(\App\Livewire\Homepage\HomepageSettingsForm::class)
+    Livewire::test(HomepageSettingsForm::class)
         ->assertForbidden();
 });
 

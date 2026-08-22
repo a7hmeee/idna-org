@@ -6,8 +6,6 @@ namespace App\Domains\Homepage\Providers;
 
 use App\Domains\Homepage\Actions\CacheForgetHomepageDataAction;
 use App\Domains\Homepage\Actions\CreateHomepageQuickLinkAction;
-use App\Domains\Municipality\Events\MunicipalityUpdated;
-use Illuminate\Support\Facades\Event;
 use App\Domains\Homepage\Actions\CreateHomepageSlideAction;
 use App\Domains\Homepage\Actions\CreateHomepageStatisticAction;
 use App\Domains\Homepage\Actions\DeleteHomepageQuickLinkAction;
@@ -32,6 +30,8 @@ use App\Domains\Homepage\Models\HomepageSetting;
 use App\Domains\Homepage\Policies\HomepagePolicy;
 use App\Domains\Homepage\Repositories\EloquentHomepagePublicRepository;
 use App\Domains\Homepage\Repositories\EloquentHomepageRepository;
+use App\Domains\Municipality\Events\MunicipalityUpdated;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 

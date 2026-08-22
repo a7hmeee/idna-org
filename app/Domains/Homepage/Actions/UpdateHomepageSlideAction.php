@@ -19,7 +19,7 @@ final readonly class UpdateHomepageSlideAction
     {
         $slide = $this->repository->findSlide($id);
 
-        if (!$slide) {
+        if (! $slide) {
             throw new \RuntimeException("Slide {$id} not found");
         }
 

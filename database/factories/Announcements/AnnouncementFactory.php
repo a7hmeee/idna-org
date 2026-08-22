@@ -61,6 +61,4 @@ final class AnnouncementFactory extends Factory
             'priority' => AnnouncementPriority::Urgent->value,
         ]);
     }
-
-
 }

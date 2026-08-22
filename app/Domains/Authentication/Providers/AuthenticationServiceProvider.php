@@ -11,6 +11,10 @@ use App\Domains\Authentication\Actions\LogoutAction;
 use App\Domains\Authentication\Actions\ResetPasswordAction;
 use App\Domains\Authentication\Contracts\LoginActivityRepositoryInterface;
 use App\Domains\Authentication\Contracts\UserRepositoryInterface;
+use App\Domains\Authentication\Events\LoginAttemptFailed;
+use App\Domains\Authentication\Events\PasswordChanged;
+use App\Domains\Authentication\Events\UserLoggedIn;
+use App\Domains\Authentication\Events\UserLoggedOut;
 use App\Domains\Authentication\Listeners\LogFailedLoginAttempt;
 use App\Domains\Authentication\Listeners\LogPasswordChange;
 use App\Domains\Authentication\Listeners\LogSuccessfulLogin;
@@ -38,25 +42,25 @@ final class AuthenticationServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../../../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../../../../database/migrations');
 
         Event::listen(
-            \App\Domains\Authentication\Events\UserLoggedIn::class,
+            UserLoggedIn::class,
             LogSuccessfulLogin::class,
         );
 
         Event::listen(
-            \App\Domains\Authentication\Events\UserLoggedOut::class,
+            UserLoggedOut::class,
             LogSuccessfulLogout::class,
         );
 
         Event::listen(
-            \App\Domains\Authentication\Events\LoginAttemptFailed::class,
+            LoginAttemptFailed::class,
             LogFailedLoginAttempt::class,
         );
 
         Event::listen(
-            \App\Domains\Authentication\Events\PasswordChanged::class,
+            PasswordChanged::class,
             LogPasswordChange::class,
         );
     }

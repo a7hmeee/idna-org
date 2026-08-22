@@ -20,15 +20,25 @@ final class CouncilDecisionForm extends Component
     public ?int $editingId = null;
 
     public string $decision_number = '';
+
     public string $title = '';
+
     public ?string $summary = null;
+
     public ?string $content = null;
+
     public string $type = 'administrative';
+
     public string $status = 'draft';
+
     public ?string $decision_date = null;
+
     public ?string $session_number = null;
+
     public ?string $attachment_path = null;
+
     public bool $is_public = false;
+
     public int $sort_order = 0;
 
     public function mount(?CouncilDecision $councilDecision = null): void

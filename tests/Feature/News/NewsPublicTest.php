@@ -6,14 +6,16 @@ use App\Domains\News\Enums\NewsCategory;
 use App\Domains\News\Models\NewsItem;
 use App\Livewire\News\PublicNewsIndex;
 use App\Livewire\News\PublicNewsShow;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    $this->seed(RolePermissionSeeder::class);
 });
 
 // ============================================

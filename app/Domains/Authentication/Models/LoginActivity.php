@@ -6,6 +6,7 @@ namespace App\Domains\Authentication\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -16,15 +17,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool $successful
  * @property string|null $failure_reason
  * @property string|null $session_id
- * @property \Illuminate\Support\Carbon|null $created_at
+ * @property Carbon|null $created_at
  */
 class LoginActivity extends Model
 {
     public const string EVENT_LOGIN = 'login';
+
     public const string EVENT_LOGOUT = 'logout';
+
     public const string EVENT_FAILED = 'failed';
+
     public const string EVENT_PASSWORD_CHANGE = 'password_change';
+
     public const string EVENT_PASSWORD_RESET = 'password_reset';
+
     public const string EVENT_LOCKOUT = 'lockout';
 
     public const UPDATED_AT = null;

@@ -8,7 +8,6 @@ use App\Domains\Authentication\Actions\LoginAction;
 use App\Domains\Authentication\DTOs\LoginDTO;
 use App\Domains\Authentication\Exceptions\AccountLockedException;
 use App\Domains\Authentication\Exceptions\InvalidCredentialsException;
-use App\Domains\Authentication\Services\AuthenticationService;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;

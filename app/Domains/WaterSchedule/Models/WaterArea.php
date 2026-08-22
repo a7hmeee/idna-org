@@ -36,7 +36,7 @@ final class WaterArea extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (WaterArea $area): void {
+        self::creating(function (WaterArea $area): void {
             if (empty($area->slug)) {
                 $area->slug = Str::slug($area->name);
             }

@@ -435,4 +435,21 @@ return [
             ['name' => 'council_members.reorder', 'display_name' => 'Reorder Council Members'],
         ],
     ],
+
+    [
+        'module' => 'chatbot',
+        'display_name' => 'Chatbot',
+        'permissions' => [
+            ['name' => 'chatbot.view', 'display_name' => 'View Dashboard'],
+            ['name' => 'chatbot.analytics', 'display_name' => 'Analytics'],
+            ['name' => 'chatbot.search-terms', 'display_name' => 'Search Terms'],
+            ['name' => 'chatbot.unknown-questions', 'display_name' => 'Unknown Questions'],
+            ['name' => 'chatbot.performance', 'display_name' => 'Performance'],
+        ],
+        'navigation' => [
+            'icon' => 'bot-message',
+            'route' => 'dashboard.chatbot',
+            'order' => 20,
+        ],
+    ],
 ];

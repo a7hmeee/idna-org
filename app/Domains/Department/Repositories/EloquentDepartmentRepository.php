@@ -19,8 +19,8 @@ final class EloquentDepartmentRepository implements DepartmentRepositoryInterfac
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('manager_name', 'like', "%{$search}%")
-                  ->orWhere('short_description', 'like', "%{$search}%");
+                    ->orWhere('manager_name', 'like', "%{$search}%")
+                    ->orWhere('short_description', 'like', "%{$search}%");
             });
         }
 
@@ -69,7 +69,7 @@ final class EloquentDepartmentRepository implements DepartmentRepositoryInterfac
     {
         return DB::transaction(function () use ($id): Department {
             $department = Department::findOrFail($id);
-            $department->update(['is_public' => !$department->is_public]);
+            $department->update(['is_public' => ! $department->is_public]);
 
             return $department->fresh();
         });
@@ -79,7 +79,7 @@ final class EloquentDepartmentRepository implements DepartmentRepositoryInterfac
     {
         return DB::transaction(function () use ($id): Department {
             $department = Department::findOrFail($id);
-            $department->update(['is_featured' => !$department->is_featured]);
+            $department->update(['is_featured' => ! $department->is_featured]);
 
             return $department->fresh();
         });
@@ -129,9 +129,9 @@ final class EloquentDepartmentRepository implements DepartmentRepositoryInterfac
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('short_description', 'like', "%{$search}%")
-                  ->orWhere('manager_name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('short_description', 'like', "%{$search}%")
+                    ->orWhere('manager_name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 

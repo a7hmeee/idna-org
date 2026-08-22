@@ -20,14 +20,23 @@ final class OpenDataAdminForm extends Component
     use WithFileUploads;
 
     public ?OpenDataset $dataset = null;
+
     public string $title = '';
+
     public string $type = '';
+
     public string $category = '';
+
     public string $description = '';
+
     public $file = null;
+
     public string $external_url = '';
+
     public string $status = '';
+
     public bool $is_featured = false;
+
     public bool $removeFile = false;
 
     public bool $editing = false;

@@ -20,8 +20,11 @@ final class AnnouncementsIndex extends Component
     use WithPagination;
 
     public string $search = '';
+
     public string $status = '';
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
 
     public function updatingSearch(): void

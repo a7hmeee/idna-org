@@ -41,4 +41,6 @@ interface CouncilDecisionRepositoryInterface
     public function getPublicStatistics(): array;
 
     public function getHomepagePublishedDecisions(int $limit = 5): array;
+
+    public function getLatestPublished(int $limit = 5): array;
 }

@@ -7,6 +7,7 @@ namespace App\Domains\Announcements\Repositories;
 use App\Domains\Announcements\Contracts\AnnouncementRepositoryInterface;
 use App\Domains\Announcements\Models\Announcement;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 
@@ -89,7 +90,7 @@ final readonly class EloquentAnnouncementRepository implements AnnouncementRepos
     public function toggleFeatured(int $id): Announcement
     {
         $announcement = $this->findOrFail($id);
-        $announcement->update(['is_featured' => !$announcement->is_featured]);
+        $announcement->update(['is_featured' => ! $announcement->is_featured]);
 
         $this->forgetCache();
 
@@ -158,8 +159,8 @@ final readonly class EloquentAnnouncementRepository implements AnnouncementRepos
     {
         $announcement = $this->model->find($id);
 
-        if (!$announcement) {
-            throw new \Illuminate\Database\Eloquent\ModelNotFoundException("Announcement with ID {$id} not found.");
+        if (! $announcement) {
+            throw new ModelNotFoundException("Announcement with ID {$id} not found.");
         }
 
         return $announcement;

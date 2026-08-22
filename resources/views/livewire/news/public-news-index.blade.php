@@ -91,7 +91,7 @@
                                     </div>
                                     <div style="min-width:0;flex:1;">
                                         <h3 style="font-size:14px;font-weight:700;color:#1F2937;margin:0 0 2px;">{{ $item->title_ar }}</h3>
-                                        <span style="font-size:11px;color:#9CA3AF;">{{ $item->category->label() }}</span>
+                                        <span style="font-size:11px;color:#9CA3AF;">{{ $item->category?->label() }}</span>
                                     </div>
                                 </div>
                                 <p style="font-size:12px;color:#9CA3AF;line-height:1.6;margin:0 0 10px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">{{ $item->summary }}</p>
@@ -129,7 +129,7 @@
                             @endif
                             <div class="p-4">
                                 <div class="flex items-center gap-2 mb-2">
-                                    <span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold">{{ $item->category->label() }}</span>
+                                    <span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold">{{ $item->category?->label() }}</span>
                                     @if ($item->is_featured)
                                         <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-semibold">مميز</span>
                                     @endif

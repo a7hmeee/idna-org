@@ -77,6 +77,6 @@ final class PageCarouselSeeder extends Seeder
             );
         }
 
-        $this->command->info('✓ تم إنشاء ' . count($slides) . ' شريحة لكاروسيل الصفحات');
+        $this->command->info('✓ تم إنشاء '.count($slides).' شريحة لكاروسيل الصفحات');
     }
 }

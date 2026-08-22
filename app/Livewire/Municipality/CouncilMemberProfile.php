@@ -17,6 +17,7 @@ use Livewire\Component;
 final class CouncilMemberProfile extends Component
 {
     public CouncilMember $councilMember;
+
     public bool $showDeleteModal = false;
 
     public function mount(CouncilMember $councilMember): void

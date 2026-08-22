@@ -2,16 +2,39 @@
 
 declare(strict_types=1);
 
+use App\Domains\Authentication\Actions\LogoutAction;
+use App\Domains\Authentication\Models\User;
+use App\Livewire\Admin\Announcements\AnnouncementForm;
+use App\Livewire\Admin\Announcements\AnnouncementsIndex;
+use App\Livewire\Admin\Chatbot\ChatbotDashboard;
+use App\Livewire\Admin\Chatbot\PerformanceMonitor;
+use App\Livewire\Admin\Chatbot\SearchTermManager;
+use App\Livewire\Admin\Chatbot\UnknownQuestionsManager;
+use App\Livewire\Announcements\PublicAnnouncementShow;
+use App\Livewire\Announcements\PublicAnnouncementsIndex;
 use App\Livewire\Auth\ChangePassword;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\ResetPassword;
+use App\Livewire\Chatbot\ChatbotPage;
+use App\Livewire\Complaints\ComplaintForm;
+use App\Livewire\Complaints\ComplaintsIndex;
+use App\Livewire\Complaints\PublicComplaintForm;
+use App\Livewire\Complaints\PublicComplaintTracking;
+use App\Livewire\Council\PublicCouncilDecisionShow;
+use App\Livewire\Council\PublicCouncilDecisionsIndex;
+use App\Livewire\Council\PublicCouncilMemberProfile;
+use App\Livewire\Council\PublicCouncilMembersPortal;
+use App\Livewire\Dashboard\ExecutiveDashboard;
+use App\Livewire\Department\DepartmentForm;
+use App\Livewire\Department\DepartmentShow;
+use App\Livewire\Department\DepartmentsIndex;
+use App\Livewire\Department\PublicDepartmentShow;
+use App\Livewire\Department\PublicDepartmentsPortal;
 use App\Livewire\ElectronicServices\ElectronicServiceAnalytics;
 use App\Livewire\ElectronicServices\ElectronicServiceForm;
-use App\Livewire\ElectronicServices\ElectronicServicesIndex;
 use App\Livewire\ElectronicServices\ElectronicServiceShow;
-use App\Livewire\Department\PublicDepartmentsPortal;
-use App\Livewire\Department\PublicDepartmentShow;
+use App\Livewire\ElectronicServices\ElectronicServicesIndex;
 use App\Livewire\ElectronicServices\PublicServiceDetail;
 use App\Livewire\ElectronicServices\PublicServicesCategory;
 use App\Livewire\ElectronicServices\PublicServicesPortal;
@@ -19,29 +42,53 @@ use App\Livewire\ElectronicServices\ServiceCategoriesIndex;
 use App\Livewire\ElectronicServices\ServiceCategoryForm;
 use App\Livewire\ElectronicServices\ServiceCategoryShow;
 use App\Livewire\EngineeringOffices\EngineeringOfficeForm;
-use App\Livewire\EngineeringOffices\EngineeringOfficesIndex;
 use App\Livewire\EngineeringOffices\EngineeringOfficeShow;
-use App\Livewire\Dashboard\ExecutiveDashboard;
+use App\Livewire\EngineeringOffices\EngineeringOfficesIndex;
+use App\Livewire\EngineeringOffices\PublicEngineeringOfficeShow;
+use App\Livewire\EngineeringOffices\PublicEngineeringOfficesIndex;
 use App\Livewire\Homepage\HomepageDashboard;
-use App\Livewire\Homepage\HomepageSettingsForm;
-use App\Livewire\Homepage\HomepageQuickLinksIndex;
 use App\Livewire\Homepage\HomepageQuickLinkForm;
+use App\Livewire\Homepage\HomepageQuickLinksIndex;
 use App\Livewire\Homepage\HomepageSectionsManager;
-use App\Livewire\Homepage\HomepageSlidesIndex;
+use App\Livewire\Homepage\HomepageSettingsForm;
 use App\Livewire\Homepage\HomepageSlideForm;
-use App\Livewire\Homepage\HomepageStatisticsIndex;
+use App\Livewire\Homepage\HomepageSlidesIndex;
 use App\Livewire\Homepage\HomepageStatisticForm;
+use App\Livewire\Homepage\HomepageStatisticsIndex;
 use App\Livewire\Homepage\PublicHomePage;
-use App\Livewire\PageCarousels\PageCarouselsIndex;
-use App\Livewire\PageCarousels\PageCarouselForm;
-use App\Livewire\Admin\Announcements\AnnouncementsIndex;
-use App\Livewire\Admin\Announcements\AnnouncementForm;
 use App\Livewire\Jobs\JobForm;
 use App\Livewire\Jobs\JobsIndex;
-use App\Livewire\Announcements\PublicAnnouncementsIndex;
-use App\Livewire\Announcements\PublicAnnouncementShow;
 use App\Livewire\Jobs\PublicJobShow;
 use App\Livewire\Jobs\PublicJobsIndex;
+use App\Livewire\Municipality\CouncilDecisionForm;
+use App\Livewire\Municipality\CouncilDecisionShow;
+use App\Livewire\Municipality\CouncilDecisionsIndex;
+use App\Livewire\Municipality\CouncilMemberForm;
+use App\Livewire\Municipality\CouncilMemberProfile;
+use App\Livewire\Municipality\CouncilMembersIndex;
+use App\Livewire\Municipality\MunicipalityBusinessHours;
+use App\Livewire\Municipality\MunicipalityContacts;
+use App\Livewire\Municipality\MunicipalityCustomFields;
+use App\Livewire\Municipality\MunicipalityEmergencyContacts;
+use App\Livewire\Municipality\MunicipalityGeneralInfo;
+use App\Livewire\Municipality\MunicipalityIndex;
+use App\Livewire\Municipality\MunicipalityMedia;
+use App\Livewire\Municipality\MunicipalityPlatforms;
+use App\Livewire\Municipality\MunicipalitySocial;
+use App\Livewire\Municipality\PublicMunicipalityAbout;
+use App\Livewire\News\NewsForm;
+use App\Livewire\News\NewsIndex;
+use App\Livewire\News\PublicNewsIndex;
+use App\Livewire\News\PublicNewsShow;
+use App\Livewire\OpenData\Admin\OpenDataAdminForm;
+use App\Livewire\OpenData\Admin\OpenDataAdminIndex;
+use App\Livewire\OpenData\OpenDataIndex;
+use App\Livewire\PageCarousels\PageCarouselForm;
+use App\Livewire\PageCarousels\PageCarouselsIndex;
+use App\Livewire\Projects\ProjectForm;
+use App\Livewire\Projects\ProjectsIndex;
+use App\Livewire\Projects\PublicProjectShow;
+use App\Livewire\Projects\PublicProjectsIndex;
 use App\Livewire\PublicFacilities\FacilitiesIndex;
 use App\Livewire\PublicFacilities\FacilityCategoriesForm;
 use App\Livewire\PublicFacilities\FacilityCategoriesIndex;
@@ -49,30 +96,21 @@ use App\Livewire\PublicFacilities\FacilityForm;
 use App\Livewire\PublicFacilities\PublicFacilitiesIndex;
 use App\Livewire\PublicFacilities\PublicFacilityShow;
 use App\Livewire\Roles\RoleIndex;
+use App\Livewire\Tenders\PublicTenderShow;
+use App\Livewire\Tenders\PublicTendersIndex;
+use App\Livewire\Tenders\TenderForm;
+use App\Livewire\Tenders\TendersIndex;
+use App\Livewire\Users\UserIndex;
 use App\Livewire\WaterSchedule\PublicWaterSchedule;
 use App\Livewire\WaterSchedule\WaterAreasForm;
 use App\Livewire\WaterSchedule\WaterAreasIndex;
 use App\Livewire\WaterSchedule\WaterMaintenanceForm;
 use App\Livewire\WaterSchedule\WaterMaintenanceIndex;
 use App\Livewire\WaterSchedule\WaterScheduleDashboard;
-use App\Livewire\Users\UserIndex;
-use App\Livewire\News\NewsIndex;
-use App\Livewire\News\NewsForm;
-use App\Livewire\Projects\ProjectsIndex;
-use App\Livewire\Projects\ProjectForm;
-use App\Livewire\Complaints\ComplaintsIndex;
-use App\Livewire\Complaints\ComplaintForm;
-use App\Livewire\Tenders\TendersIndex;
-use App\Livewire\Tenders\TenderForm;
-use App\Livewire\News\PublicNewsIndex;
-use App\Livewire\News\PublicNewsShow;
-use App\Livewire\Projects\PublicProjectsIndex;
-use App\Livewire\Projects\PublicProjectShow;
-use App\Livewire\Complaints\PublicComplaintForm;
-use App\Livewire\Complaints\PublicComplaintTracking;
-use App\Livewire\Tenders\PublicTendersIndex;
-use App\Livewire\Tenders\PublicTenderShow;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Permission;
 
 Route::get('/', PublicHomePage::class)->name('home');
 
@@ -104,22 +142,22 @@ Route::get('departments', PublicDepartmentsPortal::class)->name('public.departme
 Route::get('departments/{department:slug}', PublicDepartmentShow::class)->name('public.departments.show');
 
 // Public Engineering Offices (Public)
-Route::get('engineering-offices', \App\Livewire\EngineeringOffices\PublicEngineeringOfficesIndex::class)->name('public.engineering-offices.index');
-Route::get('engineering-offices/{office:slug}', \App\Livewire\EngineeringOffices\PublicEngineeringOfficeShow::class)->name('public.engineering-offices.show');
+Route::get('engineering-offices', PublicEngineeringOfficesIndex::class)->name('public.engineering-offices.index');
+Route::get('engineering-offices/{office:slug}', PublicEngineeringOfficeShow::class)->name('public.engineering-offices.show');
 
 // Public Open Data
-Route::get('open-data', \App\Livewire\OpenData\OpenDataIndex::class)->name('public.open-data.index');
+Route::get('open-data', OpenDataIndex::class)->name('public.open-data.index');
 
 // Public Municipality About Page
-Route::get('about', \App\Livewire\Municipality\PublicMunicipalityAbout::class)->name('public.municipality.about');
+Route::get('about', PublicMunicipalityAbout::class)->name('public.municipality.about');
 
 // Public Council Decisions (must be before council/{councilMember:slug})
-Route::get('council/decisions', \App\Livewire\Council\PublicCouncilDecisionsIndex::class)->name('public.council.decisions.index');
-Route::get('council/decisions/{decision}', \App\Livewire\Council\PublicCouncilDecisionShow::class)->name('public.council.decisions.show');
+Route::get('council/decisions', PublicCouncilDecisionsIndex::class)->name('public.council.decisions.index');
+Route::get('council/decisions/{decision}', PublicCouncilDecisionShow::class)->name('public.council.decisions.show');
 
 // Public Council
-Route::get('council', \App\Livewire\Council\PublicCouncilMembersPortal::class)->name('public.council.index');
-Route::get('council/{councilMember:slug}', \App\Livewire\Council\PublicCouncilMemberProfile::class)->name('public.council.show');
+Route::get('council', PublicCouncilMembersPortal::class)->name('public.council.index');
+Route::get('council/{councilMember:slug}', PublicCouncilMemberProfile::class)->name('public.council.show');
 
 // Public Announcements
 Route::get('announcements', PublicAnnouncementsIndex::class)->name('public.announcements.index');
@@ -141,10 +179,13 @@ Route::get('complaints/track', PublicComplaintTracking::class)->name('public.com
 Route::get('tenders', PublicTendersIndex::class)->name('public.tenders.index');
 Route::get('tenders/{tender:slug}', PublicTenderShow::class)->name('public.tenders.show');
 
+// Public Chatbot
+Route::get('chatbot', ChatbotPage::class)->name('chatbot');
+
 // Authenticated routes
 Route::middleware('auth')->group(function (): void {
     Route::post('logout', function () {
-        app(\App\Domains\Authentication\Actions\LogoutAction::class)->execute();
+        app(LogoutAction::class)->execute();
 
         return redirect()->route('login');
     })->name('logout');
@@ -165,16 +206,16 @@ Route::middleware('auth')->group(function (): void {
 
     // Departments
     Route::middleware('permission:departments.create')->group(function (): void {
-        Route::get('dashboard/departments/create', \App\Livewire\Department\DepartmentForm::class)->name('dashboard.departments.create');
+        Route::get('dashboard/departments/create', DepartmentForm::class)->name('dashboard.departments.create');
     });
 
     Route::middleware('permission:departments.update')->group(function (): void {
-        Route::get('dashboard/departments/{department}/edit', \App\Livewire\Department\DepartmentForm::class)->name('dashboard.departments.edit');
+        Route::get('dashboard/departments/{department}/edit', DepartmentForm::class)->name('dashboard.departments.edit');
     });
 
     Route::middleware('permission:departments.view')->group(function (): void {
-        Route::get('dashboard/departments', \App\Livewire\Department\DepartmentsIndex::class)->name('dashboard.departments');
-        Route::get('dashboard/departments/{department}', \App\Livewire\Department\DepartmentShow::class)->name('dashboard.departments.show');
+        Route::get('dashboard/departments', DepartmentsIndex::class)->name('dashboard.departments');
+        Route::get('dashboard/departments/{department}', DepartmentShow::class)->name('dashboard.departments.show');
     });
 
     // Electronic Services - Categories
@@ -193,16 +234,16 @@ Route::middleware('auth')->group(function (): void {
 
     // Engineering Offices
     Route::middleware('permission:engineering_offices.create')->group(function (): void {
-        Route::get('engineering-offices/create', EngineeringOfficeForm::class)->name('dashboard.engineering-offices.create');
+        Route::get('dashboard/engineering-offices/create', EngineeringOfficeForm::class)->name('dashboard.engineering-offices.create');
     });
 
     Route::middleware('permission:engineering_offices.update')->group(function (): void {
-        Route::get('engineering-offices/{office}/edit', EngineeringOfficeForm::class)->name('dashboard.engineering-offices.edit');
+        Route::get('dashboard/engineering-offices/{office}/edit', EngineeringOfficeForm::class)->name('dashboard.engineering-offices.edit');
     });
 
     Route::middleware('permission:engineering_offices.view')->group(function (): void {
-        Route::get('engineering-offices', EngineeringOfficesIndex::class)->name('dashboard.engineering-offices');
-        Route::get('engineering-offices/{office}', EngineeringOfficeShow::class)->name('dashboard.engineering-offices.show');
+        Route::get('dashboard/engineering-offices', EngineeringOfficesIndex::class)->name('dashboard.engineering-offices');
+        Route::get('dashboard/engineering-offices/{office}', EngineeringOfficeShow::class)->name('dashboard.engineering-offices.show');
     });
 
     // Electronic Services - Services
@@ -381,19 +422,19 @@ Route::middleware('auth')->group(function (): void {
 
     // Water Schedule
     Route::middleware('permission:water.create')->group(function (): void {
-        Route::get('water-schedule/areas/create', WaterAreasForm::class)->name('dashboard.water-schedule.areas.create');
-        Route::get('water-schedule/maintenance/create', WaterMaintenanceForm::class)->name('dashboard.water-schedule.maintenance.create');
+        Route::get('dashboard/water-schedule/areas/create', WaterAreasForm::class)->name('dashboard.water-schedule.areas.create');
+        Route::get('dashboard/water-schedule/maintenance/create', WaterMaintenanceForm::class)->name('dashboard.water-schedule.maintenance.create');
     });
 
     Route::middleware('permission:water.update')->group(function (): void {
-        Route::get('water-schedule/areas/{waterArea}/edit', WaterAreasForm::class)->name('dashboard.water-schedule.areas.edit');
-        Route::get('water-schedule/maintenance/{maintenance}/edit', WaterMaintenanceForm::class)->name('dashboard.water-schedule.maintenance.edit');
+        Route::get('dashboard/water-schedule/areas/{waterArea}/edit', WaterAreasForm::class)->name('dashboard.water-schedule.areas.edit');
+        Route::get('dashboard/water-schedule/maintenance/{maintenance}/edit', WaterMaintenanceForm::class)->name('dashboard.water-schedule.maintenance.edit');
     });
 
     Route::middleware('permission:water.view')->group(function (): void {
-        Route::get('water-schedule', WaterScheduleDashboard::class)->name('dashboard.water-schedule');
-        Route::get('water-schedule/areas', WaterAreasIndex::class)->name('dashboard.water-schedule.areas');
-        Route::get('water-schedule/maintenance', WaterMaintenanceIndex::class)->name('dashboard.water-schedule.maintenance');
+        Route::get('dashboard/water-schedule', WaterScheduleDashboard::class)->name('dashboard.water-schedule');
+        Route::get('dashboard/water-schedule/areas', WaterAreasIndex::class)->name('dashboard.water-schedule.areas');
+        Route::get('dashboard/water-schedule/maintenance', WaterMaintenanceIndex::class)->name('dashboard.water-schedule.maintenance');
     });
 
     // Public Facilities
@@ -423,86 +464,94 @@ Route::middleware('auth')->group(function (): void {
 
     // Municipality
     Route::middleware('permission:municipality.view')->group(function (): void {
-        Route::get('dashboard/municipality', \App\Livewire\Municipality\MunicipalityIndex::class)->name('dashboard.municipality.index');
+        Route::get('dashboard/municipality', MunicipalityIndex::class)->name('dashboard.municipality.index');
     });
 
     Route::middleware('permission:municipality.update')->group(function (): void {
-        Route::get('dashboard/municipality/general-info', \App\Livewire\Municipality\MunicipalityGeneralInfo::class)->name('dashboard.municipality.general-info');
+        Route::get('dashboard/municipality/general-info', MunicipalityGeneralInfo::class)->name('dashboard.municipality.general-info');
     });
 
     Route::middleware('permission:municipality.contacts.manage')->group(function (): void {
-        Route::get('dashboard/municipality/contacts', \App\Livewire\Municipality\MunicipalityContacts::class)->name('dashboard.municipality.contacts');
+        Route::get('dashboard/municipality/contacts', MunicipalityContacts::class)->name('dashboard.municipality.contacts');
     });
 
     Route::middleware('permission:municipality.social.manage')->group(function (): void {
-        Route::get('dashboard/municipality/social', \App\Livewire\Municipality\MunicipalitySocial::class)->name('dashboard.municipality.social');
+        Route::get('dashboard/municipality/social', MunicipalitySocial::class)->name('dashboard.municipality.social');
     });
 
     Route::middleware('permission:municipality.platforms.manage')->group(function (): void {
-        Route::get('dashboard/municipality/platforms', \App\Livewire\Municipality\MunicipalityPlatforms::class)->name('dashboard.municipality.platforms');
+        Route::get('dashboard/municipality/platforms', MunicipalityPlatforms::class)->name('dashboard.municipality.platforms');
     });
 
     Route::middleware('permission:municipality.custom-fields.manage')->group(function (): void {
-        Route::get('dashboard/municipality/custom-fields', \App\Livewire\Municipality\MunicipalityCustomFields::class)->name('dashboard.municipality.custom-fields');
+        Route::get('dashboard/municipality/custom-fields', MunicipalityCustomFields::class)->name('dashboard.municipality.custom-fields');
     });
 
     Route::middleware('permission:municipality.media.manage')->group(function (): void {
-        Route::get('dashboard/municipality/media', \App\Livewire\Municipality\MunicipalityMedia::class)->name('dashboard.municipality.media');
+        Route::get('dashboard/municipality/media', MunicipalityMedia::class)->name('dashboard.municipality.media');
     });
 
     Route::middleware('permission:municipality.business-hours.manage')->group(function (): void {
-        Route::get('dashboard/municipality/business-hours', \App\Livewire\Municipality\MunicipalityBusinessHours::class)->name('dashboard.municipality.business-hours');
+        Route::get('dashboard/municipality/business-hours', MunicipalityBusinessHours::class)->name('dashboard.municipality.business-hours');
     });
 
     Route::middleware('permission:municipality.emergency-contacts.manage')->group(function (): void {
-        Route::get('dashboard/municipality/emergency-contacts', \App\Livewire\Municipality\MunicipalityEmergencyContacts::class)->name('dashboard.municipality.emergency-contacts');
+        Route::get('dashboard/municipality/emergency-contacts', MunicipalityEmergencyContacts::class)->name('dashboard.municipality.emergency-contacts');
     });
 
     // Council Decisions
     Route::middleware('permission:council_decisions.create')->group(function (): void {
-        Route::get('dashboard/municipality/council-decisions/create', \App\Livewire\Municipality\CouncilDecisionForm::class)->name('dashboard.municipality.council-decisions.create');
+        Route::get('dashboard/municipality/council-decisions/create', CouncilDecisionForm::class)->name('dashboard.municipality.council-decisions.create');
     });
 
     Route::middleware('permission:council_decisions.update')->group(function (): void {
-        Route::get('dashboard/municipality/council-decisions/{councilDecision}/edit', \App\Livewire\Municipality\CouncilDecisionForm::class)->name('dashboard.municipality.council-decisions.edit');
+        Route::get('dashboard/municipality/council-decisions/{councilDecision}/edit', CouncilDecisionForm::class)->name('dashboard.municipality.council-decisions.edit');
     });
 
     Route::middleware('permission:council_decisions.view')->group(function (): void {
-        Route::get('dashboard/municipality/council-decisions', \App\Livewire\Municipality\CouncilDecisionsIndex::class)->name('dashboard.municipality.council-decisions');
-        Route::get('dashboard/municipality/council-decisions/{councilDecision}', \App\Livewire\Municipality\CouncilDecisionShow::class)->name('dashboard.municipality.council-decisions.show');
+        Route::get('dashboard/municipality/council-decisions', CouncilDecisionsIndex::class)->name('dashboard.municipality.council-decisions');
+        Route::get('dashboard/municipality/council-decisions/{councilDecision}', CouncilDecisionShow::class)->name('dashboard.municipality.council-decisions.show');
     });
 
     // Council Members
     Route::middleware('permission:council_members.create')->group(function (): void {
-        Route::get('dashboard/municipality/council-members/create', \App\Livewire\Municipality\CouncilMemberForm::class)->name('dashboard.municipality.council-members.create');
+        Route::get('dashboard/municipality/council-members/create', CouncilMemberForm::class)->name('dashboard.municipality.council-members.create');
     });
 
     Route::middleware('permission:council_members.update')->group(function (): void {
-        Route::get('dashboard/municipality/council-members/{councilMember}/edit', \App\Livewire\Municipality\CouncilMemberForm::class)->name('dashboard.municipality.council-members.edit');
+        Route::get('dashboard/municipality/council-members/{councilMember}/edit', CouncilMemberForm::class)->name('dashboard.municipality.council-members.edit');
     });
 
     Route::middleware('permission:council_members.view')->group(function (): void {
-        Route::get('dashboard/municipality/council-members', \App\Livewire\Municipality\CouncilMembersIndex::class)->name('dashboard.municipality.council-members');
-        Route::get('dashboard/municipality/council-members/{councilMember}', \App\Livewire\Municipality\CouncilMemberProfile::class)->name('dashboard.municipality.council-members.show');
+        Route::get('dashboard/municipality/council-members', CouncilMembersIndex::class)->name('dashboard.municipality.council-members');
+        Route::get('dashboard/municipality/council-members/{councilMember}', CouncilMemberProfile::class)->name('dashboard.municipality.council-members.show');
     });
 
     // Open Data Management
     Route::middleware('permission:open_data.view')->group(function (): void {
-        Route::get('dashboard/open-data', \App\Livewire\OpenData\Admin\OpenDataAdminIndex::class)->name('dashboard.open-data');
+        Route::get('dashboard/open-data', OpenDataAdminIndex::class)->name('dashboard.open-data');
     });
 
     Route::middleware('permission:open_data.create')->group(function (): void {
-        Route::get('dashboard/open-data/create', \App\Livewire\OpenData\Admin\OpenDataAdminForm::class)->name('dashboard.open-data.create');
+        Route::get('dashboard/open-data/create', OpenDataAdminForm::class)->name('dashboard.open-data.create');
     });
 
     Route::middleware('permission:open_data.update')->group(function (): void {
-        Route::get('dashboard/open-data/{dataset}/edit', \App\Livewire\OpenData\Admin\OpenDataAdminForm::class)->name('dashboard.open-data.edit');
+        Route::get('dashboard/open-data/{dataset}/edit', OpenDataAdminForm::class)->name('dashboard.open-data.edit');
+    });
+
+    // Chatbot
+    Route::middleware('permission:chatbot.view')->group(function (): void {
+        Route::get('dashboard/chatbot', ChatbotDashboard::class)->name('dashboard.chatbot');
+        Route::get('dashboard/chatbot/unknown-questions', UnknownQuestionsManager::class)->name('admin.chatbot.unknown-questions');
+        Route::get('dashboard/chatbot/performance', PerformanceMonitor::class)->name('admin.chatbot.performance');
+        Route::get('dashboard/chatbot/search-terms', SearchTermManager::class)->name('admin.chatbot.search-terms');
     });
 
     // Debug-only routes — blocked in production
     Route::middleware('can:access panel')->group(function (): void {
         Route::get('setup-database', function () {
-            if (!app()->environment('local')) {
+            if (! app()->environment('local')) {
                 abort(404);
             }
 
@@ -511,32 +560,32 @@ Route::middleware('auth')->group(function (): void {
             try {
                 Artisan::call('migrate', ['--force' => true]);
                 $output[] = 'Migrations ran.';
-            } catch (\Throwable $e) {
-                $output[] = 'Migrations error: ' . $e->getMessage();
+            } catch (Throwable $e) {
+                $output[] = 'Migrations error: '.$e->getMessage();
             }
 
             try {
                 Artisan::call('db:seed', ['--force' => true]);
                 $output[] = 'Seeders ran.';
-            } catch (\Throwable $e) {
-                $output[] = 'Seeders error: ' . $e->getMessage();
+            } catch (Throwable $e) {
+                $output[] = 'Seeders error: '.$e->getMessage();
             }
 
             try {
-                $users = \App\Domains\Authentication\Models\User::all();
+                $users = User::all();
                 foreach ($users as $user) {
                     $user->syncRoles(['Super Admin']);
                 }
-                $output[] = 'Assigned Super Admin role to ' . $users->count() . ' user(s)';
-            } catch (\Throwable $e) {
-                $output[] = 'Role assignment error: ' . $e->getMessage();
+                $output[] = 'Assigned Super Admin role to '.$users->count().' user(s)';
+            } catch (Throwable $e) {
+                $output[] = 'Role assignment error: '.$e->getMessage();
             }
 
             return nl2br(implode("\n\n", $output));
         })->name('setup.database');
 
         Route::get('debug-permissions', function () {
-            if (!app()->environment('local')) {
+            if (! app()->environment('local')) {
                 abort(404);
             }
 
@@ -545,24 +594,24 @@ Route::middleware('auth')->group(function (): void {
 
             $output[] = "User: {$user->name} ({$user->email})";
             $output[] = "User ID: {$user->id}";
-            $output[] = "Roles: " . $user->getRoleNames()->implode(', ');
-            $output[] = "Permissions count: " . \Spatie\Permission\Models\Permission::count();
+            $output[] = 'Roles: '.$user->getRoleNames()->implode(', ');
+            $output[] = 'Permissions count: '.Permission::count();
 
-            return '<pre>' . nl2br(implode("\n", $output)) . '</pre>';
+            return '<pre>'.nl2br(implode("\n", $output)).'</pre>';
         })->name('debug.permissions');
 
         Route::get('seed-carousels', function (): string {
-            if (!app()->environment('local')) {
+            if (! app()->environment('local')) {
                 abort(404);
             }
 
-            \Illuminate\Support\Facades\Cache::forget('homepage.public.data');
+            Cache::forget('homepage.public.data');
 
-            foreach (['services','departments','facilities','jobs','council-decisions','council-members','engineering-offices','open-data','water-schedule','announcements'] as $key) {
-                \Illuminate\Support\Facades\Cache::forget('page-carousel:' . $key);
+            foreach (['services', 'departments', 'facilities', 'jobs', 'council-decisions', 'council-members', 'engineering-offices', 'open-data', 'water-schedule', 'announcements'] as $key) {
+                Cache::forget('page-carousel:'.$key);
             }
 
-            \Illuminate\Support\Facades\DB::table('homepage_slides')->where('page_key', '!=', 'home')->delete();
+            DB::table('homepage_slides')->where('page_key', '!=', 'home')->delete();
 
             $slides = [
                 ['page_key' => 'services', 'title' => 'الخدمات الإلكترونية', 'description' => 'جميع الخدمات الإلكترونية.', 'badge_text' => 'الخدمات الإلكترونية', 'is_active' => true, 'sort_order' => 0],
@@ -576,7 +625,7 @@ Route::middleware('auth')->group(function (): void {
             ];
 
             foreach ($slides as $slide) {
-                \Illuminate\Support\Facades\DB::table('homepage_slides')->insert($slide);
+                DB::table('homepage_slides')->insert($slide);
             }
 
             return 'Done.';

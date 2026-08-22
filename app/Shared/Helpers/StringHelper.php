@@ -17,7 +17,7 @@ final class StringHelper
             return $value;
         }
 
-        return mb_substr($value, 0, $length) . '...';
+        return mb_substr($value, 0, $length).'...';
     }
 
     public static function slug(string $value): string

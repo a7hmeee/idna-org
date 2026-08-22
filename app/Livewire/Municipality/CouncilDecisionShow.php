@@ -16,6 +16,7 @@ use Livewire\Component;
 final class CouncilDecisionShow extends Component
 {
     public CouncilDecision $councilDecision;
+
     public bool $showDeleteModal = false;
 
     public function mount(CouncilDecision $councilDecision): void

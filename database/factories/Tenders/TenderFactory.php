@@ -15,13 +15,13 @@ final class TenderFactory extends Factory
 
     public function definition(): array
     {
-        $titleAr = fake()->unique()->company() . ' مناقصة';
+        $titleAr = fake()->unique()->company().' مناقصة';
 
         return [
-            'tender_number' => 'م-' . fake()->year() . '-' . fake()->unique()->randomNumber(3),
+            'tender_number' => 'م-'.fake()->year().'-'.fake()->unique()->randomNumber(3),
             'title_ar' => $titleAr,
             'title_en' => Str::slug($titleAr),
-            'slug' => Str::slug($titleAr) . '-' . fake()->unique()->randomNumber(4),
+            'slug' => Str::slug($titleAr).'-'.fake()->unique()->randomNumber(4),
             'summary' => fake()->paragraph(),
             'description' => fake()->paragraphs(3, true),
             'category' => fake()->randomElement(['أشغال', 'توريدات', 'خدمات', 'استشارات', 'إنشاءات']),

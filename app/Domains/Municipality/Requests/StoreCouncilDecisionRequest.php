@@ -24,12 +24,12 @@ final class StoreCouncilDecisionRequest extends FormRequest
         $id = $this->route('councilDecision')?->id ?? $this->input('id');
 
         return [
-            'decision_number' => ['required', 'string', 'max:255', 'unique:council_decisions,decision_number,' . ($id ?? 'NULL') . ',id'],
+            'decision_number' => ['required', 'string', 'max:255', 'unique:council_decisions,decision_number,'.($id ?? 'NULL').',id'],
             'title' => ['required', 'string', 'max:255'],
             'summary' => ['nullable', 'string', 'max:500'],
             'content' => ['nullable', 'string'],
-            'type' => ['required', 'string', 'in:' . implode(',', CouncilDecisionType::values())],
-            'status' => ['required', 'string', 'in:' . implode(',', CouncilDecisionStatus::values())],
+            'type' => ['required', 'string', 'in:'.implode(',', CouncilDecisionType::values())],
+            'status' => ['required', 'string', 'in:'.implode(',', CouncilDecisionStatus::values())],
             'decision_date' => ['nullable', 'date'],
             'session_number' => ['nullable', 'string', 'max:255'],
             'attachment_path' => ['nullable', 'string', 'max:500'],

@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\Jobs\DTOs;
 
-use App\Domains\Jobs\Enums\ApplicationMethod;
-use App\Domains\Jobs\Enums\EmploymentType;
-use App\Domains\Jobs\Enums\JobStatus;
-
 final readonly class JobData
 {
     public function __construct(

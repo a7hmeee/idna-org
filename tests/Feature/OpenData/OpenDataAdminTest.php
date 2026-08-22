@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Domains\OpenData\Models\OpenDataset;
-use App\Domains\OpenData\Enums\OpenDataStatus;
-use App\Domains\OpenData\Enums\OpenDataType;
 use App\Domains\Authentication\Models\User;
+use App\Domains\OpenData\Contracts\OpenDataRepositoryInterface;
+use App\Domains\OpenData\Enums\OpenDataType;
+use App\Domains\OpenData\Models\OpenDataset;
+use App\Domains\OpenData\Repositories\EloquentOpenDataRepository;
+use App\Livewire\OpenData\OpenDataIndex;
 
 beforeEach(function (): void {
     $this->seed(RolePermissionSeeder::class);
@@ -61,7 +63,7 @@ it('public open data page returns 200', function (): void {
 
 it('public open data page renders livewire component', function (): void {
     $this->get(route('public.open-data.index'))
-        ->assertSeeLivewire(\App\Livewire\OpenData\OpenDataIndex::class);
+        ->assertSeeLivewire(OpenDataIndex::class);
 });
 
 it('public open data shows empty state when no data', function (): void {
@@ -84,13 +86,13 @@ it('public open data hides draft datasets', function (): void {
 });
 
 it('open data repository binding resolves', function (): void {
-    $repo = app(\App\Domains\OpenData\Contracts\OpenDataRepositoryInterface::class);
+    $repo = app(OpenDataRepositoryInterface::class);
 
-    expect($repo)->toBeInstanceOf(\App\Domains\OpenData\Repositories\EloquentOpenDataRepository::class);
+    expect($repo)->toBeInstanceOf(EloquentOpenDataRepository::class);
 });
 
 it('open data repository has all required methods', function (): void {
-    $repo = app(\App\Domains\OpenData\Contracts\OpenDataRepositoryInterface::class);
+    $repo = app(OpenDataRepositoryInterface::class);
 
     expect($repo)->toHaveMethods([
         'getDatasets', 'find', 'findBySlug', 'getFeaturedDatasets',
@@ -102,7 +104,7 @@ it('repository returns published datasets', function (): void {
     OpenDataset::factory()->published()->count(3)->create();
     OpenDataset::factory()->draft()->create();
 
-    $repo = app(\App\Domains\OpenData\Contracts\OpenDataRepositoryInterface::class);
+    $repo = app(OpenDataRepositoryInterface::class);
     $datasets = $repo->getDatasets();
 
     expect($datasets->total())->toBe(3);
@@ -112,7 +114,7 @@ it('repository filters by type', function (): void {
     OpenDataset::factory()->published()->count(2)->create(['type' => OpenDataType::Dataset]);
     OpenDataset::factory()->published()->create(['type' => OpenDataType::Report]);
 
-    $repo = app(\App\Domains\OpenData\Contracts\OpenDataRepositoryInterface::class);
+    $repo = app(OpenDataRepositoryInterface::class);
     $datasets = $repo->getDatasets(type: OpenDataType::Dataset);
 
     expect($datasets->total())->toBe(2);
@@ -122,7 +124,7 @@ it('repository searches by title', function (): void {
     OpenDataset::factory()->published()->create(['title' => 'إحصاءات السكان']);
     OpenDataset::factory()->published()->create(['title' => 'ميزانية البلدية']);
 
-    $repo = app(\App\Domains\OpenData\Contracts\OpenDataRepositoryInterface::class);
+    $repo = app(OpenDataRepositoryInterface::class);
     $datasets = $repo->getDatasets(search: 'إحصاءات');
 
     expect($datasets->total())->toBe(1);
@@ -132,7 +134,7 @@ it('repository returns featured datasets', function (): void {
     OpenDataset::factory()->published()->featured()->count(2)->create();
     OpenDataset::factory()->published()->create();
 
-    $repo = app(\App\Domains\OpenData\Contracts\OpenDataRepositoryInterface::class);
+    $repo = app(OpenDataRepositoryInterface::class);
     $featured = $repo->getFeaturedDatasets();
 
     expect($featured)->toHaveCount(2);
@@ -143,7 +145,7 @@ it('repository returns distinct categories', function (): void {
     OpenDataset::factory()->published()->create(['category' => 'تقارير']);
     OpenDataset::factory()->published()->create(['category' => 'إحصاءات']);
 
-    $repo = app(\App\Domains\OpenData\Contracts\OpenDataRepositoryInterface::class);
+    $repo = app(OpenDataRepositoryInterface::class);
     $categories = $repo->getCategories();
 
     expect($categories)->toHaveCount(2);

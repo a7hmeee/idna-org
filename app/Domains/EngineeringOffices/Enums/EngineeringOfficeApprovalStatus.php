@@ -32,6 +32,7 @@ enum EngineeringOfficeApprovalStatus: string
         foreach (self::cases() as $case) {
             $options[$case->value] = $case->label();
         }
+
         return $options;
     }
 }

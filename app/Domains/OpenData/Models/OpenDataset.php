@@ -7,8 +7,6 @@ namespace App\Domains\OpenData\Models;
 use App\Domains\Authentication\Models\User;
 use App\Domains\OpenData\Enums\OpenDataStatus;
 use App\Domains\OpenData\Enums\OpenDataType;
-use Database\Factories\OpenData\OpenDatasetFactory;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,7 +47,7 @@ final class OpenDataset extends Model
 
     protected static function booting(): void
     {
-        static::creating(function (self $dataset): void {
+        self::creating(function (self $dataset): void {
             if (empty($dataset->slug)) {
                 $dataset->slug = Str::slug($dataset->title);
             }
@@ -91,7 +89,7 @@ final class OpenDataset extends Model
 
     public function getFileSizeFormattedAttribute(): string
     {
-        if (!$this->file_size) {
+        if (! $this->file_size) {
             return '';
         }
 
@@ -102,6 +100,6 @@ final class OpenDataset extends Model
             $bytes /= 1024;
         }
 
-        return round($bytes, 1) . ' ' . ($units[$i] ?? 'B');
+        return round($bytes, 1).' '.($units[$i] ?? 'B');
     }
 }

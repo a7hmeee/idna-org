@@ -10,9 +10,13 @@ use Livewire\Component;
 final class PublicMunicipalityAbout extends Component
 {
     public ?Municipality $municipality = null;
+
     public array $contacts = [];
+
     public array $socialPlatforms = [];
+
     public array $images = [];
+
     public string $municipalityName = 'بلدية إذنا';
 
     public function mount(): void
@@ -53,8 +57,8 @@ final class PublicMunicipalityAbout extends Component
             'socialPlatforms' => $this->socialPlatforms,
             'images' => $this->images,
         ])->layout('layouts.home', [
-            'title' => 'عن ' . $this->municipalityName,
-            'metaDescription' => $this->municipality?->short_description ?? 'تعرف على ' . $this->municipalityName,
+            'title' => 'عن '.$this->municipalityName,
+            'metaDescription' => $this->municipality?->short_description ?? 'تعرف على '.$this->municipalityName,
         ]);
     }
 }

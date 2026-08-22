@@ -153,7 +153,7 @@
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
-    <?php if (! $__env->hasRenderedOnce('237b699d-7f65-4404-9b9c-a1db72418803')): $__env->markAsRenderedOnce('237b699d-7f65-4404-9b9c-a1db72418803'); ?>
+    <?php if (! $__env->hasRenderedOnce('883dcf54-31a4-4a68-a8d2-be9339bf86d2')): $__env->markAsRenderedOnce('883dcf54-31a4-4a68-a8d2-be9339bf86d2'); ?>
         <?php $__env->startPush('styles'); ?>
             <style>
                 /* Desktop header — view-all button absolute on the left */

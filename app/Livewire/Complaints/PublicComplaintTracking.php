@@ -10,7 +10,9 @@ use Livewire\Component;
 final class PublicComplaintTracking extends Component
 {
     public string $trackingNumber = '';
+
     public bool $searched = false;
+
     public ?Complaint $complaint = null;
 
     protected function rules(): array
@@ -34,6 +36,10 @@ final class PublicComplaintTracking extends Component
 
     public function render()
     {
-        return view('livewire.complaints.public-complaint-tracking');
+        return view('livewire.complaints.public-complaint-tracking')
+            ->layout('layouts.home', [
+                'title' => 'تتبع الشكوى | بلدية إذنا',
+                'metaDescription' => 'تتبع حالة شكواك في بلدية إذنا',
+            ]);
     }
 }

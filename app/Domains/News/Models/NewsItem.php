@@ -66,7 +66,7 @@ final class NewsItem extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (NewsItem $news): void {
+        self::creating(function (NewsItem $news): void {
             if (empty($news->slug)) {
                 $news->slug = Str::slug($news->title_ar);
             }
@@ -74,7 +74,7 @@ final class NewsItem extends Model
             $news->views_count ??= 0;
         });
 
-        static::updating(function (NewsItem $news): void {
+        self::updating(function (NewsItem $news): void {
             if (empty($news->slug) && $news->title_ar) {
                 $news->slug = Str::slug($news->title_ar);
             }
@@ -93,12 +93,12 @@ final class NewsItem extends Model
 
     public function getCoverImageUrlAttribute(): ?string
     {
-        return $this->cover_image_path ? asset('storage/' . $this->cover_image_path) : null;
+        return $this->cover_image_path ? asset('storage/'.$this->cover_image_path) : null;
     }
 
     public function getMobileImageUrlAttribute(): ?string
     {
-        return $this->mobile_image_path ? asset('storage/' . $this->mobile_image_path) : null;
+        return $this->mobile_image_path ? asset('storage/'.$this->mobile_image_path) : null;
     }
 
     public function scopePublished($query)

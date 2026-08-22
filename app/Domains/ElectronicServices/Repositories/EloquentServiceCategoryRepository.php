@@ -19,7 +19,7 @@ final class EloquentServiceCategoryRepository implements ServiceCategoryReposito
         if ($search) {
             $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -70,7 +70,7 @@ final class EloquentServiceCategoryRepository implements ServiceCategoryReposito
     {
         return DB::transaction(function () use ($id): ServiceCategory {
             $category = ServiceCategory::findOrFail($id);
-            $category->update(['is_public' => !$category->is_public]);
+            $category->update(['is_public' => ! $category->is_public]);
 
             return $category->fresh();
         });

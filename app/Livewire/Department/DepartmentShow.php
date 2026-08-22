@@ -16,6 +16,7 @@ use Livewire\Component;
 final class DepartmentShow extends Component
 {
     public Department $department;
+
     public bool $showDeleteModal = false;
 
     public function mount(Department $department): void

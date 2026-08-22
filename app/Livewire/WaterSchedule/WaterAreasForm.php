@@ -15,9 +15,13 @@ use Livewire\Component;
 final class WaterAreasForm extends Component
 {
     public ?int $areaId = null;
+
     public string $name = '';
+
     public string $description = '';
+
     public int $displayOrder = 0;
+
     public bool $isActive = true;
 
     public function mount(?WaterArea $waterArea = null): void

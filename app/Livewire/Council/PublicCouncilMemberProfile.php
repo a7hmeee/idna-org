@@ -7,19 +7,22 @@ namespace App\Livewire\Council;
 use App\Domains\Municipality\Contracts\CouncilMemberRepositoryInterface;
 use App\Domains\Municipality\Enums\CouncilMemberPosition;
 use App\Domains\Municipality\Models\CouncilMember;
+use App\Domains\Municipality\Models\Municipality;
 use Livewire\Component;
 
 final class PublicCouncilMemberProfile extends Component
 {
     public CouncilMember $member;
+
     public ?CouncilMember $previous = null;
+
     public ?CouncilMember $next = null;
 
     public function mount(CouncilMember $councilMember): void
     {
         $this->member = $councilMember->loadMissing('creator', 'updater');
 
-        if (!$this->member->is_public || $this->member->status !== 'active') {
+        if (! $this->member->is_public || $this->member->status !== 'active') {
             abort(404);
         }
 
@@ -49,7 +52,7 @@ final class PublicCouncilMemberProfile extends Component
 
         $municipalityName = 'بلدية إذنا';
         try {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+            $municipality = Municipality::first();
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
             }
@@ -65,8 +68,8 @@ final class PublicCouncilMemberProfile extends Component
             'hasContact' => $hasContact,
             'municipalityName' => $municipalityName,
         ])->layout('layouts.home', [
-            'title' => $this->member->full_name . ' - المجلس البلدي | ' . $municipalityName,
-            'metaDescription' => $this->member->bio ?? 'ملف ' . $this->member->full_name . ' - ' . $posLabel . ' في بلدية إذنا',
+            'title' => $this->member->full_name.' - المجلس البلدي | '.$municipalityName,
+            'metaDescription' => $this->member->bio ?? 'ملف '.$this->member->full_name.' - '.$posLabel.' في بلدية إذنا',
         ]);
     }
 }

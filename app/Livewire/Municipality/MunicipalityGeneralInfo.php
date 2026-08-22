@@ -15,17 +15,29 @@ use Livewire\Component;
 final class MunicipalityGeneralInfo extends Component
 {
     public string $nameAr = '';
+
     public string $nameEn = '';
+
     public ?string $shortDescription = null;
+
     public ?string $fullDescription = null;
+
     public ?string $vision = null;
+
     public ?string $mission = null;
+
     public string $objectives = '';
+
     public ?string $foundationDate = null;
+
     public ?int $population = null;
+
     public ?float $area = null;
+
     public ?string $municipalityCode = null;
+
     public ?float $latitude = null;
+
     public ?float $longitude = null;
 
     public function mount(): void

@@ -6,15 +6,19 @@ namespace App\Livewire\Department;
 
 use App\Domains\Department\Models\Department;
 use App\Domains\ElectronicServices\Models\ElectronicService;
+use App\Domains\Municipality\Models\Municipality;
 use Livewire\Component;
 
 final class PublicDepartmentShow extends Component
 {
     public Department $department;
 
-    public function mount(Department $department): void
+    public function mount(string $department): void
     {
-        $this->department = $department->loadMissing('creator', 'updater');
+        $dept = Department::where('slug', $department)->where('is_public', true)->first();
+        abort_unless($dept, 404);
+
+        $this->department = $dept->loadMissing('creator', 'updater');
     }
 
     public function render()
@@ -28,7 +32,7 @@ final class PublicDepartmentShow extends Component
 
         $municipalityName = 'بلدية إذنا';
         try {
-            $municipality = \App\Domains\Municipality\Models\Municipality::first();
+            $municipality = Municipality::first();
             if ($municipality) {
                 $municipalityName = $municipality->name_ar ?? $municipalityName;
             }
@@ -40,8 +44,8 @@ final class PublicDepartmentShow extends Component
             'services' => $services,
             'municipalityName' => $municipalityName,
         ])->layout('layouts.home', [
-            'title' => $this->department->name . ' | ' . $municipalityName,
-            'metaDescription' => $this->department->short_description ?? 'تعرف على قسم ' . $this->department->name . ' وخدماته في ' . $municipalityName,
+            'title' => $this->department->name.' | '.$municipalityName,
+            'metaDescription' => $this->department->short_description ?? 'تعرف على قسم '.$this->department->name.' وخدماته في '.$municipalityName,
         ]);
     }
 }

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domains\Authentication\Models;
 
-use App\Domains\Authentication\Models\LoginActivity;
 use App\Domains\Department\Models\Department;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -22,23 +23,23 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $department_id
  * @property string|null $avatar
  * @property string $status
- * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
  * @property int $login_attempts
- * @property \Illuminate\Support\Carbon|null $locked_until
- * @property \Illuminate\Support\Carbon|null $last_login_at
+ * @property Carbon|null $locked_until
+ * @property Carbon|null $last_login_at
  * @property string|null $last_login_ip
  * @property string|null $two_factor_secret
  * @property bool $two_factor_enabled
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class User extends Authenticatable
 {
     use HasFactory, HasRoles, Notifiable;
 
-    protected static function newFactory(): \Illuminate\Database\Eloquent\Factories\Factory
+    protected static function newFactory(): Factory
     {
         return UserFactory::new();
     }
@@ -105,7 +106,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): ?string
     {
         if ($this->avatar) {
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
 
         return null;

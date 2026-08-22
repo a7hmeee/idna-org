@@ -25,7 +25,7 @@ final class StoreExternalPlatformRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:1000'],
             'icon' => ['required', 'string', 'max:100'],
             'url' => ['required', 'string', 'url', 'max:500'],
-            'category' => ['nullable', 'string', 'in:' . implode(',', PlatformCategory::values())],
+            'category' => ['nullable', 'string', 'in:'.implode(',', PlatformCategory::values())],
             'color' => ['nullable', 'string', 'max:50'],
             'open_in_new_tab' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
