@@ -44,7 +44,6 @@ unset($__defined_vars, $__key, $__value); ?>
     $secondaryBtn = $settings['secondary_button_text'] ?? 'تعرف على البلدية';
     $secondaryBtnUrl = $settings['secondary_button_url'] ?? '#municipality-intro';
 ?>
-
 <section id="hero" class="relative overflow-hidden bg-[#073A25]" dir="ltr" aria-label="الشريط الرئيسي">
     
     <div
@@ -59,9 +58,7 @@ unset($__defined_vars, $__key, $__value); ?>
                 }
             },
             startAutoplay() {
-                this.interval = setInterval(() => {
-                    this.next();
-                }, 8000);
+                this.interval = setInterval(() => { this.next(); }, 8000);
             },
             stopAutoplay() {
                 if (this.interval) { clearInterval(this.interval); this.interval = null; }
@@ -80,7 +77,7 @@ unset($__defined_vars, $__key, $__value); ?>
         aria-label="عرض الشرائح"
     >
         
-        <div class="relative" style="min-height: clamp(520px, 80vh, 720px);">
+        <div class="relative ih-hero-stage">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $slides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                 <div x-show="current === <?php echo e($index); ?>"
                      x-transition:enter="transition-opacity duration-700"
@@ -92,158 +89,71 @@ unset($__defined_vars, $__key, $__value); ?>
                      class="absolute inset-0"
                      role="group"
                      aria-roledescription="slide"
-                     aria-label="<?php echo e('شريحة ' . ($index + 1) . ' من ' . count($slides)); ?>"
-                    <?php if($index === 0): ?>
-                     
-                    <?php endif; ?>>
+                     aria-label="<?php echo e('شريحة ' . ($index + 1) . ' من ' . count($slides)); ?>">
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($slide['image_url'])): ?>
                         <img src="<?php echo e($slide['image_url']); ?>"
                              alt="<?php echo e($slide['title'] ?? ''); ?>"
                              class="w-full h-full object-cover object-center"
-                             style="min-height: clamp(520px, 80vh, 720px);"
-                             <?php if($index === 0): ?>
-                             fetchpriority="high" loading="eager"
-                             <?php else: ?>
-                             loading="lazy" decoding="async"
-                             <?php endif; ?>
+                             <?php if($index === 0): ?> fetchpriority="high" loading="eager" <?php else: ?> loading="lazy" decoding="async" <?php endif; ?>
                              onerror="this.parentElement.style.background='linear-gradient(135deg, #073A25, #0F6A3D, #2B8A4B)'; this.style.display='none';">
                     <?php else: ?>
-                        <div class="w-full h-full" style="background:linear-gradient(135deg, #073A25, #0F6A3D, #2B8A4B);min-height: clamp(520px, 80vh, 720px);"></div>
+                        <div class="w-full h-full" style="background:linear-gradient(135deg, #073A25, #0F6A3D, #2B8A4B);"></div>
                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
 
             
-            <div class="absolute inset-0 z-10 bg-gradient-to-l from-[#031F10]/92 via-[#073A25]/70 via-35% to-[#073A25]/30 to-70%"></div>
+            <div class="absolute inset-0 z-10" style="background: linear-gradient(135deg, rgba(3,31,16,0.85) 0%, rgba(7,58,37,0.65) 45%, rgba(7,58,37,0.35) 75%, rgba(7,58,37,0.08) 100%);"></div>
 
             
-            <div class="absolute inset-0 z-10 pointer-events-none opacity-[0.04]" aria-hidden="true">
-                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <pattern id="islamic-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-                            <rect width="80" height="80" fill="none"/>
-                            <path d="M40 0 L80 40 L40 80 L0 40 Z" fill="none" stroke="#C8A85A" stroke-width="0.5"/>
-                            <path d="M40 10 L70 40 L40 70 L10 40 Z" fill="none" stroke="#C8A85A" stroke-width="0.5"/>
-                            <path d="M40 20 L60 40 L40 60 L20 40 Z" fill="none" stroke="#C8A85A" stroke-width="0.4"/>
-                            <circle cx="40" cy="40" r="3" fill="none" stroke="#C8A85A" stroke-width="0.4"/>
-                            <circle cx="40" cy="40" r="1" fill="#C8A85A" opacity="0.5"/>
-                            <line x1="0" y1="40" x2="80" y2="40" stroke="#C8A85A" stroke-width="0.2" opacity="0.5"/>
-                            <line x1="40" y1="0" x2="40" y2="80" stroke="#C8A85A" stroke-width="0.2" opacity="0.5"/>
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#islamic-pattern)"/>
-                </svg>
-            </div>
+            <div class="relative z-20 w-full h-full ih-hero-content" dir="rtl">
+                <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-[600px] lg:max-w-[680px] mx-auto lg:ml-0 lg:mr-[5%] text-center lg:text-right">
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $slides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                            <div x-show="current === <?php echo e($index); ?>" x-transition:enter="transition-all duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
 
-            
-            <div class="absolute top-0 right-0 left-0 h-[2px] z-20 pointer-events-none" style="background: linear-gradient(90deg, transparent 0%, #C8A85A 20%, #C8A85A 80%, transparent 100%); opacity: 0.6;" aria-hidden="true"></div>
+                                
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($slide['badge_text'])): ?>
+                                    <div class="ih-hero-badge"><?php echo e($slide['badge_text']); ?></div>
+                                <?php else: ?>
+                                    <div class="ih-hero-badge">الخدمات الإلكترونية</div>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            
-            <div class="absolute left-0 top-0 bottom-0 w-[35%] max-w-[500px] z-20 pointer-events-none overflow-hidden hidden lg:block" aria-hidden="true">
-                <div class="absolute left-0 top-0 w-full h-full" style="background: linear-gradient(135deg, #0F6A3D 0%, #0F6A3D 40%, transparent 100%); clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 85% 80%, 78% 60%, 82% 40%, 90% 20%); opacity: 0.85;"></div>
-                <div class="absolute left-0 top-0 w-full h-full" style="background: linear-gradient(135deg, #2B8A4B 0%, transparent 70%); clip-path: polygon(100% 0, 5% 0, 15% 100%, 100% 100%, 88% 82%, 82% 60%, 85% 35%); opacity: 0.30; transform: translateY(5%);"></div>
-            </div>
+                                
+                                <h1 class="ih-hero-title">
+                                    <?php
+                                        $rawTitle = !empty($slide['title']) ? $slide['title'] : 'مرحباً بكم في بلدية إذنا';
+                                        $greenWord = 'إذنا';
+                                        $titleHtml = preg_replace(
+                                            '/' . preg_quote($greenWord, '/') . '/',
+                                            '<span class="ih-hero-title-green" style="color:#3BAF56 !important;">' . $greenWord . '</span>',
+                                            e($rawTitle),
+                                            1
+                                        );
+                                    ?>
+                                    <span class="ih-hero-title-white"><?php echo $titleHtml; ?></span>
+                                </h1>
 
-            
-            <div class="absolute top-4 left-4 z-20 pointer-events-none opacity-30 hidden md:block" aria-hidden="true">
-                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 55 L5 5 L55 5" stroke="#C8A85A" stroke-width="1" fill="none"/>
-                    <path d="M10 50 L10 10 L50 10" stroke="#C8A85A" stroke-width="0.5" fill="none" opacity="0.7"/>
-                    <circle cx="5" cy="5" r="2" fill="#C8A85A" opacity="0.8"/>
-                    <path d="M5 15 L15 5" stroke="#C8A85A" stroke-width="0.5" fill="none" opacity="0.6"/>
-                </svg>
-            </div>
-            <div class="absolute top-4 right-4 z-20 pointer-events-none opacity-30 hidden md:block" aria-hidden="true">
-                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M55 55 L55 5 L5 5" stroke="#C8A85A" stroke-width="1" fill="none"/>
-                    <path d="M50 50 L50 10 L10 10" stroke="#C8A85A" stroke-width="0.5" fill="none" opacity="0.7"/>
-                    <circle cx="55" cy="5" r="2" fill="#C8A85A" opacity="0.8"/>
-                    <path d="M55 15 L45 5" stroke="#C8A85A" stroke-width="0.5" fill="none" opacity="0.6"/>
-                </svg>
-            </div>
+                                
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($slide['description'])): ?>
+                                    <p class="ih-hero-desc"><?php echo e($slide['description']); ?></p>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            
-            <div class="relative z-30 w-full h-full flex items-center" dir="rtl">
-                <div class="w-full py-20 sm:py-24 lg:py-28" style="padding-top:max(80px, 6vh);padding-bottom:max(80px, 12vh);">
-                    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="max-w-[580px] lg:max-w-[640px] mr-auto lg:mr-[5%] text-right">
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $slides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                                <div x-show="current === <?php echo e($index); ?>" x-transition:enter="transition-all duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
-                                    
-                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($slide['badge_text'])): ?>
-                                        <span class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.07] backdrop-blur-md text-white/95 text-xs sm:text-sm font-bold mb-5 sm:mb-6 border border-white/[0.15] shadow-lg relative z-10" style="box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#C8A85A] shadow-[0_0_6px_rgba(200,168,90,0.5)]"></span>
-                                            <?php echo e($slide['badge_text']); ?>
-
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.07] backdrop-blur-md text-white/95 text-xs sm:text-sm font-bold mb-5 sm:mb-6 border border-white/[0.15] shadow-lg relative z-10" style="box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#C8A85A] shadow-[0_0_6px_rgba(200,168,90,0.5)]"></span>
-                                            الخدمات الإلكترونية
-                                        </span>
-                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-                                    
-                                    <h1 class="font-black text-white leading-[1.15] mb-2 relative z-10" style="font-size: clamp(32px, 6vw, 72px); text-shadow: 0 2px 24px rgba(0,0,0,0.35); letter-spacing: -0.01em;">
-                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($slide['title'])): ?>
-                                            <?php echo e($slide['title']); ?>
-
-                                        <?php else: ?>
-                                            مرحباً بكم في
-                                            <br>
-                                            <span class="relative inline-block" style="color: #7BBC9D;">
-                                                <?php echo e($municipalityName); ?>
-
-                                                
-                                                <svg class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[80%] h-3 text-[#C8A85A] opacity-60" viewBox="0 0 200 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                    <path d="M0 6 Q 25 0, 50 6 T 100 6 T 150 6 T 200 6" stroke="currentColor" stroke-width="1.2" fill="none"/>
-                                                    <circle cx="100" cy="6" r="2" fill="currentColor" opacity="0.8"/>
-                                                    <circle cx="60" cy="6" r="1.2" fill="currentColor" opacity="0.5"/>
-                                                    <circle cx="140" cy="6" r="1.2" fill="currentColor" opacity="0.5"/>
-                                                </svg>
-                                            </span>
-                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                    </h1>
-
-                                    
-                                    <div class="flex items-center gap-3 mb-5 mt-3" aria-hidden="true">
-                                        <div class="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#C8A85A]/40 to-transparent max-w-[120px]"></div>
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-[#C8A85A]/60">
-                                            <path d="M10 1 L12 8 L19 10 L12 12 L10 19 L8 12 L1 10 L8 8 Z" fill="currentColor" opacity="0.7"/>
-                                        </svg>
-                                        <div class="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#C8A85A]/40 to-transparent max-w-[120px]"></div>
-                                    </div>
-
-                                    
-                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($slide['description'])): ?>
-                                        <p class="text-white/85 leading-[1.8] mb-8 max-w-[500px] relative z-10" style="font-size: clamp(14px, 1.6vw, 17px); text-shadow: 0 1px 8px rgba(0,0,0,0.15);">
-                                            <?php echo e($slide['description']); ?>
-
-                                        </p>
-                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-                                    
-                                    <div class="flex flex-wrap items-center gap-3 sm:gap-4 relative z-10">
-                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($portalUrl): ?>
-                                            <a href="<?php echo e($portalUrl); ?>" target="_blank" rel="noopener noreferrer"
-                                               class="inline-flex items-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-white text-[#073A25] font-bold text-sm sm:text-base hover:bg-gray-50 transition-all duration-300 relative overflow-hidden group"
-                                               style="box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 1px rgba(200,168,90,0.15);">
-                                                <span class="absolute inset-0 bg-gradient-to-r from-[#C8A85A]/0 via-[#C8A85A]/10 to-[#C8A85A]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                                                <i data-lucide="external-link" class="w-4 h-4 sm:w-5 sm:h-5 relative z-10"></i>
-                                                <span class="relative z-10"><?php echo e($primaryBtn); ?></span>
-                                            </a>
-                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                        <a href="<?php echo e($secondaryBtnUrl); ?>"
-                                           class="inline-flex items-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl border border-white/20 text-white font-semibold text-sm sm:text-base hover:bg-white/10 hover:border-[#C8A85A]/40 transition-all duration-300 backdrop-blur-sm relative group"
-                                           style="box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
-                                            <span class="absolute inset-0 bg-gradient-to-r from-[#C8A85A]/0 via-[#C8A85A]/8 to-[#C8A85A]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                                            <i data-lucide="info" class="w-4 h-4 sm:w-5 sm:h-5 relative z-10"></i>
-                                            <span class="relative z-10"><?php echo e($secondaryBtn); ?></span>
+                                
+                                <div class="ih-hero-buttons">
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($portalUrl): ?>
+                                        <a href="<?php echo e($portalUrl); ?>" target="_blank" rel="noopener noreferrer" class="ih-hero-btn ih-hero-btn-primary">
+                                            <i data-lucide="arrow-up-left" style="width:14px;height:14px;"></i>
+                                            <span><?php echo e($primaryBtn); ?></span>
                                         </a>
-                                    </div>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                    <a href="<?php echo e($secondaryBtnUrl); ?>" class="ih-hero-btn ih-hero-btn-secondary">
+                                        <i data-lucide="info" style="width:14px;height:14px;"></i>
+                                        <span><?php echo e($secondaryBtn); ?></span>
+                                    </a>
                                 </div>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-                        </div>
+                            </div>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -251,11 +161,11 @@ unset($__defined_vars, $__key, $__value); ?>
 
         
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$singleSlide && count($slides) > 1): ?>
-            <div class="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2" role="tablist" aria-label="اختيار الشريحة">
+            <div class="absolute left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5" style="bottom:12px;" role="tablist" aria-label="اختيار الشريحة">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $slides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $slide): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                     <button @click="goTo(<?php echo e($index); ?>)"
-                            :class="current === <?php echo e($index); ?> ? 'bg-[#C8A85A] w-7' : 'bg-white/40 w-2.5 hover:bg-white/70'"
-                            class="h-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A85A]/60"
+                            :class="current === <?php echo e($index); ?> ? 'bg-[#3BAF56] w-6' : 'bg-white/40 w-2 hover:bg-white/70'"
+                            class="h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3BAF56]/60"
                             role="tab"
                             :aria-selected="current === <?php echo e($index); ?>"
                             :aria-label="'الانتقال إلى الشريحة ' + (<?php echo e($index); ?> + 1)">
@@ -263,9 +173,207 @@ unset($__defined_vars, $__key, $__value); ?>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
             </div>
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-        
-        <div class="absolute bottom-0 right-0 left-0 h-[1px] z-20 pointer-events-none" style="background: linear-gradient(90deg, transparent 0%, #C8A85A/30 20%, #C8A85A/30 80%, transparent 100%);" aria-hidden="true"></div>
     </div>
 </section>
-<?php /**PATH C:\Users\ahmed\idna-org\resources\views/livewire/homepage/sections/hero.blade.php ENDPATH**/ ?>
+
+<?php $__env->startPush('styles'); ?>
+    <?php if (! $__env->hasRenderedOnce('3b5680b0-6c1d-42d6-a6a7-90b996d955ec')): $__env->markAsRenderedOnce('3b5680b0-6c1d-42d6-a6a7-90b996d955ec'); ?>
+        <style>
+            /* ===== HERO STAGE HEIGHT ===== */
+            .ih-hero-stage { height: clamp(520px, 80vh, 720px); overflow: hidden; position: relative; }
+            .ih-hero-content {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: clamp(40px, 6vw, 96px) 0 clamp(48px, 7vw, 96px);
+            }
+
+            /* ===== BADGE ===== */
+            .ih-hero-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 5px 14px;
+                border-radius: 9999px;
+                background: rgba(59,175,86,0.12);
+                backdrop-filter: blur(8px);
+                color: #5EC97A;
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 18px;
+                border: 1px solid rgba(59,175,86,0.2);
+                letter-spacing: 0.03em;
+            }
+
+            /* ===== TITLE ===== */
+            .ih-hero-title {
+                font-weight: 800;
+                line-height: 1.15;
+                margin: 0 0 14px;
+                font-size: clamp(30px, 5.5vw, 68px);
+                text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+                letter-spacing: -0.01em;
+            }
+            .ih-hero-title-white {
+                color: #FFFFFF;
+            }
+            .ih-hero-title-green {
+                color: #3BAF56;
+                position: relative;
+                display: inline;
+                text-shadow: 0 0 40px rgba(59,175,86,0.25), 0 2px 24px rgba(0,0,0,0.35);
+            }
+            .ih-hero-title-green::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                right: 0;
+                width: 100%;
+                height: 3px;
+                background: linear-gradient(90deg, transparent 0%, #3BAF56 20%, #3BAF56 80%, transparent 100%);
+                border-radius: 2px;
+                opacity: 0.45;
+            }
+
+            /* ===== DESCRIPTION ===== */
+            .ih-hero-desc {
+                color: rgba(255,255,255,0.85);
+                line-height: 1.85;
+                margin: 0 0 30px;
+                max-width: 520px;
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 15px;
+                text-shadow: 0 1px 8px rgba(0,0,0,0.12);
+                font-weight: 400;
+                letter-spacing: 0.01em;
+            }
+
+            /* ===== BUTTONS ===== */
+            .ih-hero-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+            }
+            .ih-hero-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 14px 32px;
+                border-radius: 14px;
+                font-size: 15px;
+                font-weight: 700;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                border: none;
+            }
+            .ih-hero-btn-primary {
+                background: linear-gradient(135deg, #176B32 0%, #0F4F28 100%);
+                color: white;
+                box-shadow: 0 4px 20px rgba(23,107,50,0.35);
+            }
+            .ih-hero-btn-primary:hover {
+                background: linear-gradient(135deg, #1a7a38 0%, #126030 100%);
+                box-shadow: 0 6px 28px rgba(23,107,50,0.5);
+                transform: translateY(-1px);
+            }
+            .ih-hero-btn-secondary {
+                background: rgba(255,255,255,0.12);
+                color: white;
+                border: 1.5px solid rgba(212,183,106,0.4);
+                backdrop-filter: blur(8px);
+            }
+            .ih-hero-btn-secondary:hover {
+                background: rgba(255,255,255,0.2);
+                border-color: rgba(212,183,106,0.7);
+                transform: translateY(-1px);
+            }
+
+            /* ===== DESKTOP (>= 1024px) ===== */
+            @media (min-width: 1024px) {
+                .ih-hero-stage { height: clamp(520px, 80vh, 720px); }
+                .ih-hero-content { padding: 96px 0; }
+                .ih-hero-badge { font-size: 13px; padding: 6px 18px; margin-bottom: 22px; }
+                .ih-hero-title { font-size: clamp(40px, 5vw, 68px); margin-bottom: 18px; }
+                .ih-hero-desc { font-size: 17px; margin-bottom: 36px; }
+                .ih-hero-btn { padding: 16px 36px; font-size: 16px; border-radius: 14px; gap: 10px; }
+            }
+
+            /* ===== TABLET (768px – 1023px) ===== */
+            @media (min-width: 768px) and (max-width: 1023.98px) {
+                .ih-hero-stage { height: 480px; }
+                .ih-hero-content { padding: 60px 0; }
+                .ih-hero-title { font-size: clamp(32px, 5vw, 48px); }
+                .ih-hero-desc { font-size: 16px; margin-bottom: 28px; }
+                .ih-hero-btn { padding: 14px 30px; font-size: 14px; }
+            }
+
+            /* ===== MOBILE (< 768px) ===== */
+            @media (max-width: 767.98px) {
+                .ih-hero-stage {
+                    height: 400px;
+                }
+                .ih-hero-content {
+                    padding: 40px 20px 24px;
+                    align-items: center;
+                }
+                .ih-hero-badge {
+                    font-size: 11px;
+                    padding: 4px 12px;
+                    margin-bottom: 12px;
+                }
+                .ih-hero-title {
+                    font-size: clamp(26px, 8vw, 38px);
+                    margin-bottom: 10px;
+                    line-height: 1.12;
+                }
+                .ih-hero-desc {
+                    font-size: 14px;
+                    line-height: 1.7;
+                    margin-bottom: 24px;
+                }
+                .ih-hero-buttons {
+                    gap: 12px;
+                    flex-wrap: nowrap;
+                    justify-content: center;
+                }
+                .ih-hero-btn {
+                    padding: 12px 22px;
+                    font-size: 13px;
+                    border-radius: 12px;
+                    gap: 7px;
+                    flex-shrink: 0;
+                }
+                .ih-hero-btn i, .ih-hero-btn svg {
+                    width: 14px !important;
+                    height: 14px !important;
+                }
+            }
+
+            /* ===== SMALL MOBILE (< 380px) ===== */
+            @media (max-width: 379.98px) {
+                .ih-hero-content { padding: 28px 14px 24px; }
+                .ih-hero-title { font-size: 24px; }
+                .ih-hero-desc { font-size: 13px; margin-bottom: 20px; }
+                .ih-hero-buttons { gap: 10px; flex-wrap: wrap; }
+                .ih-hero-btn {
+                    padding: 11px 18px;
+                    font-size: 12px;
+                    flex: 1 1 auto;
+                    min-width: 0;
+                }
+            }
+
+            /* ===== REDUCED MOTION ===== */
+            @media (prefers-reduced-motion: reduce) {
+                .ih-hero-btn { transition: none; }
+            }
+        </style>
+    <?php endif; ?>
+<?php $__env->stopPush(); ?><?php /**PATH C:\Users\ahmed\idna-org\resources\views/livewire/homepage/sections/hero.blade.php ENDPATH**/ ?>

@@ -2,7 +2,7 @@
     $services = collect($featuredServices)->take(6);
 ?>
 
-<section id="services" class="services-section" style="background:#FFFFFF;padding-top:clamp(44px,5vw,66px);padding-bottom:clamp(48px,5.5vw,78px);overflow:hidden;position:relative;">
+<section id="services" class="services-section" style="background:#FFFFFF;padding-top:clamp(16px,3vw,66px);padding-bottom:clamp(24px,4vw,78px);overflow:hidden;position:relative;">
     
     <div class="services-pattern" style="position:absolute;top:0;bottom:0;right:0;pointer-events:none;overflow:hidden;width:clamp(120px,15vw,200px);" aria-hidden="true">
         <svg style="position:absolute;top:50%;right:-10px;transform:translateY(-50%);width:100%;height:auto;opacity:0.035;" viewBox="0 0 160 280" fill="none" preserveAspectRatio="xMidYMid meet">
@@ -153,7 +153,7 @@
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
-    <?php if (! $__env->hasRenderedOnce('883dcf54-31a4-4a68-a8d2-be9339bf86d2')): $__env->markAsRenderedOnce('883dcf54-31a4-4a68-a8d2-be9339bf86d2'); ?>
+    <?php if (! $__env->hasRenderedOnce('2f368f5a-49ca-4d82-b4f8-8ad5896abc6b')): $__env->markAsRenderedOnce('2f368f5a-49ca-4d82-b4f8-8ad5896abc6b'); ?>
         <?php $__env->startPush('styles'); ?>
             <style>
                 /* Desktop header — view-all button absolute on the left */
@@ -190,17 +190,34 @@
 
                 /* Mobile — single column, tighter spacing */
                 @media (max-width: 640px) {
+                    .services-section {
+                        padding-top: 12px !important;
+                        padding-bottom: 20px !important;
+                    }
+                    .services-header-center p {
+                        font-size: 12px !important;
+                        margin-top: 4px !important;
+                        line-height: 1.6 !important;
+                    }
                     .services-grid {
                         grid-template-columns: 1fr !important;
-                        margin-top: 32px !important;
-                        gap: 16px !important;
+                        margin-top: 16px !important;
+                        gap: 12px !important;
                     }
                     .service-card {
-                        padding: 16px 18px !important;
-                        min-height: 210px !important;
+                        padding: 12px 14px !important;
+                        min-height: 180px !important;
                     }
                     .services-pattern {
                         display: none !important;
+                    }
+                    .services-header-action {
+                        margin-top: 12px !important;
+                    }
+                    .services-view-all-btn {
+                        height: 36px !important;
+                        font-size: 12px !important;
+                        padding: 0 16px !important;
                     }
                 }
 

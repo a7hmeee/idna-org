@@ -8,11 +8,11 @@ use App\Domains\Announcements\Providers\AnnouncementServiceProvider;
 use App\Domains\Authentication\Providers\AuthenticationServiceProvider;
 use App\Domains\Chatbot\Providers\ChatbotServiceProvider;
 use App\Domains\ChatbotAnalytics\Providers\ChatbotAnalyticsServiceProvider;
+use App\Domains\CitizenWorkflows\Providers\CitizenWorkflowServiceProvider;
 use App\Domains\Complaints\Providers\ComplaintServiceProvider;
 use App\Domains\ContactRequests\Providers\ContactRequestServiceProvider;
-use App\Domains\CitizenWorkflows\Providers\CitizenWorkflowServiceProvider;
-use App\Domains\Department\Providers\DepartmentServiceProvider;
 use App\Domains\Dashboard\Providers\DashboardServiceProvider;
+use App\Domains\Department\Providers\DepartmentServiceProvider;
 use App\Domains\ElectronicServices\Providers\ElectronicServiceProvider;
 use App\Domains\EngineeringOffices\Providers\EngineeringOfficeServiceProvider;
 use App\Domains\Homepage\Providers\HomepageServiceProvider;
@@ -27,6 +27,7 @@ use App\Domains\SharedKernel\Providers\SharedKernelServiceProvider;
 use App\Domains\Tenders\Providers\TenderServiceProvider;
 use App\Domains\UserManagement\Providers\UserManagementServiceProvider;
 use App\Domains\WaterSchedule\Providers\WaterScheduleServiceProvider;
+use App\View\Composers\PublicLayoutComposer;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -66,14 +67,14 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        View::composer('layouts.home', \App\View\Composers\PublicLayoutComposer::class);
+        View::composer('layouts.home', PublicLayoutComposer::class);
     }
 
     private function configureRateLimiting(): void
     {
         RateLimiter::for('login', function (Request $request) {
             $email = mb_strtolower((string) $request->input('email', ''));
-            $key = $email . '|' . ($request->ip() ?? '0.0.0.0');
+            $key = $email.'|'.($request->ip() ?? '0.0.0.0');
 
             return Limit::perMinute(5)->by($key);
         });

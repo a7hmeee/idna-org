@@ -23,7 +23,13 @@
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
     <?php echo $__env->yieldPushContent('styles'); ?>
-    <style>[x-cloak] { display: none !important; } html { scroll-behavior: smooth; }</style>
+    <style>[x-cloak] { display: none !important; } html { scroll-behavior: smooth; }
+        /* Global mobile overflow prevention */
+        @media (max-width: 768px) {
+            html, body { overflow-x: hidden; max-width: 100vw; }
+            img { max-width: 100%; height: auto; }
+        }
+    </style>
 </head>
 <body class="bg-background font-sans text-text antialiased">
 
@@ -96,7 +102,7 @@
             x-show="visible"
             x-transition
             @click="window.scrollTo({top:0,behavior:'smooth'})"
-            class="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-xl bg-primary text-white shadow-lg hover:bg-primary-dark transition-all flex items-center justify-center cursor-pointer"
+            class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-xl bg-primary text-white shadow-lg hover:bg-primary-dark transition-all flex items-center justify-center cursor-pointer"
             aria-label="العودة إلى الأعلى">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>

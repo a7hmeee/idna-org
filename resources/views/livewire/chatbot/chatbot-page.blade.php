@@ -3,8 +3,8 @@
         {{-- Header --}}
         <header class="shrink-0 bg-surface border-b border-border px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-primary-light flex items-center justify-center">
-                    <i data-lucide="bot" class="w-5 h-5 text-primary"></i>
+                <div class="w-10 h-10 rounded-full overflow-hidden border border-border">
+                    <img src="{{ asset('robot.png') }}" alt="المساعد الذكي" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="text-sm font-bold text-text">المساعد الذكي لبلدية إذنا</h1>

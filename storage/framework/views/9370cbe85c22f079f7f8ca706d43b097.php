@@ -1,5 +1,5 @@
 <div class="fixed bottom-5 left-4 z-[70] flex flex-col items-end gap-3 animate-chatbot-rise"
-     x-data="{ open: <?php if ((object) ('widgetOpen') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('widgetOpen'->value()); ?>')<?php echo e('widgetOpen'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('widgetOpen'); ?>')<?php endif; ?>, showWelcome: true, toggleChat() { this.open = !this.open; if (this.open) { this.showWelcome = false; } else { this.showWelcome = true; } }, openChat() { this.open = true; this.showWelcome = false; }, closeChat() { this.open = false; this.showWelcome = true; } }"
+     x-data="{ open: false, showWelcome: true, toggleChat() { this.open = !this.open; if (this.open) { this.showWelcome = false; } else { this.showWelcome = true; } }, openChat() { this.open = true; this.showWelcome = false; }, closeChat() { this.open = false; this.showWelcome = true; } }"
      @keydown.escape.window="if(open) closeChat()">
 
     
@@ -48,13 +48,6 @@
                 </button>
             </div>
         </header>
-
-        
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($disclaimer): ?>
-            <div class="shrink-0 bg-white/50 border-b border-white/20 px-4 py-2">
-                <p class="text-[11px] text-text-secondary text-center"><?php echo e($disclaimer); ?></p>
-            </div>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         
         <div class="flex-1 overflow-y-auto px-3 py-3 space-y-2.5 scroll-smooth" x-ref="msgList">
@@ -119,7 +112,7 @@
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <?php else: ?>
                 <div class="flex flex-col items-center justify-center py-6 text-center">
-                    <p class="text-sm text-white/60">المساعد الذكي غير متاح حاليًا</p>
+                    <p class="text-sm text-text-secondary">المساعد الذكي غير متاح حاليًا</p>
                 </div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>

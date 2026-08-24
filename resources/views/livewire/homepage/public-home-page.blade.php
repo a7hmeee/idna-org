@@ -56,7 +56,7 @@
     };
 @endphp
 
-<div style="min-height:100vh;background:white;width:100%;max-width:100%;">
+<div style="min-height:100vh;background:white;width:100%;max-width:100%;overflow-x:hidden;">
 
     {{-- ============================================ --}}
     {{-- HERO SECTION --}}

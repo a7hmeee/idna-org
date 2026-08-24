@@ -199,8 +199,8 @@
 }
 
 @keyframes chatbotRise {
-    from { transform: translateY(10px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 @utility animate-chatbot-rise {
     animation: chatbotRise 0.5s ease-out forwards;
@@ -891,10 +891,10 @@ input:focus-visible {
     overflow: hidden;
 }
 .ph-brand-logo img {
-    width: 28px !important;
-    height: 28px !important;
-    max-width: 28px !important;
-    max-height: 28px !important;
+    width: 36px !important;
+    height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
     object-fit: contain;
     display: block;
 }
@@ -1120,10 +1120,10 @@ input:focus-visible {
     overflow: hidden;
 }
 .ph-mobile-logo img {
-    width: 22px !important;
-    height: 22px !important;
-    max-width: 22px !important;
-    max-height: 22px !important;
+    width: 28px !important;
+    height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
     object-fit: contain;
     display: block;
 }
@@ -1206,10 +1206,10 @@ input:focus-visible {
     overflow: hidden;
 }
 .ph-drawer-logo img {
-    width: 28px !important;
-    height: 28px !important;
-    max-width: 28px !important;
-    max-height: 28px !important;
+    width: 34px !important;
+    height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
     object-fit: contain;
     display: block;
 }

@@ -47,7 +47,7 @@
             aria-label="عرض الشرائح">
 
             {{-- Slides --}}
-            <div class="relative" style="min-height:{{ $heroHeight }};">
+            <div class="relative overflow-hidden" style="height:{{ $heroHeight }};">
                 @if ($hasSlides)
                     @foreach ($slides as $index => $slide)
                         <div x-show="current === {{ $index }}"
@@ -63,20 +63,20 @@
                              aria-label="{{ 'شريحة ' . ($index + 1) . ' من ' . $slideCount }}">
                             <img src="{{ $slide->image_url }}"
                                  alt="{{ $slide->title ?? '' }}"
-                                 class="hidden md:block w-full h-full object-cover object-center page-hero-zoom"
-                                 style="min-height:{{ $heroHeight }};animation:pageHeroZoom 9s ease-out forwards;"
+                                 class="hidden md:block absolute inset-0 w-full h-full object-cover object-center page-hero-zoom"
+                                 style="animation:pageHeroZoom 9s ease-out forwards;"
                                  @if ($index === 0) fetchpriority="high" loading="eager" @else loading="lazy" decoding="async" @endif
                                  onerror="this.parentElement.style.background='linear-gradient(135deg, #073A25, #0F6A3D, #2B8A4B)'; this.style.display='none';">
                             <img src="{{ $slide->mobile_image_url ?? $slide->image_url }}"
                                  alt="{{ $slide->title ?? '' }}"
-                                 class="md:hidden w-full h-full object-cover object-center page-hero-zoom"
-                                 style="min-height:{{ $heroHeight }};animation:pageHeroZoom 9s ease-out forwards;"
+                                 class="md:hidden absolute inset-0 w-full h-full object-cover object-center page-hero-zoom"
+                                 style="animation:pageHeroZoom 9s ease-out forwards;"
                                  loading="lazy" decoding="async"
                                  onerror="this.parentElement.style.background='linear-gradient(135deg, #073A25, #0F6A3D, #2B8A4B)'; this.style.display='none';">
                         </div>
                     @endforeach
                 @elseif ($bgImage)
-                    <img src="{{ $bgImage }}" alt="" class="w-full h-full object-cover object-center page-hero-zoom" style="min-height:{{ $heroHeight }};animation:pageHeroZoom 9s ease-out forwards;" fetchpriority="high" loading="eager">
+                    <img src="{{ $bgImage }}" alt="" class="absolute inset-0 w-full h-full object-cover object-center page-hero-zoom" style="animation:pageHeroZoom 9s ease-out forwards;" fetchpriority="high" loading="eager">
                 @else
                     <div class="w-full h-full" style="background:linear-gradient(135deg, #073A25, #0F6A3D, #2B8A4B);min-height:{{ $heroHeight }};"></div>
                 @endif
