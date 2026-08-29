@@ -8,6 +8,7 @@ use App\Domains\ElectronicServices\Actions\RecordPortalClickAction;
 use App\Domains\ElectronicServices\Actions\RecordServiceViewAction;
 use App\Domains\ElectronicServices\Contracts\ElectronicServiceRepositoryInterface;
 use App\Domains\ElectronicServices\Models\ElectronicService;
+use App\Domains\ElectronicServices\Models\ServiceCategory;
 use App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
@@ -18,8 +19,9 @@ final class PublicServiceDetail extends Component
 
     public Collection $relatedServices;
 
-    public function mount(ElectronicService $service): void
+    public function mount(ServiceCategory $category, ElectronicService $service): void
     {
+        abort_unless($category->is_public && $category->status === 'active', 404);
         abort_unless($service->is_public && $service->status === 'active', 404);
 
         $this->service = $service->load(['category', 'department']);

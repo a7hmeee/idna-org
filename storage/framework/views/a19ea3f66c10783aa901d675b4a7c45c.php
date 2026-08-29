@@ -1,117 +1,140 @@
 <?php
     $statusConfig = [
-        'available' => ['label' => 'متوفرة', 'color' => 'bg-success-light text-success'],
-        'low_pressure' => ['label' => 'ضغط منخفض', 'color' => 'bg-accent-light/30 text-accent-dark'],
-        'maintenance' => ['label' => 'صيانة', 'color' => 'bg-warning-light text-warning'],
-        'emergency' => ['label' => 'طارئ', 'color' => 'bg-danger-light text-danger'],
-        'no_water' => ['label' => 'مقطوعة', 'color' => 'bg-surface-hover text-text-secondary'],
+        'available'     => ['label' => 'متوفر',   'color' => '#176B32', 'bg' => '#EAF5EE', 'dot' => '#176B32'],
+        'low_pressure'  => ['label' => 'ضغط منخفض', 'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
+        'maintenance'   => ['label' => 'صيانة',    'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
+        'emergency'     => ['label' => 'طارئ',     'color' => '#DC2626', 'bg' => '#FEE2E2', 'dot' => '#DC2626'],
+        'no_water'      => ['label' => 'مقطوع',    'color' => '#6B7280', 'bg' => '#F3F4F6', 'dot' => '#D1D5DB'],
     ];
-    $todaySchedules = collect($waterSchedule)->take(6);
+
+    $schedules = collect($waterSchedule);
+    $hasData = $schedules->isNotEmpty();
+
+    $todayDayName = now()->locale('ar')->translatedFormat('l');
+    $todayDateShort = now()->locale('ar')->translatedFormat('d/m/Y');
+    $scheduleDate = $hasData ? \Carbon\Carbon::parse($schedules->first()['schedule_date'] ?? now())->locale('ar')->translatedFormat('d/m/Y') : null;
+    $isToday = $hasData && \Carbon\Carbon::parse($schedules->first()['schedule_date'] ?? now())->isToday();
 ?>
 
-<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($todaySchedules->isNotEmpty()): ?>
-<section id="water-schedule" class="section-py bg-white overflow-hidden">
+<section id="water-schedule" style="background: #F8F9F6; padding: 1.5rem 0;">
     <div class="container-home">
+
         
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-            <div>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold bg-primary-light text-primary mb-3">
-                    <i data-lucide="droplets" class="w-3.5 h-3.5"></i>
-                    جدول توزيع المياه
-                </span>
-                <h2 class="text-3xl sm:text-4xl lg:text-[34px] font-black text-text leading-tight"><?php echo e($sectionTitle ?? 'جدول توزيع المياه'); ?></h2>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sectionSubtitle): ?>
-                    <p class="text-sm sm:text-base text-text-secondary mt-3 max-w-xl leading-relaxed"><?php echo e($sectionSubtitle); ?></p>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+                <span class="w-1 h-5 rounded-full" style="background: var(--color-primary);"></span>
+                <h2 class="text-lg font-black" style="color: #1A1F16;"><?php echo e($sectionTitle ?? 'جدول توزيع المياه'); ?></h2>
+            </div>
+            <div class="flex items-center gap-2">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasData): ?>
+                    <span class="text-[10px] font-medium px-1.5 py-0.5 rounded" style="background: #EAF5EE; color: #176B32;">
+                        <?php echo e($schedules->count()); ?> منطقة
+                    </span>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('public.water-schedule')): ?>
+                    <a href="<?php echo e(route('public.water-schedule')); ?>" wire:navigate
+                       class="inline-flex items-center gap-0.5 text-[11px] font-semibold transition-opacity"
+                       style="color: var(--color-primary);"
+                       onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">
+                        عرض الجدول الكامل
+                        <i data-lucide="chevron-left" class="w-3 h-3"></i>
+                    </a>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('public.water-schedule')): ?>
-                <a href="<?php echo e(route('public.water-schedule')); ?>" wire:navigate class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-all shadow-sm whitespace-nowrap">
-                    <span>عرض الجدول الكامل</span>
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                </a>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         
-        <div class="bg-gradient-to-br from-[#F4F5F1] to-white rounded-3xl border border-border/60 p-8 sm:p-10 shadow-lg">
-            <div class="grid lg:grid-cols-12 gap-8 items-start">
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasData): ?>
+            <div class="rounded-xl overflow-hidden" style="background: white; border: 1px solid #E5E7E0;">
+
                 
-                <div class="lg:col-span-4">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center">
-                            <i data-lucide="calendar-clock" class="w-7 h-7 text-white"></i>
+                <div class="flex items-center gap-3 px-4 py-2" style="background: #FAFAF8; border-bottom: 1px solid #EEF0EB;">
+                    <div class="flex items-center gap-1.5">
+                        <i data-lucide="calendar" class="w-3 h-3" style="color: var(--color-primary);"></i>
+                        <span class="text-[11px] font-semibold" style="color: #1A1F16;"><?php echo e($todayDayName); ?> <?php echo e($todayDateShort); ?></span>
+                    </div>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasData && $scheduleDate): ?>
+                        <span class="text-[10px]" style="color: #D1D5CB;">|</span>
+                        <div class="flex items-center gap-1">
+                            <i data-lucide="clock" class="w-2.5 h-2.5" style="color: #9CA3AF;"></i>
+                            <span class="text-[10px]" style="color: #6B7562;">آخر تحديث <?php echo e($scheduleDate); ?></span>
                         </div>
-                        <div>
-                            <p class="font-black text-text text-lg">جدول توزيع المياه</p>
-                            <p class="text-xs text-text-muted"><?php echo e(now()->locale('ar')->translatedFormat('l d F Y')); ?></p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $statusConfig; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $cfg): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold <?php echo e($cfg['color']); ?>"><?php echo e($cfg['label']); ?></span>
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-                    </div>
-                    <div class="mt-6 p-4 rounded-2xl bg-accent-light/20 border border-accent/20">
-                        <p class="text-xs text-accent-dark flex items-center gap-1.5">
-                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5 flex-shrink-0"></i>
-                            قد تتغير المواعيد وفق الظروف الفنية
-                        </p>
-                    </div>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isToday): ?>
+                        <span class="inline-flex items-center gap-1 mr-auto">
+                            <span class="w-1.5 h-1.5 rounded-full" style="background: #176B32;"></span>
+                            <span class="text-[10px] font-bold" style="color: #176B32;">جدول اليوم</span>
+                        </span>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 
-                <div class="lg:col-span-8">
-                    <div class="bg-white rounded-2xl border border-border/50 overflow-hidden shadow-sm">
-                        <div class="grid grid-cols-12 gap-0">
+                <div>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $schedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                        <?php
+                            $areaName = $schedule['area']['name'] ?? '—';
+                            $status = $schedule['status'] ?? '';
+                            $statusStr = is_object($status) ? ($status->value ?? (string) $status) : (string) $status;
+                            $statusInfo = $statusConfig[$statusStr] ?? ['label' => $statusStr, 'color' => '#6B7562', 'bg' => '#F3F4F6', 'dot' => '#D1D5DB'];
+                            $start = $schedule['start_time'] ?? '';
+                            $end = $schedule['end_time'] ?? '';
+                            $isLast = $index === $schedules->count() - 1;
+                        ?>
+                        <div class="flex items-center gap-3 px-4 py-2.5"
+                             style="<?php echo e($isLast ? '' : 'border-bottom: 1px solid #F3F4F6;'); ?>">
                             
-                            <div class="col-span-12 grid grid-cols-12 gap-0 px-5 py-3 bg-[#F4F5F1] border-b border-border/50 text-[10px] font-bold text-text-muted">
-                                <div class="col-span-5">المنطقة</div>
-                                <div class="col-span-3 text-center">التوقيت</div>
-                                <div class="col-span-2 text-center">الحالة</div>
-                                <div class="col-span-2 text-left">ملاحظات</div>
+                            <div class="flex-shrink-0 relative">
+                                <span class="block w-2 h-2 rounded-full" style="background: <?php echo e($statusInfo['dot']); ?>;"></span>
                             </div>
+
                             
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $todaySchedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                                <?php
-                                    $areaName = $schedule['area']['name'] ?? 'منطقة غير محددة';
-                                    $status = $schedule['status'] ?? '';
-                                    $statusStr = is_object($status) ? ($status->value ?? $status) : (string) $status;
-                                    $statusInfo = $statusConfig[$statusStr] ?? ['label' => $statusStr, 'color' => 'bg-surface-hover text-text-secondary'];
-                                    $start = $schedule['start_time'] ?? '';
-                                    $end = $schedule['end_time'] ?? '';
-                                    $notes = $schedule['notes'] ?? '';
-                                ?>
-                                <div class="col-span-12 grid grid-cols-12 gap-0 px-5 py-4 border-b border-border/30 last:border-0 hover:bg-primary-light/20 transition-colors items-center">
-                                    <div class="col-span-5 flex items-center gap-2.5">
-                                        <div class="w-8 h-8 rounded-lg bg-primary-light flex items-center justify-center flex-shrink-0">
-                                            <i data-lucide="map-pin" class="w-4 h-4 text-primary"></i>
-                                        </div>
-                                        <span class="text-sm font-bold text-text"><?php echo e($areaName); ?></span>
-                                    </div>
-                                    <div class="col-span-3 text-center">
-                                        <span class="text-xs font-semibold text-text inline-flex items-center gap-1">
-                                            <i data-lucide="clock" class="w-3 h-3 text-primary"></i>
-                                            <?php echo e($start); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($end): ?> - <?php echo e($end); ?><?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                        </span>
-                                    </div>
-                                    <div class="col-span-2 text-center">
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold whitespace-nowrap <?php echo e($statusInfo['color']); ?>"><?php echo e($statusInfo['label']); ?></span>
-                                    </div>
-                                    <div class="col-span-2 text-left">
-                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($notes): ?>
-                                            <span class="text-[10px] text-text-muted"><?php echo e($notes); ?></span>
-                                        <?php else: ?>
-                                            <span class="text-[10px] text-text-muted">—</span>
-                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                    </div>
-                                </div>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                            <div class="flex items-center gap-1.5 min-w-0 flex-shrink-0" style="width: 30%;">
+                                <i data-lucide="map-pin" class="w-3 h-3 flex-shrink-0" style="color: #9CA3AF;"></i>
+                                <span class="text-sm font-bold truncate" style="color: #1A1F16;"><?php echo e($areaName); ?></span>
+                            </div>
+
+                            
+                            <div class="flex items-center gap-1.5 flex-1 min-w-0 justify-center">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($start && $end): ?>
+                                    <span class="text-[13px] font-medium" style="color: #374151;" dir="ltr"><?php echo e($start); ?> — <?php echo e($end); ?></span>
+                                <?php elseif($start): ?>
+                                    <span class="text-[13px] font-medium" style="color: #374151;" dir="ltr"><?php echo e($start); ?></span>
+                                <?php else: ?>
+                                    <span class="text-[10px]" style="color: #D1D5CB;">—</span>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </div>
+
+                            
+                            <div class="flex-shrink-0">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold"
+                                      style="background: <?php echo e($statusInfo['bg']); ?>; color: <?php echo e($statusInfo['color']); ?>;">
+                                    <span class="w-1.5 h-1.5 rounded-full" style="background: <?php echo e($statusInfo['dot']); ?>;"></span>
+                                    <?php echo e($statusInfo['label']); ?>
+
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                </div>
+
+                
+                <div class="flex items-center gap-1.5 px-4 py-1.5" style="background: #FAFAF8; border-top: 1px solid #EEF0EB;">
+                    <i data-lucide="info" class="w-2.5 h-2.5" style="color: #D1D5CB;"></i>
+                    <span class="text-[9px]" style="color: #9CA3AF;">قد تتغير المواعيد وفق الظروف الفنية</span>
                 </div>
             </div>
-        </div>
+
+        <?php else: ?>
+            
+            <div class="rounded-xl px-4 py-6 text-center" style="background: white; border: 1px solid #E5E7E0;">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2" style="background: #F3F4F6;">
+                    <i data-lucide="droplets" class="w-4 h-4" style="color: #9CA3AF;"></i>
+                </div>
+                <p class="text-xs font-bold mb-0.5" style="color: #1A1F16;">لا يوجد جدول توزيع منشور حالياً</p>
+                <p class="text-[10px]" style="color: #6B7562;">سيتم نشره فور توفره</p>
+            </div>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
     </div>
 </section>
-<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php /**PATH C:\Users\ahmed\idna-org\resources\views/livewire/homepage/sections/water-status.blade.php ENDPATH**/ ?>

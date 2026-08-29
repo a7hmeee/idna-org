@@ -38,15 +38,15 @@
         </p>
 
         {{-- Pagination buttons --}}
-        <div class="flex items-center gap-1">
+        <div class="flex flex-wrap items-center gap-1 justify-center">
             {{-- Previous --}}
             @if ($paginator->onFirstPage())
-                <span style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#D1D5DB;cursor:default;">
+                <span style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#D1D5DB;cursor:default;">
                     <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
                 </span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" rel="prev"
-                   style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#6B7280;text-decoration:none;transition:all 0.2s;"
+                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="الصفحة السابقة"
+                   style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#6B7280;text-decoration:none;transition:all 0.2s;"
                    onmouseover="this.style.background='#F3F4F6';this.style.borderColor='#E5E7EB';this.style.color='#0F6A3D'"
                    onmouseout="this.style.background='#F9FAFB';this.style.borderColor='#F3F4F6';this.style.color='#6B7280'">
                     <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
@@ -56,14 +56,14 @@
             {{-- Page numbers --}}
             @foreach ($elements as $element)
                 @if (is_string($element))
-                    <span style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#D1D5DB;cursor:default;">{{ $element }}</span>
+                    <span style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#D1D5DB;cursor:default;">{{ $element }}</span>
                 @elseif (is_array($element))
                     @foreach ($element as $url => $page)
                         @if ($page == $paginator->currentPage())
-                            <span style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#0F6A3D;color:white;box-shadow:0 2px 8px rgba(15,106,61,0.2);cursor:default;">{{ $page }}</span>
+                            <span style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#0F6A3D;color:white;box-shadow:0 2px 8px rgba(15,106,61,0.2);cursor:default;" aria-current="page">{{ $page }}</span>
                         @else
                             <a href="{{ $url }}"
-                               style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#6B7280;text-decoration:none;transition:all 0.2s;"
+                               style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#6B7280;text-decoration:none;transition:all 0.2s;"
                                onmouseover="this.style.background='#F3F4F6';this.style.color='#0F6A3D'"
                                onmouseout="this.style.background='transparent';this.style.color='#6B7280'">{{ $page }}</a>
                         @endif
@@ -73,14 +73,14 @@
 
             {{-- Next --}}
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" rel="next"
-                   style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#6B7280;text-decoration:none;transition:all 0.2s;"
+                <a href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="الصفحة التالية"
+                   style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#6B7280;text-decoration:none;transition:all 0.2s;"
                    onmouseover="this.style.background='#F3F4F6';this.style.borderColor='#E5E7EB';this.style.color='#0F6A3D'"
                    onmouseout="this.style.background='#F9FAFB';this.style.borderColor='#F3F4F6';this.style.color='#6B7280'">
                     <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
                 </a>
             @else
-                <span style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#D1D5DB;cursor:default;">
+                <span style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#F9FAFB;border:1px solid #F3F4F6;color:#D1D5DB;cursor:default;">
                     <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
                 </span>
             @endif

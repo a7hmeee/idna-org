@@ -22,7 +22,7 @@
                     <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i>
                     إحصائيات البلدية
                 </span>
-                <h2 class="text-[clamp(28px,3.2vw,38px)] font-extrabold text-white leading-[1.2]">{{ $sectionTitle ?? 'إحصائيات بلدية إذنا' }}</h2>
+                <h2 class="text-[clamp(30px,3.5vw,42px)] font-extrabold text-white leading-[1.2]">{{ $sectionTitle ?? 'إحصائيات بلدية إذنا' }}</h2>
                 @if ($sectionSubtitle)
                     <p class="mt-3 text-sm sm:text-base max-w-2xl mx-auto" style="color:rgba(255,255,255,0.55);">{{ $sectionSubtitle }}</p>
                 @endif
@@ -36,13 +36,13 @@
                                 <i data-lucide="{{ $stat['icon'] }}" class="w-5 h-5" style="color:#A5D6A7;"></i>
                             </div>
                         @endif
-                        <p class="text-2xl sm:text-3xl font-black text-white leading-none">
+                        <p class="text-3xl sm:text-4xl font-black text-white leading-none">
                             {{ number_format((int) ($stat['value'] ?? 0)) }}
                             @if (!empty($stat['suffix']))
-                                <span class="text-sm font-bold mr-0.5" style="color:#C8A85A;">{{ $stat['suffix'] }}</span>
+                                <span class="text-base font-bold mr-0.5" style="color:#C8A85A;">{{ $stat['suffix'] }}</span>
                             @endif
                         </p>
-                        <p class="text-xs font-medium mt-1" style="color:rgba(255,255,255,0.6);">{{ $stat['label'] ?? '' }}</p>
+                        <p class="text-sm font-medium mt-1.5" style="color:rgba(255,255,255,0.6);">{{ $stat['label'] ?? '' }}</p>
                         @if (!empty($stat['description']))
                             <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.3);">{{ $stat['description'] }}</p>
                         @endif

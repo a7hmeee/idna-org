@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Homepage;
 
+use App\Domains\Homepage\Actions\CacheForgetHomepageDataAction;
 use App\Domains\Homepage\Actions\CreateHomepageSlideAction;
 use App\Domains\Homepage\Actions\UpdateHomepageSlideAction;
 use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
@@ -91,7 +92,7 @@ final class HomepageSlideForm extends Component
             'title' => ['required', 'string', 'max:255'],
             'subtitle' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'buttonText' => ['nullable', 'string', 'max:255'],
             'buttonUrl' => ['nullable', 'string', 'max:500'],
             'secondaryButtonText' => ['nullable', 'string', 'max:255'],
@@ -104,6 +105,13 @@ final class HomepageSlideForm extends Component
         ]);
 
         if ($this->image) {
+            if ($this->slideId && $this->existingImageUrl) {
+                $repo = app(HomepageRepositoryInterface::class);
+                $existingSlide = $repo->findSlide($this->slideId);
+                if ($existingSlide && $existingSlide->image_path && Storage::disk('public')->exists($existingSlide->image_path)) {
+                    Storage::disk('public')->delete($existingSlide->image_path);
+                }
+            }
             $validated['imagePath'] = $this->image->store('homepage/slides', 'public');
         }
 
@@ -137,6 +145,8 @@ final class HomepageSlideForm extends Component
         $repo->updateSlide($this->slideId, ['image_path' => null]);
         $this->existingImageUrl = null;
         $this->image = null;
+
+        CacheForgetHomepageDataAction::execute();
 
         session()->flash('success', 'تم حذف الصورة بنجاح.');
     }

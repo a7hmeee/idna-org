@@ -22,6 +22,7 @@
                     <div class="flex-1 relative">
                         <i data-lucide="search" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"></i>
                         <input type="text" wire:model.live.debounce.400ms="search"
+                               aria-label="ابحث ضمن{{ ' ' . $category->name }}"
                                placeholder="ابحث ضمن {{ $category->name }}..."
                                class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pr-10 pl-4 text-sm text-gray-900 outline-none transition-all duration-200"
                                onfocus="this.style.borderColor='#0F6A3D';this.style.boxShadow='0 0 0 3px rgba(15,106,61,0.1)'"
@@ -109,7 +110,7 @@
 
                 @if ($services->hasPages())
                     <div class="mt-10">
-                        {{ $services->links() }}
+                        <x-ui.pagination :paginator="$services" />
                     </div>
                 @endif
             @endif

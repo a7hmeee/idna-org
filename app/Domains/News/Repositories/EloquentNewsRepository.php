@@ -129,23 +129,46 @@ final readonly class EloquentNewsRepository implements NewsRepositoryInterface
 
     public function getFeatured(): Collection
     {
-        return Cache::remember('news_featured_v1', 3600, function (): Collection {
+        $cached = Cache::remember('news_featured_v2', 3600, function (): array {
             return $this->model->published()
                 ->featured()
                 ->orderBy('publish_at', 'desc')
                 ->take(5)
-                ->get();
+                ->get()
+                ->toArray();
         });
+
+        return $this->hydrateCollection($cached);
     }
 
     public function getLatest(int $limit = 5): Collection
     {
-        return Cache::remember('news_latest_v1', 3600, function () use ($limit): Collection {
+        $cached = Cache::remember('news_latest_v2', 3600, function () use ($limit): array {
             return $this->model->published()
                 ->orderBy('publish_at', 'desc')
                 ->take($limit)
-                ->get();
+                ->get()
+                ->toArray();
         });
+
+        return $this->hydrateCollection($cached);
+    }
+
+    /**
+     * Reconstruct Eloquent models from cached arrays.
+     */
+    private function hydrateCollection(array $rows): Collection
+    {
+        $models = new \Illuminate\Database\Eloquent\Collection;
+
+        foreach ($rows as $row) {
+            $model = new NewsItem;
+            $model->forceFill($row);
+            $model->exists = true;
+            $models->push($model);
+        }
+
+        return $models;
     }
 
     private function findOrFail(int $id): NewsItem
@@ -161,6 +184,8 @@ final readonly class EloquentNewsRepository implements NewsRepositoryInterface
 
     private function forgetCache(): void
     {
+        Cache::forget('news_featured_v2');
+        Cache::forget('news_latest_v2');
         Cache::forget('news_featured_v1');
         Cache::forget('news_latest_v1');
         Cache::forget('homepage.public.data');

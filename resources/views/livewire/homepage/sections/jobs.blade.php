@@ -6,7 +6,7 @@
                     <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
                     الوظائف والمكاتب الهندسية
                 </span>
-                <h2 class="text-3xl sm:text-4xl lg:text-[34px] font-black text-text leading-tight">{{ $sectionTitle ?? 'فرص عمل ومكاتب معتمدة' }}</h2>
+                <h2 class="text-3xl sm:text-4xl lg:text-[38px] font-black text-text leading-tight">{{ $sectionTitle ?? 'فرص عمل ومكاتب معتمدة' }}</h2>
                 @if ($sectionSubtitle)
                     <p class="text-sm sm:text-base text-text-secondary mt-3 max-w-xl leading-relaxed">{{ $sectionSubtitle }}</p>
                 @endif
@@ -99,8 +99,8 @@
                             <p class="text-[11px] text-text-secondary">مكاتب معتمدة لدى البلدية</p>
                         </div>
                     </div>
-                    @if (Route::has('public.departments.index'))
-                        <a href="{{ route('public.departments.index') }}" wire:navigate class="text-xs font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1 no-underline">
+                    @if (Route::has('public.engineering-offices.index'))
+                        <a href="{{ route('public.engineering-offices.index') }}" wire:navigate class="text-xs font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1 no-underline">
                             <span>عرض الكل</span>
                             <i data-lucide="arrow-left" class="w-3 h-3"></i>
                         </a>

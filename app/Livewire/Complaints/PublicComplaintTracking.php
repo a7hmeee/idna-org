@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Livewire\Complaints;
 
 use App\Domains\Complaints\Models\Complaint;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 final class PublicComplaintTracking extends Component
 {
+    #[Url]
     public string $trackingNumber = '';
 
     public bool $searched = false;

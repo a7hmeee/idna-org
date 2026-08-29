@@ -66,17 +66,7 @@
             {{-- Top Bar: Search + View Toggle --}}
             <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;">
                 <div style="display:flex;align-items:center;gap:8px;">
-                    {{-- View Toggle --}}
-                    <div style="display:flex;align-items:center;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;overflow:hidden;">
-                        <button style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#F3F4F6;color:#6B7280;border:none;cursor:pointer;transition:all 0.2s;">
-                            <i data-lucide="list" style="width:16px;height:16px;"></i>
-                        </button>
-                        <button style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#0F6A3D;color:white;border:none;cursor:pointer;">
-                            <i data-lucide="grid-3x2" style="width:16px;height:16px;"></i>
-                        </button>
-                    </div>
-
-                    {{-- Filter Button --}}
+                                        {{-- Filter Button --}}
                     <button style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:#0F6A3D;color:white;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;"
                             wire:click="toggleFilters"
                             onmouseover="this.style.background='#0D5C34'"
@@ -91,7 +81,8 @@
                 {{-- Search Input --}}
                 <div style="flex:1;max-width:400px;position:relative;">
                     <i data-lucide="search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#9CA3AF;pointer-events:none;"></i>
-                    <input type="text" wire:model.live.debounce.400ms="search"
+                    <span class="sr-only" role="status" wire:loading wire:target="search">جاري تحديث النتائج…</span>
+<input type="text" wire:model.live.debounce.400ms="search" aria-label="ابحث عن قرار"
                            placeholder="ابحث عن قرار..."
                            style="width:100%;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:12px 44px 12px 16px;font-size:13px;color:#1F2937;outline:none;transition:all 0.2s;"
                            onfocus="this.style.borderColor='#0F6A3D';this.style.boxShadow='0 0 0 3px rgba(15,106,61,0.1)'"
@@ -106,11 +97,13 @@
                     <p style="font-size:13px;font-weight:600;color:#4B5563;margin:0 0 10px;">السنة</p>
                     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
                         <button wire:click="$set('year', '')"
+                                aria-pressed="{{ $year == '' }}"
                                 style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $year == '' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $year == '' ? '#0F6A3D' : 'white' }};color:{{ $year == '' ? 'white' : '#6B7280' }};">
                             الكل
                         </button>
                         @foreach ($years as $y)
                             <button wire:click="$set('year', '{{ $y }}')"
+                                    aria-pressed="{{ $year == $y }}"
                                     style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $year == $y ? '#0F6A3D' : '#E5E7EB' }};background:{{ $year == $y ? '#0F6A3D' : 'white' }};color:{{ $year == $y ? 'white' : '#6B7280' }};">
                                 {{ $y }}
                             </button>
@@ -122,11 +115,13 @@
                 <p style="font-size:13px;font-weight:600;color:#4B5563;margin:0 0 10px;">النوع</p>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;">
                     <button wire:click="$set('type', '')"
+                            aria-pressed="{{ $type == '' }}"
                             style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $type == '' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $type == '' ? '#0F6A3D' : 'white' }};color:{{ $type == '' ? 'white' : '#6B7280' }};">
                         الكل
                     </button>
                     @foreach ($typeOptions as $value => $label)
                         <button wire:click="$set('type', '{{ $value }}')"
+                                aria-pressed="{{ $type == $value }}"
                                 style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $type == $value ? '#0F6A3D' : '#E5E7EB' }};background:{{ $type == $value ? '#0F6A3D' : 'white' }};color:{{ $type == $value ? 'white' : '#6B7280' }};">
                             {{ $label }}
                         </button>
@@ -150,7 +145,7 @@
                     <div style="width:64px;height:64px;border-radius:16px;background:rgba(15,106,61,0.06);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
                         <i data-lucide="file-x" style="width:32px;height:32px;color:#9CA3AF;"></i>
                     </div>
-                    <h3 style="font-size:16px;font-weight:700;color:#1F2937;margin:0 0 8px;">لا توجد قرارات مطابقة</h3>
+                    <h2 style="font-size:16px;font-weight:700;color:#1F2937;margin:0 0 8px;">لا توجد قرارات مطابقة</h2>
                     <p style="font-size:13px;color:#9CA3AF;margin:0;">جرّب البحث بكلمات مختلفة أو غيّر الفلاتر</p>
                 </div>
             @else
@@ -186,9 +181,9 @@
                                 </div>
 
                                 {{-- Title --}}
-                                <h3 style="font-weight:700;font-size:14px;color:#1F2937;margin:0 0 6px;transition:color 0.2s;" class="group-hover:text-primary">
+                                <h2 style="font-weight:700;font-size:14px;color:#1F2937;margin:0 0 6px;transition:color 0.2s;" class="group-hover:text-primary">
                                     {{ $decision->title }}
-                                </h3>
+                                </h2>
 
                                 {{-- Summary --}}
                                 @if ($decision->summary)
@@ -206,10 +201,10 @@
                                     @if ($decision->attachment_path)
                                         @php
                                             $fileUrl = asset('storage/' . $decision->attachment_path);
-                                            $fileExists = \Illuminate\Support\Facades\Storage::disk('public')->exists($decision->attachment_path);
+                                            $fileExists = in_array($decision->attachment_path, $existingAttachments ?? []);
                                         @endphp
                                         @if ($fileExists)
-                                            <a href="{{ $fileUrl }}" target="_blank" rel="noopener noreferrer"
+                                            <a href="{{ $fileUrl }}" target="_blank" rel="noopener noreferrer" aria-label="تحميل مرفق القرار (PDF)"
                                                onclick="event.stopPropagation();"
                                                style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;background:rgba(15,106,61,0.07);color:#0F6A3D;font-size:11px;font-weight:600;text-decoration:none;transition:background 0.2s;">
                                                 <i data-lucide="file-text" style="width:11px;height:11px;"></i>

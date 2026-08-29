@@ -80,7 +80,7 @@ final class MunicipalityMedia extends Component
     {
         [$maxSize, $allowedMimes] = match ($this->collection) {
             'logo', 'white_logo', 'dark_logo', 'favicon', 'mobile_logo' => [2048, 'jpg,jpeg,png,gif,webp,svg'],
-            'hero', 'cover', 'banner', 'gallery', 'images', 'statistics_bg', 'portal-cta', 'departments-hero', 'council-hero', 'decisions-hero' => [5120, 'jpg,jpeg,png,gif,webp'],
+            'hero', 'cover', 'banner', 'gallery', 'images', 'about_image', 'statistics_bg', 'portal-cta', 'departments-hero', 'council-hero', 'decisions-hero' => [5120, 'jpg,jpeg,png,gif,webp'],
             default => [10240, 'jpg,jpeg,png,gif,webp,svg,pdf,doc,docx'],
         };
 
@@ -101,7 +101,7 @@ final class MunicipalityMedia extends Component
 
         [$maxSize, $allowedMimes] = match ($this->collection) {
             'logo', 'white_logo', 'dark_logo', 'favicon', 'mobile_logo' => [2048, 'jpg,jpeg,png,gif,webp,svg'],
-            'hero', 'cover', 'banner', 'gallery', 'images', 'statistics_bg', 'portal-cta', 'departments-hero', 'council-hero', 'decisions-hero' => [5120, 'jpg,jpeg,png,gif,webp'],
+            'hero', 'cover', 'banner', 'gallery', 'images', 'about_image', 'statistics_bg', 'portal-cta', 'departments-hero', 'council-hero', 'decisions-hero' => [5120, 'jpg,jpeg,png,gif,webp'],
             default => [10240, 'jpg,jpeg,png,gif,webp,svg,pdf,doc,docx'],
         };
 

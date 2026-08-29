@@ -36,7 +36,7 @@
                 <h3 class="text-sm font-bold text-text">آخر الأخبار</h3>
                 <p class="text-xs text-text-tertiary font-medium mt-0.5">أخبار وأنشطة البلدية</p>
             </div>
-            <a href="#" class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
+            <a href="{{ route('dashboard.news') }}" wire:navigate class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             @forelse ($news as $item)
@@ -71,25 +71,25 @@
             <h3 class="text-sm font-bold text-text">وصول سريع</h3>
         </div>
         <div class="grid grid-cols-2 gap-2">
-            <a href="#" class="quick-action hover:quick-action-hover !p-4">
+            <a href="{{ route('dashboard.services.index') }}" wire:navigate class="quick-action hover:quick-action-hover !p-4">
                 <div class="quick-action-icon bg-municipal-50">
                     <i data-lucide="file-text" class="w-5 h-5 text-primary"></i>
                 </div>
                 <span class="text-[11px] font-bold text-center">تقديم<br>معاملة</span>
             </a>
-            <a href="#" class="quick-action hover:quick-action-hover !p-4">
+            <a href="{{ route('dashboard.complaints') }}" wire:navigate class="quick-action hover:quick-action-hover !p-4">
                 <div class="quick-action-icon bg-warning-light">
                     <i data-lucide="message-square-warning" class="w-5 h-5 text-warning"></i>
                 </div>
                 <span class="text-[11px] font-bold text-center">تقديم<br>شكوى</span>
             </a>
-            <a href="#" class="quick-action hover:quick-action-hover !p-4">
+            <a href="{{ route('dashboard.water-schedule') }}" wire:navigate class="quick-action hover:quick-action-hover !p-4">
                 <div class="quick-action-icon bg-success-light">
                     <i data-lucide="receipt" class="w-5 h-5 text-success"></i>
                 </div>
-                <span class="text-[11px] font-bold text-center">الاستعلام عن<br>فاتورة</span>
+                <span class="text-[11px] font-bold text-center">جدول<br>المياه</span>
             </a>
-            <a href="#" class="quick-action hover:quick-action-hover !p-4">
+            <a href="{{ route('dashboard.municipality') }}" wire:navigate class="quick-action hover:quick-action-hover !p-4">
                 <div class="quick-action-icon bg-info-light">
                     <i data-lucide="calendar-check" class="w-5 h-5 text-info"></i>
                 </div>

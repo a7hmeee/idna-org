@@ -3,7 +3,7 @@
     'breadcrumbItems' => [],
 ])
 
-<header {{ $attributes->class(['sticky top-4 z-30 mx-4 mt-4 bg-surface/80 backdrop-blur-xl rounded-2xl border border-border shadow-sm']) }}>
+<header {{ $attributes->class(['sticky top-4 z-50 mx-4 mt-4 bg-surface/80 backdrop-blur-xl rounded-2xl border border-border shadow-sm', 'isolation-isolate']) }}>
     <div class="flex items-center justify-between h-14 px-5">
         {{-- Left: Mobile Menu + Breadcrumb --}}
         <div class="flex items-center gap-3">
@@ -32,8 +32,8 @@
             </div>
 
             {{-- Notifications --}}
-            <div x-data="{ notifOpen: false }" class="relative">
-                <button @click="notifOpen = !notifOpen" class="relative p-2 rounded-xl hover:bg-municipal-50 transition-colors">
+            <div x-data="{ notifOpen: false, _h: false, _t: null }" class="relative" @click.outside="if (!_h) notifOpen = false">
+                <button @click="notifOpen = !notifOpen" @mouseenter="_h = true; clearTimeout(_t)" @mouseleave="_t = setTimeout(() => _h = false, 150)" class="relative p-2 rounded-xl hover:bg-municipal-50 transition-colors">
                     <div class="absolute top-1.5 right-1.5 w-2 h-2 bg-danger rounded-full ring-2 ring-surface"></div>
                     <i data-lucide="bell" class="w-[18px] h-[18px] text-text-secondary"></i>
                 </button>
@@ -41,7 +41,6 @@
                 {{-- Notifications Dropdown --}}
                 <div
                     x-show="notifOpen"
-                    @click.outside="notifOpen = false"
                     x-cloak
                     x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0 scale-95"
@@ -49,6 +48,8 @@
                     x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100 scale-100"
                     x-transition:leave-end="opacity-0 scale-95"
+                    @mouseenter="_h = true; clearTimeout(_t)"
+                    @mouseleave="_t = setTimeout(() => _h = false, 150)"
                     class="absolute left-0 mt-2 w-80 bg-surface rounded-2xl shadow-xl border border-border py-2 z-50 origin-top"
                 >
                     <div class="px-4 py-2 border-b border-border">
@@ -110,8 +111,8 @@
             <div class="w-px h-6 bg-border mx-1.5"></div>
 
             {{-- User Menu --}}
-            <div x-data="{ open: false }" class="relative">
-                <button @click="open = !open" class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-municipal-50 transition-colors">
+            <div x-data="{ open: false, _h: false, _t: null }" class="relative" @click.outside="if (!_h) open = false">
+                <button @click="open = !open" @mouseenter="_h = true; clearTimeout(_t)" @mouseleave="_t = setTimeout(() => _h = false, 150)" class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-municipal-50 transition-colors">
                     <div class="w-8 h-8 rounded-full bg-primary text-surface font-bold text-xs flex items-center justify-center shadow-sm">
                         {{ substr(auth()->user()?->name ?? 'م', 0, 2) }}
                     </div>
@@ -127,7 +128,6 @@
                 {{-- User Dropdown --}}
                 <div
                     x-show="open"
-                    @click.outside="open = false"
                     x-cloak
                     x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0 scale-95"
@@ -135,6 +135,8 @@
                     x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100 scale-100"
                     x-transition:leave-end="opacity-0 scale-95"
+                    @mouseenter="_h = true; clearTimeout(_t)"
+                    @mouseleave="_t = setTimeout(() => _h = false, 150)"
                     class="absolute left-0 mt-2 w-52 bg-surface rounded-2xl shadow-xl border border-border py-1.5 z-50 origin-top"
                 >
                     <div class="px-4 py-3 border-b border-border">

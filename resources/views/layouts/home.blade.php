@@ -22,7 +22,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @stack('styles')
-    <style>[x-cloak] { display: none !important; } html { scroll-behavior: smooth; }
+    <style>[x-cloak] { display: none !important; } html { scroll-behavior: smooth; } @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
         /* Global mobile overflow prevention */
         @media (max-width: 768px) {
             html, body { overflow-x: hidden; max-width: 100vw; }
@@ -31,6 +31,11 @@
     </style>
 </head>
 <body class="bg-background font-sans text-text antialiased">
+
+    {{-- Skip to content link --}}
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg focus:text-sm focus:font-bold focus:no-underline focus:outline-none focus:ring-2 focus:ring-white">
+        انتقال إلى المحتوى الرئيسي
+    </a>
 
     @unless ($hideDefaultHeader ?? false)
         @include('livewire.homepage.sections.header', [
@@ -78,7 +83,7 @@
         </div>
     @endif
 
-    {{ $slot }}
+    <main id="main-content">{{ $slot }}</main>
 
     @unless ($hideDefaultFooter ?? false)
         @include('livewire.homepage.sections.footer', [

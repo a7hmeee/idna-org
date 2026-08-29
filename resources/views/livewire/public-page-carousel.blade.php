@@ -9,8 +9,10 @@
         } elseif ($fallbackImage) {
             $bgImage = $fallbackImage;
         }
-        $displayTitle = $pageTitle ?? ($hasSlides ? $slides->first()->title ?? null : null) ?? $fallbackTitle ?? '';
-        $displaySubtitle = $pageSubtitle ?? ($hasSlides ? $slides->first()->description ?? null : null) ?? $fallbackDescription ?? '';
+        $configTitle = $carouselConfig['title'] ?? null;
+        $configSubtitle = $carouselConfig['subtitle'] ?? null;
+        $displayTitle = $pageTitle ?? ($hasSlides ? $slides->first()->title ?? null : null) ?? $configTitle ?? $fallbackTitle ?? '';
+        $displaySubtitle = $pageSubtitle ?? ($hasSlides ? $slides->first()->description ?? null : null) ?? $configSubtitle ?? $fallbackDescription ?? '';
         $displayBadge = $pageBadge ?? ($hasSlides ? $slides->first()->badge_text ?? null : null) ?? $fallbackBadge ?? '';
         $isExternal = fn ($url) => parse_url($url, PHP_URL_HOST) !== null && parse_url($url, PHP_URL_HOST) !== request()->getHost();
     @endphp

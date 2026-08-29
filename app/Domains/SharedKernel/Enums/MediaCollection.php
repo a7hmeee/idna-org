@@ -20,6 +20,7 @@ enum MediaCollection: string
     case DepartmentsHero = 'departments-hero';
     case CouncilHero = 'council-hero';
     case DecisionsHero = 'decisions-hero';
+    case AboutImage = 'about_image';
     case MobileLogo = 'mobile_logo';
     case Attachment = 'attachment';
 
@@ -40,6 +41,7 @@ enum MediaCollection: string
             self::DepartmentsHero => 'صور كاروسيل الأقسام',
             self::CouncilHero => 'صور كاروسيل المجلس البلدي',
             self::DecisionsHero => 'خلفية هيرو القرارات',
+            self::AboutImage => 'صورة نبذة عن البلدية',
             self::MobileLogo => 'شعار الجوال',
             self::Attachment => 'مرفق',
         };

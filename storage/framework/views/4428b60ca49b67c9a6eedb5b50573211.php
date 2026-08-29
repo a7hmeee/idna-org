@@ -22,7 +22,7 @@
                     <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i>
                     إحصائيات البلدية
                 </span>
-                <h2 class="text-[clamp(28px,3.2vw,38px)] font-extrabold text-white leading-[1.2]"><?php echo e($sectionTitle ?? 'إحصائيات بلدية إذنا'); ?></h2>
+                <h2 class="text-[clamp(30px,3.5vw,42px)] font-extrabold text-white leading-[1.2]"><?php echo e($sectionTitle ?? 'إحصائيات بلدية إذنا'); ?></h2>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sectionSubtitle): ?>
                     <p class="mt-3 text-sm sm:text-base max-w-2xl mx-auto" style="color:rgba(255,255,255,0.55);"><?php echo e($sectionSubtitle); ?></p>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -36,14 +36,14 @@
                                 <i data-lucide="<?php echo e($stat['icon']); ?>" class="w-5 h-5" style="color:#A5D6A7;"></i>
                             </div>
                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                        <p class="text-2xl sm:text-3xl font-black text-white leading-none">
+                        <p class="text-3xl sm:text-4xl font-black text-white leading-none">
                             <?php echo e(number_format((int) ($stat['value'] ?? 0))); ?>
 
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($stat['suffix'])): ?>
-                                <span class="text-sm font-bold mr-0.5" style="color:#C8A85A;"><?php echo e($stat['suffix']); ?></span>
+                                <span class="text-base font-bold mr-0.5" style="color:#C8A85A;"><?php echo e($stat['suffix']); ?></span>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </p>
-                        <p class="text-xs font-medium mt-1" style="color:rgba(255,255,255,0.6);"><?php echo e($stat['label'] ?? ''); ?></p>
+                        <p class="text-sm font-medium mt-1.5" style="color:rgba(255,255,255,0.6);"><?php echo e($stat['label'] ?? ''); ?></p>
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($stat['description'])): ?>
                             <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.3);"><?php echo e($stat['description']); ?></p>
                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>

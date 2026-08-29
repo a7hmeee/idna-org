@@ -12,7 +12,7 @@
                 <h3 class="text-sm font-bold text-text">آخر الشكاوى</h3>
                 <p class="text-xs text-text-tertiary font-medium mt-0.5">غير المقروءة</p>
             </div>
-            <a href="#" class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
+            <a href="{{ route('dashboard.complaints') }}" wire:navigate class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
         </div>
         <div class="space-y-3">
             @forelse ($complaints as $complaint)
@@ -43,7 +43,7 @@
                 <h3 class="text-sm font-bold text-text">آخر النشاطات</h3>
                 <p class="text-xs text-text-tertiary font-medium mt-0.5">اليوم</p>
             </div>
-            <a href="#" class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
+            <a href="{{ route('dashboard.municipality') }}" wire:navigate class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
         </div>
         <div class="space-y-0">
             @forelse ($activities as $activity)
@@ -79,7 +79,7 @@
                 <h3 class="text-sm font-bold text-text">الأقسام</h3>
                 <p class="text-xs text-text-tertiary font-medium mt-0.5">نظرة عامة</p>
             </div>
-            <a href="#" class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
+            <a href="{{ route('dashboard.departments') }}" wire:navigate class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">عرض الكل</a>
         </div>
         <div class="space-y-4">
             @forelse ($departments as $dept)

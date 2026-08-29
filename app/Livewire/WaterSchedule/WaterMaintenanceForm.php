@@ -32,7 +32,7 @@ final class WaterMaintenanceForm extends Component
 
     public function mount(?WaterMaintenance $maintenance = null): void
     {
-        if ($maintenance->exists) {
+        if ($maintenance?->exists) {
             $this->authorize('update', WaterMaintenance::class);
 
             $this->maintenanceId = $maintenance->id;

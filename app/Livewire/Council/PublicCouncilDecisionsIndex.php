@@ -10,6 +10,7 @@ use App\Domains\Municipality\Contracts\CouncilDecisionRepositoryInterface;
 use App\Domains\Municipality\Enums\CouncilDecisionType;
 use App\Domains\Municipality\Models\Municipality;
 use App\Domains\SharedKernel\Models\Media;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -107,6 +108,15 @@ final class PublicCouncilDecisionsIndex extends Component
 
         $hasActiveFilters = $this->search !== '' || $this->type !== '' || $this->year !== '' || $this->sort !== 'latest';
 
+        $existingAttachments = collect($decisions->items())
+            ->filter(fn ($d) => ! empty($d->attachment_path))
+            ->pluck('attachment_path')
+            ->unique()
+            ->filter(fn ($path) => Storage::disk('public')->exists($path))
+            ->flip()
+            ->keys()
+            ->toArray();
+
         return view('livewire.council.public-council-decisions-index', [
             'decisions' => $decisions,
             'years' => $years,
@@ -116,6 +126,7 @@ final class PublicCouncilDecisionsIndex extends Component
             'heroImageUrl' => $heroImageUrl,
             'carouselImages' => $slides->pluck('image_url'),
             'hasActiveFilters' => $hasActiveFilters,
+            'existingAttachments' => $existingAttachments,
         ])->layout('layouts.home', [
             'title' => 'قرارات المجلس البلدي | '.$municipalityName,
             'metaDescription' => 'تصفح قرارات المجلس البلدي في '.$municipalityName.'، واطلع على القرارات الإدارية والمالية والتنظيمية.',

@@ -10,6 +10,7 @@ use App\Domains\ElectronicServices\Contracts\ServiceCategoryRepositoryInterface;
 use App\Domains\Homepage\Contracts\HomepagePublicRepositoryInterface;
 use App\Domains\Municipality\Models\Municipality;
 use App\Domains\SharedKernel\Models\Media;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,8 +18,10 @@ final class PublicServicesPortal extends Component
 {
     use WithPagination;
 
+    #[Url]
     public string $search = '';
 
+    #[Url(as: 'category')]
     public ?int $filterCategoryId = null;
 
     public ?string $filterDepartmentSlug = null;

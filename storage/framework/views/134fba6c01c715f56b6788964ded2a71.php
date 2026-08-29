@@ -37,11 +37,11 @@
                     <span style="font-size:12px;font-weight:700;color:#176B32;letter-spacing:0.3px;">مرافقنا</span>
                     <span style="display:block;width:20px;height:2px;border-radius:9999px;background:#176B32;"></span>
                 </div>
-                <h2 style="color:#17243A;font-size:clamp(23px,2.8vw,32px);font-weight:800;line-height:1.3;margin:0;">
+                <h2 style="color:#17243A;font-size:clamp(26px,3vw,36px);font-weight:800;line-height:1.3;margin:0;">
                     <?php echo e($sectionTitle ?? 'المرافق العامة'); ?>
 
                 </h2>
-                <p style="max-width:650px;margin:8px 0 0;font-size:clamp(12px,1.1vw,14px);line-height:1.8;color:#66756D;">
+                <p style="max-width:650px;margin:10px 0 0;font-size:clamp(13px,1.1vw,15px);line-height:1.8;color:#66756D;">
                     <?php echo e($sectionSubtitle ?? 'تعرف على المرافق العامة التي تديرها البلدية والخدمات التي تقدمها للمواطنين.'); ?>
 
                 </p>
@@ -114,7 +114,7 @@
 
     </div>
 
-    <?php if (! $__env->hasRenderedOnce('dddf19dc-74ca-4176-a542-68be069b0485')): $__env->markAsRenderedOnce('dddf19dc-74ca-4176-a542-68be069b0485'); ?>
+    <?php if (! $__env->hasRenderedOnce('f65ce8fa-6c9e-4cc0-b275-b56f323ded79')): $__env->markAsRenderedOnce('f65ce8fa-6c9e-4cc0-b275-b56f323ded79'); ?>
         <?php $__env->startPush('styles'); ?>
             <style>
                 /* =============================== */

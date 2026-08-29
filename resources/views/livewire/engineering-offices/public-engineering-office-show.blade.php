@@ -17,7 +17,7 @@
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-gray-100">
                     <div class="p-6 space-y-4">
-                        <h3 class="text-xs font-bold text-text-tertiary uppercase tracking-wider">معلومات المكتب</h3>
+                        <h2 class="text-xs font-bold text-text-tertiary uppercase tracking-wider">معلومات المكتب</h2>
                         @if ($office->license_number)
                             <div>
                                 <p class="text-xs text-text-tertiary">رقم الترخيص</p>
@@ -38,28 +38,28 @@
                         @endif
                     </div>
                     <div class="p-6 space-y-4">
-                        <h3 class="text-xs font-bold text-text-tertiary uppercase tracking-wider">معلومات الاتصال</h3>
+                        <h2 class="text-xs font-bold text-text-tertiary uppercase tracking-wider">معلومات الاتصال</h2>
                         @if ($office->phone)
                             <div>
                                 <p class="text-xs text-text-tertiary">الهاتف</p>
-                                <p class="text-sm font-bold text-text" dir="ltr">{{ $office->phone }}</p>
+                                <p class="text-sm font-bold text-text" dir="ltr"><a href="tel:{{ $office->phone }}" style="color:inherit;text-decoration:none;">{{ $office->phone }}</a></p>
                             </div>
                         @endif
                         @if ($office->mobile)
                             <div>
                                 <p class="text-xs text-text-tertiary">الجوال</p>
-                                <p class="text-sm font-bold text-text" dir="ltr">{{ $office->mobile }}</p>
+                                <p class="text-sm font-bold text-text" dir="ltr"><a href="tel:{{ $office->mobile }}" style="color:inherit;text-decoration:none;">{{ $office->mobile }}</a></p>
                             </div>
                         @endif
                         @if ($office->email)
                             <div>
                                 <p class="text-xs text-text-tertiary">البريد الإلكتروني</p>
-                                <p class="text-sm font-bold text-text dir-ltr">{{ $office->email }}</p>
+                                <p class="text-sm font-bold text-text dir-ltr"><a href="mailto:{{ $office->email }}" style="color:inherit;text-decoration:none;">{{ $office->email }}</a></p>
                             </div>
                         @endif
                     </div>
                     <div class="p-6 space-y-4">
-                        <h3 class="text-xs font-bold text-text-tertiary uppercase tracking-wider">حالة الاعتماد</h3>
+                        <h2 class="text-xs font-bold text-text-tertiary uppercase tracking-wider">حالة الاعتماد</h2>
                         @php
                             $statusColors = match($office->approval_status) {
                                 'approved' => 'bg-green-100 text-green-700',
@@ -97,7 +97,7 @@
 
                 @if ($office->specializations && is_array($office->specializations) && count($office->specializations) > 0)
                     <div class="border-t border-gray-100 px-6 py-5">
-                        <h3 class="text-xs font-bold text-text-tertiary uppercase tracking-wider mb-3">التخصصات</h3>
+                        <h2 class="text-xs font-bold text-text-tertiary uppercase tracking-wider mb-3">التخصصات</h2>
                         <div style="display:flex;flex-wrap:wrap;gap:6px;">
                             @foreach ($office->specializations as $spec)
                                 <span style="font-size:12px;font-weight:600;color:#0F6A3D;background:rgba(15,106,61,0.06);padding:4px 12px;border-radius:8px;">{{ $spec }}</span>
@@ -108,7 +108,7 @@
 
                 @if ($office->notes)
                     <div class="border-t border-gray-100 px-6 py-5">
-                        <h3 class="text-xs font-bold text-text-tertiary uppercase tracking-wider mb-2">ملاحظات</h3>
+                        <h2 class="text-xs font-bold text-text-tertiary uppercase tracking-wider mb-2">ملاحظات</h2>
                         <p class="text-sm text-text-secondary">{{ $office->notes }}</p>
                     </div>
                 @endif

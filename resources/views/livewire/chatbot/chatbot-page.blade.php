@@ -18,10 +18,10 @@
                 <button type="button"
                         wire:click="resetContext"
                         class="p-2 rounded-lg text-text-secondary hover:text-primary hover:bg-primary-light transition-all cursor-pointer border-none"
-                        title="تصفية المحادثة">
+                        title="تصفية المحادثة" aria-label="تصفية المحادثة">
                     <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                 </button>
-                <a href="{{ route('home') }}"
+                <a href="{{ route('home') }}" aria-label="العودة إلى الرئيسية"
                    class="p-2 rounded-lg text-text-secondary hover:text-primary hover:bg-primary-light transition-all no-underline">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </a>

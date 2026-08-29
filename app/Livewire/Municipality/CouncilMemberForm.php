@@ -148,6 +148,11 @@ final class CouncilMemberForm extends Component
 
         $photoPath = $this->existingPhotoPath;
 
+        if (! $photoPath && $this->editingId) {
+            $existingMember = CouncilMember::find($this->editingId);
+            $photoPath = $existingMember?->photo_path;
+        }
+
         if ($this->photo) {
             $photoService = app(CouncilMemberPhotoService::class);
 
@@ -160,9 +165,12 @@ final class CouncilMemberForm extends Component
 
         $data = array_merge($validated, [
             'photo_path' => $photoPath,
-            'created_by' => auth()->id(),
             'updated_by' => auth()->id(),
         ]);
+
+        if (! $this->editingId) {
+            $data['created_by'] = auth()->id();
+        }
 
         $dto = CouncilMemberDTO::fromRequest($data);
 

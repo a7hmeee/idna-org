@@ -1,5 +1,8 @@
 <?php
     $services = collect($featuredServices)->take(6);
+    $carouselConfig = \App\Domains\Homepage\Services\CarouselRegistry::getConfigArray('homepage-services');
+    $resolvedTitle = $sectionTitle ?? $carouselConfig['title'] ?? 'الخدمات الإلكترونية';
+    $resolvedSubtitle = $sectionSubtitle ?? $carouselConfig['subtitle'] ?? 'نقدم مجموعة متكاملة من الخدمات الإلكترونية لتسهيل معاملات المواطنين بسرعة ووضوح.';
 ?>
 
 <section id="services" class="services-section" style="background:#FFFFFF;padding-top:clamp(16px,3vw,66px);padding-bottom:clamp(24px,4vw,78px);overflow:hidden;position:relative;">
@@ -27,13 +30,13 @@
                     <span style="display:block;width:26px;height:2px;border-radius:9999px;background:#176B32;"></span>
                 </div>
 
-                <h2 class="services-title" style="text-align:center;color:#17243A;font-size:clamp(23px,2.8vw,32px);font-weight:700;line-height:1.3;margin:0;">
-                    <?php echo e($sectionTitle ?? 'الخدمات الإلكترونية'); ?>
+                <h2 class="services-title" style="text-align:center;color:#17243A;font-size:clamp(26px,3vw,36px);font-weight:800;line-height:1.3;margin:0;">
+                    <?php echo e($resolvedTitle); ?>
 
                 </h2>
 
-                <p style="text-align:center;max-width:640px;margin:8px auto 0;font-size:13px;line-height:1.8;color:#66756D;">
-                    <?php echo e($sectionSubtitle ?? 'نقدم مجموعة متكاملة من الخدمات الإلكترونية لتسهيل معاملات المواطنين بسرعة ووضوح.'); ?>
+                <p style="text-align:center;max-width:640px;margin:10px auto 0;font-size:15px;line-height:1.8;color:#66756D;">
+                    <?php echo e($resolvedSubtitle); ?>
 
                 </p>
             </div>
@@ -86,14 +89,14 @@
                         </div>
 
                         
-                        <h3 style="margin:18px 0 0;font-size:17px;font-weight:700;color:#17243A;line-height:1.55;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
+                        <h3 style="margin:18px 0 0;font-size:18px;font-weight:700;color:#17243A;line-height:1.55;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
                             <?php echo e($serviceName); ?>
 
                         </h3>
 
                         
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($serviceSummary): ?>
-                            <p style="margin:8px 0 0;font-size:13px;line-height:1.75;color:#66756D;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
+                            <p style="margin:8px 0 0;font-size:14px;line-height:1.75;color:#66756D;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
                                 <?php echo e($serviceSummary); ?>
 
                             </p>
@@ -153,7 +156,7 @@
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
-    <?php if (! $__env->hasRenderedOnce('2f368f5a-49ca-4d82-b4f8-8ad5896abc6b')): $__env->markAsRenderedOnce('2f368f5a-49ca-4d82-b4f8-8ad5896abc6b'); ?>
+    <?php if (! $__env->hasRenderedOnce('c0cdc4fc-0165-480a-aa66-97949490a171')): $__env->markAsRenderedOnce('c0cdc4fc-0165-480a-aa66-97949490a171'); ?>
         <?php $__env->startPush('styles'); ?>
             <style>
                 /* Desktop header — view-all button absolute on the left */
@@ -191,33 +194,33 @@
                 /* Mobile — single column, tighter spacing */
                 @media (max-width: 640px) {
                     .services-section {
-                        padding-top: 12px !important;
-                        padding-bottom: 20px !important;
+                        padding-top: 40px !important;
+                        padding-bottom: 48px !important;
                     }
                     .services-header-center p {
-                        font-size: 12px !important;
-                        margin-top: 4px !important;
-                        line-height: 1.6 !important;
+                        font-size: 14px !important;
+                        margin-top: 6px !important;
+                        line-height: 1.7 !important;
                     }
                     .services-grid {
                         grid-template-columns: 1fr !important;
-                        margin-top: 16px !important;
-                        gap: 12px !important;
+                        margin-top: 28px !important;
+                        gap: 14px !important;
                     }
                     .service-card {
-                        padding: 12px 14px !important;
-                        min-height: 180px !important;
+                        padding: 16px 18px !important;
+                        min-height: 200px !important;
                     }
                     .services-pattern {
                         display: none !important;
                     }
                     .services-header-action {
-                        margin-top: 12px !important;
+                        margin-top: 16px !important;
                     }
                     .services-view-all-btn {
-                        height: 36px !important;
-                        font-size: 12px !important;
-                        padding: 0 16px !important;
+                        height: 40px !important;
+                        font-size: 13px !important;
+                        padding: 0 18px !important;
                     }
                 }
 

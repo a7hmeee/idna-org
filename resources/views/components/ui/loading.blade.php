@@ -13,7 +13,7 @@
     $sizeClass = $sizes[$size] ?? $sizes['md'];
 @endphp
 
-<div class="flex flex-col items-center justify-center gap-3">
+<div class="flex flex-col items-center justify-center gap-3" role="status" aria-live="polite">
     <div {{ $attributes->class([$sizeClass, 'border-primary border-t-transparent rounded-full animate-spin']) }}></div>
     @if ($text)
         <p class="text-sm text-text-tertiary animate-pulse">{{ $text }}</p>

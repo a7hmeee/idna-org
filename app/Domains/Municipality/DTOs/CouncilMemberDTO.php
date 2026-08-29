@@ -71,7 +71,7 @@ final readonly class CouncilMemberDTO
     {
         return [
             'full_name' => $this->fullName,
-            'slug' => $this->slug,
+            ...($this->slug !== null ? ['slug' => $this->slug] : []),
             'national_number' => $this->nationalNumber,
             'position' => $this->position,
             'qualification' => $this->qualification,

@@ -1,4 +1,6 @@
 <div>
+    <x-slot name="title">{{ $editing ? 'تعديل' : 'إضافة' }} مجموعة بيانات</x-slot>
+
     <div class="mb-6">
         <a href="{{ route('dashboard.open-data') }}" wire:navigate class="text-sm text-gray-500 hover:text-gray-700 inline-flex items-center gap-1">
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -81,11 +83,12 @@
             </div>
 
             <div class="flex items-center gap-3 pt-4">
-                <button type="submit" class="px-6 py-2.5 bg-green-700 text-white rounded-xl text-sm font-bold hover:bg-green-800 transition-colors">
-                    {{ $editing ? 'تحديث' : 'إضافة' }}
+                <button type="submit" wire:loading.attr="disabled" class="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary-dark transition-colors disabled:opacity-50">
+                    <span wire:loading.remove wire:target="save">{{ $editing ? 'تحديث' : 'إضافة' }}</span>
+                    <span wire:loading wire:target="save">جاري الحفظ...</span>
                 </button>
                 @if ($editing)
-                    <button type="button" wire:click="delete" wire:confirm="هل أنت متأكد من الحذف؟"
+                    <button type="button" wire:click="delete" wire:confirm="هل أنت متأكد من الحذف？"
                             class="px-6 py-2.5 bg-red-50 text-red-600 rounded-xl text-sm font-bold hover:bg-red-100 transition-colors">
                         حذف
                     </button>

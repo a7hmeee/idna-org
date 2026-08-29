@@ -22,13 +22,13 @@
             <div class="flex flex-col gap-4 mb-7">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div class="flex items-center gap-2 flex-wrap">
-                        <select wire:model.live="category" class="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                        <select wire:model.live="category" aria-label="التصنيف" class="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
                             <option value="">جميع التصنيفات</option>
                             @foreach ($categories as $c)
                                 <option value="{{ $c->value }}">{{ $c->label() }}</option>
                             @endforeach
                         </select>
-                        <select wire:model.live="projectStatus" class="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                        <select wire:model.live="projectStatus" aria-label="حالة المشروع" class="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
                             <option value="">جميع الحالات</option>
                             @foreach ($projectStatuses as $ps)
                                 <option value="{{ $ps->value }}">{{ $ps->label() }}</option>
@@ -37,7 +37,8 @@
                     </div>
                     <div class="relative w-full max-w-xs">
                         <i data-lucide="search" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-tertiary pointer-events-none"></i>
-                        <input type="text" wire:model.live.debounce.400ms="search"
+                        <span class="sr-only" role="status" wire:loading wire:target="search">جاري تحديث النتائج…</span>
+<input type="text" wire:model.live.debounce.400ms="search" aria-label="ابحث عن مشروع"
                                placeholder="ابحث عن مشروع..."
                                class="w-full bg-white border border-gray-200 rounded-xl pr-10 pl-4 py-2.5 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all" />
                     </div>
@@ -57,7 +58,7 @@
                     <div class="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center mx-auto mb-4">
                         <i data-lucide="hard-hat" class="w-8 h-8 text-text-tertiary"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-text mb-2">لا توجد مشاريع حالياً</h3>
+                    <h2 class="text-lg font-bold text-text mb-2">لا توجد مشاريع حالياً</h2>
                     <p class="text-sm text-text-tertiary">جرّب البحث بكلمات مختلفة أو غيّر التصفية</p>
                 </div>
             @else
@@ -89,7 +90,7 @@
 
                             {{-- Content --}}
                             <div class="p-4">
-                                <h3 class="font-bold text-text group-hover:text-primary transition-colors mb-2">{{ $project->name_ar }}</h3>
+                                <h2 class="font-bold text-text group-hover:text-primary transition-colors mb-2">{{ $project->name_ar }}</h2>
                                 @if ($project->summary)
                                     <p class="text-sm text-text-secondary line-clamp-2 mb-3">{{ $project->summary }}</p>
                                 @endif
@@ -101,7 +102,7 @@
                                             <span class="text-text-tertiary">نسبة الإنجاز</span>
                                             <span class="font-semibold" dir="ltr">{{ $project->implementation_percentage }}%</span>
                                         </div>
-                                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden" role="progressbar" aria-valuenow="{{ $project->implementation_percentage }}" aria-valuemin="0" aria-valuemax="100">
                                             <div class="h-full rounded-full transition-all duration-700
                                                 @if($project->implementation_percentage >= 100) bg-success
                                                 @elseif($project->implementation_percentage >= 50) bg-primary
@@ -149,7 +150,7 @@
             {{-- Pagination --}}
             @if ($projects->hasPages())
                 <div class="mt-10">
-                    {{ $projects->links() }}
+                    <x-ui.pagination :paginator="$projects" />
                 </div>
             @endif
         </div>

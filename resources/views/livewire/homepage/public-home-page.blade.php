@@ -38,8 +38,6 @@
 
     $publicServicesIndexUrl = Route::has('public.services.index') ? route('public.services.index') : $portalUrl;
 
-    $mayor = $data['mayor'] ?? null;
-
     $sectionTitle = fn ($key) => collect($sections)->firstWhere('key', $key)['title'] ?? null;
     $sectionSubtitle = fn ($key) => collect($sections)->firstWhere('key', $key)['subtitle'] ?? null;
     $sectionSettings = fn ($key) => collect($sections)->firstWhere('key', $key)['settings'] ?? [];
@@ -56,10 +54,10 @@
     };
 @endphp
 
-<div style="min-height:100vh;background:white;width:100%;max-width:100%;overflow-x:hidden;">
+<div style="background:white;width:100%;max-width:100%;overflow-x:hidden;">
 
     {{-- ============================================ --}}
-    {{-- HERO SECTION --}}
+    {{-- HERO --}}
     {{-- ============================================ --}}
     @if (in_array('hero', $sectionKeys))
         @include('livewire.homepage.sections.hero', [
@@ -73,11 +71,12 @@
     @endif
 
     {{-- ============================================ --}}
-    {{-- 1. QUICK ACCESS - الآن داخل الهيرو --}}
+    {{-- CITIZEN QUICK ACTIONS — «الباب البلدي» --}}
     {{-- ============================================ --}}
+    @include('livewire.homepage.sections.quick-actions')
 
     {{-- ============================================ --}}
-    {{-- 2. ELECTRONIC SERVICES --}}
+    {{-- 1. ELECTRONIC SERVICES --}}
     {{-- ============================================ --}}
     @includeWhen(in_array('services', $sectionKeys), 'livewire.homepage.sections.services', [
         'featuredServices' => $featuredServices,
@@ -88,17 +87,7 @@
     ])
 
     {{-- ============================================ --}}
-    {{-- 3. LATEST NEWS + EMERGENCY --}}
-    {{-- ============================================ --}}
-    @includeWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
-        'latestNews' => $latestNews,
-        'latestAnnouncements' => $latestAnnouncements,
-        'sectionTitle' => $sectionTitle('latest_news'),
-        'sectionSubtitle' => $sectionSubtitle('latest_news'),
-    ])
-
-    {{-- ============================================ --}}
-    {{-- 4. DEPARTMENTS --}}
+    {{-- 2. DEPARTMENTS --}}
     {{-- ============================================ --}}
     @includeWhen(in_array('departments', $sectionKeys), 'livewire.homepage.sections.departments', [
         'featuredDepartments' => $featuredDepartments,
@@ -107,12 +96,33 @@
     ])
 
     {{-- ============================================ --}}
-    {{-- 5. PUBLIC FACILITIES --}}
+    {{-- 3. PUBLIC FACILITIES --}}
     {{-- ============================================ --}}
     @includeWhen(in_array('facilities', $sectionKeys), 'livewire.homepage.sections.facilities', [
         'featuredFacilities' => $featuredFacilities,
         'sectionTitle' => $sectionTitle('facilities'),
         'sectionSubtitle' => $sectionSubtitle('facilities'),
+    ])
+
+    {{-- ============================================ --}}
+    {{-- 4. NEWS + ANNOUNCEMENTS --}}
+    {{-- ============================================ --}}
+    @includeWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
+        'latestNews' => $latestNews,
+        'latestAnnouncements' => $latestAnnouncements,
+        'sectionTitle' => $sectionTitle('latest_news'),
+        'sectionSubtitle' => $sectionSubtitle('latest_news'),
+        'municipality' => $municipality,
+    ])
+
+    {{-- ============================================ --}}
+    {{-- 5. WATER SCHEDULE — always rendered (honest empty state) --}}
+    {{-- ============================================ --}}
+    @include('livewire.homepage.sections.water-status', [
+        'waterSchedule' => $waterSchedule,
+        'waterAreas' => $waterAreas,
+        'sectionTitle' => $sectionTitle('water_schedule') ?? 'جدول توزيع المياه',
+        'sectionSubtitle' => $sectionSubtitle('water_schedule') ?? '',
     ])
 
     {{-- ============================================ --}}
@@ -127,18 +137,17 @@
     ])
 
     {{-- ============================================ --}}
-    {{-- 7. COUNCIL MEMBERS + MAYOR --}}
+    {{-- 7. COUNCIL — PEOPLE --}}
     {{-- ============================================ --}}
     @includeWhen(in_array('council_members', $sectionKeys), 'livewire.homepage.sections.council-members', [
         'featuredCouncilMembers' => $featuredCouncilMembers,
-        'mayor' => $mayor,
         'municipalityName' => $municipalityName,
         'sectionTitle' => $sectionTitle('council_members'),
         'sectionSubtitle' => $sectionSubtitle('council_members'),
     ])
 
     {{-- ============================================ --}}
-    {{-- 8. COUNCIL DECISIONS --}}
+    {{-- 8. COUNCIL — DECISIONS --}}
     {{-- ============================================ --}}
     @includeWhen(in_array('council_decisions', $sectionKeys), 'livewire.homepage.sections.council-decisions', [
         'latestCouncilDecisions' => $latestCouncilDecisions,
@@ -148,23 +157,22 @@
     ])
 
     {{-- ============================================ --}}
-    {{-- 9. WATER SCHEDULE --}}
-    {{-- ============================================ --}}
-    @includeWhen(!empty($waterSchedule), 'livewire.homepage.sections.water-status', [
-        'waterSchedule' => $waterSchedule,
-        'waterAreas' => $waterAreas,
-        'sectionTitle' => $sectionTitle('water_schedule') ?? 'جدول توزيع المياه',
-        'sectionSubtitle' => $sectionSubtitle('water_schedule') ?? '',
-    ])
-
-    {{-- ============================================ --}}
-    {{-- 10. JOBS + ENGINEERING OFFICES (عمودين) --}}
+    {{-- 9. OPPORTUNITIES — JOBS + OFFICES --}}
     {{-- ============================================ --}}
     @includeWhen(!empty($latestJobs) || (!empty($engineeringOffices) && in_array('engineering_offices', $sectionKeys)), 'livewire.homepage.sections.jobs', [
         'latestJobs' => $latestJobs,
         'engineeringOffices' => $engineeringOffices,
         'sectionTitle' => $sectionTitle('jobs'),
         'sectionSubtitle' => $sectionSubtitle('jobs'),
+    ])
+
+    {{-- ============================================ --}}
+    {{-- 10. OPPORTUNITIES — TENDERS --}}
+    {{-- ============================================ --}}
+    @includeWhen(in_array('tenders', $sectionKeys), 'livewire.homepage.sections.tenders', [
+        'latestTenders' => $latestTenders,
+        'sectionTitle' => $sectionTitle('tenders'),
+        'sectionSubtitle' => $sectionSubtitle('tenders'),
     ])
 
     {{-- ============================================ --}}
@@ -175,20 +183,6 @@
         'sectionTitle' => $sectionTitle('projects'),
         'sectionSubtitle' => $sectionSubtitle('projects'),
     ])
-
-    {{-- ============================================ --}}
-    {{-- 12. TENDERS --}}
-    {{-- ============================================ --}}
-    @includeWhen(in_array('tenders', $sectionKeys), 'livewire.homepage.sections.tenders', [
-        'latestTenders' => $latestTenders,
-        'sectionTitle' => $sectionTitle('tenders'),
-        'sectionSubtitle' => $sectionSubtitle('tenders'),
-    ])
-
-    {{-- ============================================ --}}
-    {{-- FACEBOOK FEED — آخر أخبار البلدية من فيسبوك --}}
-    {{-- ============================================ --}}
-    @include('livewire.homepage.sections.facebook-feed')
 
     {{-- ============================================ --}}
     {{-- 12. STATISTICS --}}
@@ -202,14 +196,16 @@
     ])
 
     {{-- ============================================ --}}
-    {{-- PARTNERS --}}
+    {{-- 13. PARTNERS --}}
     {{-- ============================================ --}}
     @includeWhen(!empty($partnerLogos), 'livewire.homepage.sections.partners', [
         'partnerLogos' => $partnerLogos,
+        'sectionTitle' => $sectionTitle('partners'),
+        'sectionSubtitle' => $sectionSubtitle('partners'),
     ])
 
     {{-- ============================================ --}}
-    {{-- 13. CONTACT CTA --}}
+    {{-- 14. CONTACT CTA --}}
     {{-- ============================================ --}}
     @includeWhen(in_array('contact_cta', $sectionKeys), 'livewire.homepage.sections.contact-cta', [
         'settings' => $settings,
@@ -219,5 +215,4 @@
         'businessHours' => $businessHours,
         'municipality' => $municipality,
     ])
-
 </div>

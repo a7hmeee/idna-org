@@ -83,6 +83,7 @@ use App\Livewire\News\PublicNewsShow;
 use App\Livewire\OpenData\Admin\OpenDataAdminForm;
 use App\Livewire\OpenData\Admin\OpenDataAdminIndex;
 use App\Livewire\OpenData\OpenDataIndex;
+use App\Livewire\PageCarousels\CarouselConfigManager;
 use App\Livewire\PageCarousels\PageCarouselForm;
 use App\Livewire\PageCarousels\PageCarouselsIndex;
 use App\Livewire\Projects\ProjectForm;
@@ -384,6 +385,7 @@ Route::middleware('auth')->group(function (): void {
     // Page Carousels
     Route::middleware('permission:homepage.slides.view')->group(function (): void {
         Route::get('page-carousels', PageCarouselsIndex::class)->name('dashboard.page-carousels');
+        Route::get('page-carousels/config', CarouselConfigManager::class)->name('dashboard.carousel-config');
     });
 
     Route::middleware('permission:homepage.slides.create')->group(function (): void {

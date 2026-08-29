@@ -292,9 +292,7 @@
                             <i data-lucide="globe" style="width:11px;height:11px;flex-shrink:0;"></i>
                             <span style="font-size:11px;">البوابة الإلكترونية</span>
                         </a>
-                        <span style="display:none;width:1px;height:10px;background:rgba(255,255,255,0.12);" class="sm-block"></span>
                     @endif
-                    <button style="color:rgba(255,255,255,0.65);font-size:11px;font-weight:600;padding:0.15rem 0.4rem;border-radius:3px;cursor:pointer;background:none;border:none;">EN</button>
                 </div>
             </div>
         </div>
@@ -334,7 +332,7 @@
                            class="ih-nav-link {{ $isActive('public.municipality.about') ? 'ih-nav-link--active' : '' }}">عن البلدية</a>
 
                         {{-- الخدمات ▼ --}}
-                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @keydown.escape.window="open = false" @mouseenter="open = true" @mouseleave="open = false">
                             <button class="ih-nav-link {{ $isActive('public.services.*') ? 'ih-nav-link--active' : '' }}" @click="open = !open" :aria-expanded="open">
                                 الخدمات
                                 <svg class="ih-chevron" :class="open ? 'ih-chevron--open' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -352,7 +350,7 @@
                         </div>
 
                         {{-- المجلس البلدي ▼ --}}
-                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @keydown.escape.window="open = false" @mouseenter="open = true" @mouseleave="open = false">
                             <button class="ih-nav-link {{ $isActive('public.council.*') ? 'ih-nav-link--active' : '' }}" @click="open = !open" :aria-expanded="open">
                                 المجلس البلدي
                                 <svg class="ih-chevron" :class="open ? 'ih-chevron--open' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -379,7 +377,7 @@
                            class="ih-nav-link {{ $isActive('public.jobs.*') ? 'ih-nav-link--active' : '' }}">الوظائف</a>
 
                         {{-- المزيد ▼ — جميع الروابط الثانوية --}}
-                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @keydown.escape.window="open = false" @mouseenter="open = true" @mouseleave="open = false">
                             <button class="ih-nav-link" @click="open = !open" :aria-expanded="open">
                                 المزيد
                                 <svg class="ih-chevron" :class="open ? 'ih-chevron--open' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -428,7 +426,12 @@
                     </div>
                 </nav>
 
-               
+                {{-- ===== COL 3: ACTIONS ===== --}}
+                <div class="ih-actions">
+                    <a href="{{ route('login') }}" wire:navigate class="ih-login-btn">
+                        الدخول
+                    </a>
+                </div>
 
             </div>
 

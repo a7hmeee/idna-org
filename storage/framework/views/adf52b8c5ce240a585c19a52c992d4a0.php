@@ -20,12 +20,12 @@
                 <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
                 تواصل معنا
             </span>
-            <h2 class="text-3xl lg:text-[34px] font-black text-white"><?php echo e($ctaTitle); ?></h2>
+            <h2 class="text-3xl lg:text-[38px] font-black text-white"><?php echo e($ctaTitle); ?></h2>
         </div>
 
         <div class="grid lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-16 items-center">
             <div>
-                <p class="text-sm sm:text-base leading-relaxed mb-8" style="color:rgba(255,255,255,0.7);"><?php echo e($ctaDesc); ?></p>
+                <p class="text-base sm:text-lg leading-relaxed mb-8" style="color:rgba(255,255,255,0.7);"><?php echo e($ctaDesc); ?></p>
 
                 <div class="grid sm:grid-cols-3 gap-3 mb-8">
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($contactPhone): ?>

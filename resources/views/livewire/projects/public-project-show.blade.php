@@ -100,8 +100,8 @@
                             <h2 class="text-lg font-bold text-text mb-4">معرض الصور</h2>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                 @foreach ($project->gallery_urls as $url)
-                                    <a href="{{ $url }}" target="_blank" class="block rounded-xl overflow-hidden border border-gray-100 hover:opacity-90 transition-opacity">
-                                        <img src="{{ $url }}" class="w-full h-32 object-cover" />
+                                    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="block rounded-xl overflow-hidden border border-gray-100 hover:opacity-90 transition-opacity">
+                                        <img src="{{ $url }}" alt="{{ $project->name_ar }}" class="w-full h-32 object-cover" />
                                     </a>
                                 @endforeach
                             </div>
@@ -149,7 +149,7 @@
                                        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors no-underline group">
                                         <div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-surface-secondary">
                                             @if ($related->cover_image_url)
-                                                <img src="{{ $related->cover_image_url }}" class="w-full h-full object-cover" />
+                                                <img src="{{ $related->cover_image_url }}" alt="{{ $related->name_ar }}" class="w-full h-full object-cover" />
                                             @else
                                                 <div class="w-full h-full flex items-center justify-center">
                                                     <i data-lucide="hard-hat" class="w-5 h-5 text-text-tertiary"></i>

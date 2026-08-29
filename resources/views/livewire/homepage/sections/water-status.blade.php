@@ -1,116 +1,138 @@
 @php
     $statusConfig = [
-        'available' => ['label' => 'متوفرة', 'color' => 'bg-success-light text-success'],
-        'low_pressure' => ['label' => 'ضغط منخفض', 'color' => 'bg-accent-light/30 text-accent-dark'],
-        'maintenance' => ['label' => 'صيانة', 'color' => 'bg-warning-light text-warning'],
-        'emergency' => ['label' => 'طارئ', 'color' => 'bg-danger-light text-danger'],
-        'no_water' => ['label' => 'مقطوعة', 'color' => 'bg-surface-hover text-text-secondary'],
+        'available'     => ['label' => 'متوفر',   'color' => '#176B32', 'bg' => '#EAF5EE', 'dot' => '#176B32'],
+        'low_pressure'  => ['label' => 'ضغط منخفض', 'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
+        'maintenance'   => ['label' => 'صيانة',    'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
+        'emergency'     => ['label' => 'طارئ',     'color' => '#DC2626', 'bg' => '#FEE2E2', 'dot' => '#DC2626'],
+        'no_water'      => ['label' => 'مقطوع',    'color' => '#6B7280', 'bg' => '#F3F4F6', 'dot' => '#D1D5DB'],
     ];
-    $todaySchedules = collect($waterSchedule)->take(6);
+
+    $schedules = collect($waterSchedule);
+    $hasData = $schedules->isNotEmpty();
+
+    $todayDayName = now()->locale('ar')->translatedFormat('l');
+    $todayDateShort = now()->locale('ar')->translatedFormat('d/m/Y');
+    $scheduleDate = $hasData ? \Carbon\Carbon::parse($schedules->first()['schedule_date'] ?? now())->locale('ar')->translatedFormat('d/m/Y') : null;
+    $isToday = $hasData && \Carbon\Carbon::parse($schedules->first()['schedule_date'] ?? now())->isToday();
 @endphp
 
-@if ($todaySchedules->isNotEmpty())
-<section id="water-schedule" class="section-py bg-white overflow-hidden">
+<section id="water-schedule" style="background: #F8F9F6; padding: 1.5rem 0;">
     <div class="container-home">
-        {{-- Section Header --}}
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-            <div>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold bg-primary-light text-primary mb-3">
-                    <i data-lucide="droplets" class="w-3.5 h-3.5"></i>
-                    جدول توزيع المياه
-                </span>
-                <h2 class="text-3xl sm:text-4xl lg:text-[34px] font-black text-text leading-tight">{{ $sectionTitle ?? 'جدول توزيع المياه' }}</h2>
-                @if ($sectionSubtitle)
-                    <p class="text-sm sm:text-base text-text-secondary mt-3 max-w-xl leading-relaxed">{{ $sectionSubtitle }}</p>
+
+        {{-- Header Row --}}
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+                <span class="w-1 h-5 rounded-full" style="background: var(--color-primary);"></span>
+                <h2 class="text-lg font-black" style="color: #1A1F16;">{{ $sectionTitle ?? 'جدول توزيع المياه' }}</h2>
+            </div>
+            <div class="flex items-center gap-2">
+                @if ($hasData)
+                    <span class="text-[10px] font-medium px-1.5 py-0.5 rounded" style="background: #EAF5EE; color: #176B32;">
+                        {{ $schedules->count() }} منطقة
+                    </span>
+                @endif
+                @if (Route::has('public.water-schedule'))
+                    <a href="{{ route('public.water-schedule') }}" wire:navigate
+                       class="inline-flex items-center gap-0.5 text-[11px] font-semibold transition-opacity"
+                       style="color: var(--color-primary);"
+                       onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">
+                        عرض الجدول الكامل
+                        <i data-lucide="chevron-left" class="w-3 h-3"></i>
+                    </a>
                 @endif
             </div>
-            @if (Route::has('public.water-schedule'))
-                <a href="{{ route('public.water-schedule') }}" wire:navigate class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-all shadow-sm whitespace-nowrap">
-                    <span>عرض الجدول الكامل</span>
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                </a>
-            @endif
         </div>
 
-        {{-- Dashboard Card --}}
-        <div class="bg-gradient-to-br from-[#F4F5F1] to-white rounded-3xl border border-border/60 p-8 sm:p-10 shadow-lg">
-            <div class="grid lg:grid-cols-12 gap-8 items-start">
-                {{-- Left: Info --}}
-                <div class="lg:col-span-4">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center">
-                            <i data-lucide="calendar-clock" class="w-7 h-7 text-white"></i>
+        {{-- Schedule List --}}
+        @if ($hasData)
+            <div class="rounded-xl overflow-hidden" style="background: white; border: 1px solid #E5E7E0;">
+
+                {{-- Top Info Strip --}}
+                <div class="flex items-center gap-3 px-4 py-2" style="background: #FAFAF8; border-bottom: 1px solid #EEF0EB;">
+                    <div class="flex items-center gap-1.5">
+                        <i data-lucide="calendar" class="w-3 h-3" style="color: var(--color-primary);"></i>
+                        <span class="text-[11px] font-semibold" style="color: #1A1F16;">{{ $todayDayName }} {{ $todayDateShort }}</span>
+                    </div>
+                    @if ($hasData && $scheduleDate)
+                        <span class="text-[10px]" style="color: #D1D5CB;">|</span>
+                        <div class="flex items-center gap-1">
+                            <i data-lucide="clock" class="w-2.5 h-2.5" style="color: #9CA3AF;"></i>
+                            <span class="text-[10px]" style="color: #6B7562;">آخر تحديث {{ $scheduleDate }}</span>
                         </div>
-                        <div>
-                            <p class="font-black text-text text-lg">جدول توزيع المياه</p>
-                            <p class="text-xs text-text-muted">{{ now()->locale('ar')->translatedFormat('l d F Y') }}</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        @foreach ($statusConfig as $key => $cfg)
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold {{ $cfg['color'] }}">{{ $cfg['label'] }}</span>
-                        @endforeach
-                    </div>
-                    <div class="mt-6 p-4 rounded-2xl bg-accent-light/20 border border-accent/20">
-                        <p class="text-xs text-accent-dark flex items-center gap-1.5">
-                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5 flex-shrink-0"></i>
-                            قد تتغير المواعيد وفق الظروف الفنية
-                        </p>
-                    </div>
+                    @endif
+                    @if ($isToday)
+                        <span class="inline-flex items-center gap-1 mr-auto">
+                            <span class="w-1.5 h-1.5 rounded-full" style="background: #176B32;"></span>
+                            <span class="text-[10px] font-bold" style="color: #176B32;">جدول اليوم</span>
+                        </span>
+                    @endif
                 </div>
 
-                {{-- Right: Schedule Table --}}
-                <div class="lg:col-span-8">
-                    <div class="bg-white rounded-2xl border border-border/50 overflow-hidden shadow-sm">
-                        <div class="grid grid-cols-12 gap-0">
-                            {{-- Header --}}
-                            <div class="col-span-12 grid grid-cols-12 gap-0 px-5 py-3 bg-[#F4F5F1] border-b border-border/50 text-[10px] font-bold text-text-muted">
-                                <div class="col-span-5">المنطقة</div>
-                                <div class="col-span-3 text-center">التوقيت</div>
-                                <div class="col-span-2 text-center">الحالة</div>
-                                <div class="col-span-2 text-left">ملاحظات</div>
+                {{-- Entries --}}
+                <div>
+                    @foreach ($schedules as $index => $schedule)
+                        @php
+                            $areaName = $schedule['area']['name'] ?? '—';
+                            $status = $schedule['status'] ?? '';
+                            $statusStr = is_object($status) ? ($status->value ?? (string) $status) : (string) $status;
+                            $statusInfo = $statusConfig[$statusStr] ?? ['label' => $statusStr, 'color' => '#6B7562', 'bg' => '#F3F4F6', 'dot' => '#D1D5DB'];
+                            $start = $schedule['start_time'] ?? '';
+                            $end = $schedule['end_time'] ?? '';
+                            $isLast = $index === $schedules->count() - 1;
+                        @endphp
+                        <div class="flex items-center gap-3 px-4 py-2.5"
+                             style="{{ $isLast ? '' : 'border-bottom: 1px solid #F3F4F6;' }}">
+                            {{-- Timeline Dot --}}
+                            <div class="flex-shrink-0 relative">
+                                <span class="block w-2 h-2 rounded-full" style="background: {{ $statusInfo['dot'] }};"></span>
                             </div>
-                            {{-- Rows --}}
-                            @foreach ($todaySchedules as $schedule)
-                                @php
-                                    $areaName = $schedule['area']['name'] ?? 'منطقة غير محددة';
-                                    $status = $schedule['status'] ?? '';
-                                    $statusStr = is_object($status) ? ($status->value ?? $status) : (string) $status;
-                                    $statusInfo = $statusConfig[$statusStr] ?? ['label' => $statusStr, 'color' => 'bg-surface-hover text-text-secondary'];
-                                    $start = $schedule['start_time'] ?? '';
-                                    $end = $schedule['end_time'] ?? '';
-                                    $notes = $schedule['notes'] ?? '';
-                                @endphp
-                                <div class="col-span-12 grid grid-cols-12 gap-0 px-5 py-4 border-b border-border/30 last:border-0 hover:bg-primary-light/20 transition-colors items-center">
-                                    <div class="col-span-5 flex items-center gap-2.5">
-                                        <div class="w-8 h-8 rounded-lg bg-primary-light flex items-center justify-center flex-shrink-0">
-                                            <i data-lucide="map-pin" class="w-4 h-4 text-primary"></i>
-                                        </div>
-                                        <span class="text-sm font-bold text-text">{{ $areaName }}</span>
-                                    </div>
-                                    <div class="col-span-3 text-center">
-                                        <span class="text-xs font-semibold text-text inline-flex items-center gap-1">
-                                            <i data-lucide="clock" class="w-3 h-3 text-primary"></i>
-                                            {{ $start }}@if($end) - {{ $end }}@endif
-                                        </span>
-                                    </div>
-                                    <div class="col-span-2 text-center">
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold whitespace-nowrap {{ $statusInfo['color'] }}">{{ $statusInfo['label'] }}</span>
-                                    </div>
-                                    <div class="col-span-2 text-left">
-                                        @if ($notes)
-                                            <span class="text-[10px] text-text-muted">{{ $notes }}</span>
-                                        @else
-                                            <span class="text-[10px] text-text-muted">—</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
+
+                            {{-- Area Name --}}
+                            <div class="flex items-center gap-1.5 min-w-0 flex-shrink-0" style="width: 30%;">
+                                <i data-lucide="map-pin" class="w-3 h-3 flex-shrink-0" style="color: #9CA3AF;"></i>
+                                <span class="text-sm font-bold truncate" style="color: #1A1F16;">{{ $areaName }}</span>
+                            </div>
+
+                            {{-- Time --}}
+                            <div class="flex items-center gap-1.5 flex-1 min-w-0 justify-center">
+                                @if ($start && $end)
+                                    <span class="text-[13px] font-medium" style="color: #374151;" dir="ltr">{{ $start }} — {{ $end }}</span>
+                                @elseif ($start)
+                                    <span class="text-[13px] font-medium" style="color: #374151;" dir="ltr">{{ $start }}</span>
+                                @else
+                                    <span class="text-[10px]" style="color: #D1D5CB;">—</span>
+                                @endif
+                            </div>
+
+                            {{-- Status Badge --}}
+                            <div class="flex-shrink-0">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold"
+                                      style="background: {{ $statusInfo['bg'] }}; color: {{ $statusInfo['color'] }};">
+                                    <span class="w-1.5 h-1.5 rounded-full" style="background: {{ $statusInfo['dot'] }};"></span>
+                                    {{ $statusInfo['label'] }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
+                </div>
+
+                {{-- Footer --}}
+                <div class="flex items-center gap-1.5 px-4 py-1.5" style="background: #FAFAF8; border-top: 1px solid #EEF0EB;">
+                    <i data-lucide="info" class="w-2.5 h-2.5" style="color: #D1D5CB;"></i>
+                    <span class="text-[9px]" style="color: #9CA3AF;">قد تتغير المواعيد وفق الظروف الفنية</span>
                 </div>
             </div>
-        </div>
+
+        @else
+            {{-- Empty State --}}
+            <div class="rounded-xl px-4 py-6 text-center" style="background: white; border: 1px solid #E5E7E0;">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2" style="background: #F3F4F6;">
+                    <i data-lucide="droplets" class="w-4 h-4" style="color: #9CA3AF;"></i>
+                </div>
+                <p class="text-xs font-bold mb-0.5" style="color: #1A1F16;">لا يوجد جدول توزيع منشور حالياً</p>
+                <p class="text-[10px]" style="color: #6B7562;">سيتم نشره فور توفره</p>
+            </div>
+        @endif
+
     </div>
 </section>
-@endif

@@ -132,25 +132,48 @@ final readonly class EloquentProjectRepository implements ProjectRepositoryInter
 
     public function getFeatured(): Collection
     {
-        return Cache::remember('projects_featured_v1', 3600, function (): Collection {
+        $cached = Cache::remember('projects_featured_v2', 3600, function (): array {
             return $this->model
                 ->published()
                 ->featured()
                 ->orderBy('display_order')
                 ->take(5)
-                ->get();
+                ->get()
+                ->toArray();
         });
+
+        return $this->hydrateCollection($cached);
     }
 
     public function getLatest(int $limit = 5): Collection
     {
-        return Cache::remember('projects_latest_v1', 3600, function () use ($limit): Collection {
+        $cached = Cache::remember('projects_latest_v2', 3600, function () use ($limit): array {
             return $this->model
                 ->published()
                 ->orderByDesc('created_at')
                 ->take($limit)
-                ->get();
+                ->get()
+                ->toArray();
         });
+
+        return $this->hydrateCollection($cached);
+    }
+
+    /**
+     * Reconstruct Eloquent models from cached arrays.
+     */
+    private function hydrateCollection(array $rows): Collection
+    {
+        $models = new \Illuminate\Database\Eloquent\Collection;
+
+        foreach ($rows as $row) {
+            $model = new Project;
+            $model->forceFill($row);
+            $model->exists = true;
+            $models->push($model);
+        }
+
+        return $models;
     }
 
     public function getByCategory(Project $category): Collection
@@ -184,6 +207,8 @@ final readonly class EloquentProjectRepository implements ProjectRepositoryInter
 
     private function forgetCache(): void
     {
+        Cache::forget('projects_featured_v2');
+        Cache::forget('projects_latest_v2');
         Cache::forget('projects_featured_v1');
         Cache::forget('projects_latest_v1');
         Cache::forget('homepage.public.data');

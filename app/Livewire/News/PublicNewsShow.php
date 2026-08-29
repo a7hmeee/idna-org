@@ -14,14 +14,14 @@ final class PublicNewsShow extends Component
 {
     public ?NewsItem $news = null;
 
-    public function mount(?NewsItem $news = null): void
+    public function mount(?NewsItem $newsItem = null): void
     {
-        if ($news && $news->exists) {
-            abort_if(! $news->is_public || $news->status->value !== 'published', 404);
+        if ($newsItem && $newsItem->exists) {
+            abort_if(! $newsItem->is_public || $newsItem->status->value !== 'published', 404);
 
-            $this->news = $news;
+            $this->news = $newsItem;
 
-            app(RecordNewsViewAction::class)->execute($news->id);
+            app(RecordNewsViewAction::class)->execute($newsItem->id);
         }
 
         abort_unless($this->news, 404);

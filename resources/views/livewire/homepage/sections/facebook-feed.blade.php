@@ -93,43 +93,27 @@
     @once
         @push('scripts')
             <script>
-                console.log('[FB Debug] Initializing...');
-
                 window.fbAsyncInit = function() {
-                    console.log('[FB Debug] fbAsyncInit fired — SDK ready');
                     var sk = document.getElementById('fb-skeleton');
-                    if (sk) { sk.style.display = 'none'; console.log('[FB Debug] Skeleton hidden'); }
+                    if (sk) { sk.style.display = 'none'; }
                     if (window.FB && typeof FB.XFBML === 'object') {
-                        console.log('[FB Debug] Calling FB.XFBML.parse()');
                         FB.XFBML.parse();
                     }
                 };
 
                 setTimeout(function() {
                     var sk = document.getElementById('fb-skeleton');
-                    if (sk) { sk.style.display = 'none'; console.log('[FB Debug] Skeleton hidden (timeout)'); }
+                    if (sk) { sk.style.display = 'none'; }
 
                     var iframe = document.querySelector('.fb-page iframe, .fb-page > iframe');
                     var fallback = document.getElementById('fb-fallback');
 
-                    console.log('[FB Debug] 10s check — iframe in .fb-page:', !!iframe);
-
                     if (iframe && iframe.getAttribute('src') && iframe.getAttribute('src').indexOf('facebook.com') !== -1) {
                         if (fallback) { fallback.style.display = 'none'; }
-                        console.log('[FB Debug] Facebook iframe confirmed — hiding fallback, plugin active');
                     } else {
                         if (fallback) { fallback.style.display = 'block'; }
-                        console.log('[FB Debug] No Facebook iframe — showing fallback');
-                        console.log('[FB Debug] Possible causes: AdBlock, network block, CSP, or Facebook domain blocked');
                     }
                 }, 10000);
-
-                document.querySelector('script[src*="connect.facebook.net"]')?.addEventListener('load', function() {
-                    console.log('[FB Debug] SDK script load event fired');
-                });
-                document.querySelector('script[src*="connect.facebook.net"]')?.addEventListener('error', function() {
-                    console.log('[FB Debug] SDK script FAILED to load — connect.facebook.net may be blocked');
-                });
             </script>
             <script async defer crossorigin="anonymous"
                     src="https://connect.facebook.net/ar_AR/sdk.js#xfbml=1&version=v25.0">

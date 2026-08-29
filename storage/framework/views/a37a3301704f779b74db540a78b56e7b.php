@@ -38,8 +38,6 @@
 
     $publicServicesIndexUrl = Route::has('public.services.index') ? route('public.services.index') : $portalUrl;
 
-    $mayor = $data['mayor'] ?? null;
-
     $sectionTitle = fn ($key) => collect($sections)->firstWhere('key', $key)['title'] ?? null;
     $sectionSubtitle = fn ($key) => collect($sections)->firstWhere('key', $key)['subtitle'] ?? null;
     $sectionSettings = fn ($key) => collect($sections)->firstWhere('key', $key)['settings'] ?? [];
@@ -56,7 +54,7 @@
     };
 ?>
 
-<div style="min-height:100vh;background:white;width:100%;max-width:100%;overflow-x:hidden;">
+<div style="background:white;width:100%;max-width:100%;overflow-x:hidden;">
 
     
     
@@ -75,6 +73,7 @@
     
     
     
+    <?php echo $__env->make('livewire.homepage.sections.quick-actions', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     
     
@@ -85,16 +84,6 @@
         'sectionSubtitle' => $sectionSubtitle('services'),
         'publicServicesIndexUrl' => $publicServicesIndexUrl,
         'portalUrl' => $portalUrl,
-    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
-
-    
-    
-    
-    <?php echo $__env->renderWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
-        'latestNews' => $latestNews,
-        'latestAnnouncements' => $latestAnnouncements,
-        'sectionTitle' => $sectionTitle('latest_news'),
-        'sectionSubtitle' => $sectionSubtitle('latest_news'),
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     
@@ -118,6 +107,27 @@
     
     
     
+    <?php echo $__env->renderWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
+        'latestNews' => $latestNews,
+        'latestAnnouncements' => $latestAnnouncements,
+        'sectionTitle' => $sectionTitle('latest_news'),
+        'sectionSubtitle' => $sectionSubtitle('latest_news'),
+        'municipality' => $municipality,
+    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
+
+    
+    
+    
+    <?php echo $__env->make('livewire.homepage.sections.water-status', [
+        'waterSchedule' => $waterSchedule,
+        'waterAreas' => $waterAreas,
+        'sectionTitle' => $sectionTitle('water_schedule') ?? 'جدول توزيع المياه',
+        'sectionSubtitle' => $sectionSubtitle('water_schedule') ?? '',
+    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+    
+    
+    
     <?php echo $__env->renderWhen(in_array('municipality_intro', $sectionKeys) && !empty($municipality), 'livewire.homepage.sections.municipality-story', [
         'municipality' => $municipality,
         'municipalityName' => $municipalityName,
@@ -131,7 +141,6 @@
     
     <?php echo $__env->renderWhen(in_array('council_members', $sectionKeys), 'livewire.homepage.sections.council-members', [
         'featuredCouncilMembers' => $featuredCouncilMembers,
-        'mayor' => $mayor,
         'municipalityName' => $municipalityName,
         'sectionTitle' => $sectionTitle('council_members'),
         'sectionSubtitle' => $sectionSubtitle('council_members'),
@@ -150,30 +159,11 @@
     
     
     
-    <?php echo $__env->renderWhen(!empty($waterSchedule), 'livewire.homepage.sections.water-status', [
-        'waterSchedule' => $waterSchedule,
-        'waterAreas' => $waterAreas,
-        'sectionTitle' => $sectionTitle('water_schedule') ?? 'جدول توزيع المياه',
-        'sectionSubtitle' => $sectionSubtitle('water_schedule') ?? '',
-    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
-
-    
-    
-    
     <?php echo $__env->renderWhen(!empty($latestJobs) || (!empty($engineeringOffices) && in_array('engineering_offices', $sectionKeys)), 'livewire.homepage.sections.jobs', [
         'latestJobs' => $latestJobs,
         'engineeringOffices' => $engineeringOffices,
         'sectionTitle' => $sectionTitle('jobs'),
         'sectionSubtitle' => $sectionSubtitle('jobs'),
-    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
-
-    
-    
-    
-    <?php echo $__env->renderWhen(in_array('projects', $sectionKeys), 'livewire.homepage.sections.projects', [
-        'latestProjects' => $latestProjects,
-        'sectionTitle' => $sectionTitle('projects'),
-        'sectionSubtitle' => $sectionSubtitle('projects'),
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     
@@ -188,7 +178,11 @@
     
     
     
-    <?php echo $__env->make('livewire.homepage.sections.facebook-feed', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php echo $__env->renderWhen(in_array('projects', $sectionKeys), 'livewire.homepage.sections.projects', [
+        'latestProjects' => $latestProjects,
+        'sectionTitle' => $sectionTitle('projects'),
+        'sectionSubtitle' => $sectionSubtitle('projects'),
+    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     
     
@@ -206,6 +200,8 @@
     
     <?php echo $__env->renderWhen(!empty($partnerLogos), 'livewire.homepage.sections.partners', [
         'partnerLogos' => $partnerLogos,
+        'sectionTitle' => $sectionTitle('partners'),
+        'sectionSubtitle' => $sectionSubtitle('partners'),
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     
@@ -219,6 +215,5 @@
         'businessHours' => $businessHours,
         'municipality' => $municipality,
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
-
 </div>
 <?php /**PATH C:\Users\ahmed\idna-org\resources\views/livewire/homepage/public-home-page.blade.php ENDPATH**/ ?>

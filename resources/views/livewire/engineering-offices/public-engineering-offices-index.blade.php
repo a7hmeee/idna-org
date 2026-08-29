@@ -17,10 +17,12 @@
                 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
                     <div style="display:flex;align-items:center;gap:6px;">
                         <button wire:click="$set('filter', 'all')"
+                                aria-pressed="{{ $filter == 'all' }}"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $filter == 'all' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $filter == 'all' ? '#0F6A3D' : 'white' }};color:{{ $filter == 'all' ? 'white' : '#6B7280' }};">
                             الكل
                         </button>
                         <button wire:click="$set('filter', 'featured')"
+                                aria-pressed="{{ $filter == 'featured' }}"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $filter == 'featured' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $filter == 'featured' ? '#0F6A3D' : 'white' }};color:{{ $filter == 'featured' ? 'white' : '#6B7280' }};">
                             <i data-lucide="star" style="width:12px;height:12px;"></i>
                             المميزة
@@ -28,7 +30,8 @@
                     </div>
                     <div style="position:relative;width:100%;max-width:340px;">
                         <i data-lucide="search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#9CA3AF;pointer-events:none;"></i>
-                        <input type="text" wire:model.live.debounce.400ms="search"
+                        <span class="sr-only" role="status" wire:loading wire:target="search">جاري تحديث النتائج…</span>
+<input type="text" wire:model.live.debounce.400ms="search" aria-label="ابحث عن مكتب هندسي"
                                placeholder="ابحث عن مكتب..."
                                style="width:100%;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:11px 44px 11px 16px;font-size:13px;color:#1F2937;outline:none;transition:all 0.2s;"
                                onfocus="this.style.borderColor='#0F6A3D';this.style.boxShadow='0 0 0 3px rgba(15,106,61,0.1)'"
@@ -48,7 +51,7 @@
                     <div style="width:64px;height:64px;border-radius:16px;background:rgba(15,106,61,0.06);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
                         <i data-lucide="hard-hat" style="width:32px;height:32px;color:#9CA3AF;"></i>
                     </div>
-                    <h3 style="font-size:16px;font-weight:700;color:#1F2937;margin:0 0 8px;">لا توجد نتائج</h3>
+                    <h2 style="font-size:16px;font-weight:700;color:#1F2937;margin:0 0 8px;">لا توجد نتائج</h2>
                     <p style="font-size:13px;color:#9CA3AF;margin:0;">جرّب البحث بكلمات مختلفة أو غيّر التصفية</p>
                 </div>
             @else
@@ -64,7 +67,7 @@
                                     <i data-lucide="hard-hat" style="width:22px;height:22px;color:#0F6A3D;"></i>
                                 </div>
                                 <div style="min-width:0;flex:1;">
-                                    <h3 style="font-size:14px;font-weight:700;color:#1F2937;margin:0 0 2px;">{{ $office->office_name }}</h3>
+                                    <h2 style="font-size:14px;font-weight:700;color:#1F2937;margin:0 0 2px;">{{ $office->office_name }}</h2>
                                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                                         @if ($office->engineer_name)
                                             <span style="font-size:11px;color:#6B7280;">{{ $office->engineer_name }}</span>
@@ -118,7 +121,7 @@
 
             @if ($offices->hasPages())
                 <div class="mt-10">
-                    {{ $offices->links() }}
+                    <x-ui.pagination :paginator="$offices" />
                 </div>
             @endif
         </div>

@@ -205,11 +205,13 @@ final class EloquentElectronicServiceRepository implements ElectronicServiceRepo
             ->where('is_public', true)
             ->where('status', 'active');
 
-        $query->where(function ($q) use ($search): void {
-            $q->where('name', 'like', "%{$search}%")
-                ->orWhere('summary', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        });
+        if ($search !== '') {
+            $query->where(function ($q) use ($search): void {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
 
         if ($categoryId) {
             $query->where('service_category_id', $categoryId);

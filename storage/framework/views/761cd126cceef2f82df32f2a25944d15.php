@@ -11,13 +11,13 @@
                     <i data-lucide="scroll-text" class="w-3.5 h-3.5"></i>
                     المناقصات
                 </span>
-                <h2 class="text-3xl sm:text-4xl lg:text-[34px] font-black text-text leading-tight"><?php echo e($sectionTitle ?? 'المناقصات والعطاءات'); ?></h2>
+                <h2 class="text-3xl sm:text-4xl lg:text-[38px] font-black text-text leading-tight"><?php echo e($sectionTitle ?? 'المناقصات والعطاءات'); ?></h2>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sectionSubtitle): ?>
                     <p class="text-sm sm:text-base text-text-secondary mt-3 max-w-xl leading-relaxed"><?php echo e($sectionSubtitle); ?></p>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('public.tenders.index')): ?>
-                <a href="<?php echo e(route('public.tenders.index')); ?>" class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors no-underline shrink-0">
+                <a href="<?php echo e(route('public.tenders.index')); ?>" wire:navigate class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors no-underline shrink-0">
                     <span>جميع المناقصات</span>
                     <i data-lucide="arrow-left" class="w-4 h-4"></i>
                 </a>

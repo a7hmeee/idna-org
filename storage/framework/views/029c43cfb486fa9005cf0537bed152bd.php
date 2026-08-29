@@ -1,332 +1,274 @@
 <?php
-    $chairman = $mayor ?? collect($featuredCouncilMembers)->first(function ($m) {
-        $pos = $m['position'] ?? '';
-        return str_contains($pos, 'رئيس') || $pos === 'mayor';
-    });
-    $membersList = collect($featuredCouncilMembers)->filter(function ($m) use ($chairman) {
-        return $chairman ? ($m['id'] ?? null) !== ($chairman['id'] ?? null) : true;
-    })->values();
-    $hasMembers = $chairman || $membersList->isNotEmpty();
+    $members = collect($featuredCouncilMembers);
+    $president = $members->firstWhere('position', 'mayor');
+    $regularMembers = $members->reject(fn (array $member): bool =>
+        $president !== null && ($member['id'] ?? null) === ($president['id'] ?? null)
+    )->values();
 
-    $chairmanPhoto = null;
-    $chairmanName = '';
-    $chairmanRole = 'رئيس المجلس البلدي';
-    $chairmanBio = '';
-    $chairmanUrl = '#';
-    $hasChairmanBio = false;
+    $photoUrl = static fn (array $member): ?string => ! empty($member['photo_url'])
+        ? $member['photo_url']
+        : null;
 
-    if ($chairman) {
-        $chairmanPhoto = $chairman['photo_url'] ?? null;
-        $chairmanName = $chairman['full_name'] ?? '';
-        $chairmanRole = $chairman['position_label'] ?? $chairman['position'] ?? 'رئيس المجلس البلدي';
-        $chairmanBio = $chairman['bio'] ?? '';
-        $chairmanSlug = $chairman['slug'] ?? ($chairman['id'] ?? null);
-        $chairmanUrl = $chairmanSlug && Route::has('public.council.show') ? route('public.council.show', ['councilMember' => $chairmanSlug]) : '#';
-        $hasChairmanBio = !empty($chairmanBio);
-    }
+    $profileUrl = static function (array $member): string {
+        $slug = $member['slug'] ?? null;
 
-    $isMayor = $chairman && (($chairman['position'] ?? '') === 'mayor' || !empty($mayor));
+        return $slug && Route::has('public.council.show')
+            ? route('public.council.show', ['councilMember' => $slug])
+            : '#';
+    };
+
+    $initials = static function (string $name): string {
+        $parts = array_values(array_filter(preg_split('/\s+/u', trim($name)) ?: []));
+
+        return count($parts) > 1
+            ? mb_substr($parts[0], 0, 1).' '.mb_substr($parts[1], 0, 1)
+            : mb_substr($parts[0] ?? '', 0, 2);
+    };
 ?>
 
-<section id="council-members" class="py-[90px] bg-white relative overflow-hidden">
-    
-    <div class="absolute pointer-events-none" style="top:-30%;right:-10%;width:50%;height:80%;background:radial-gradient(ellipse 60% 70% at 70% 40%,rgba(31,122,54,0.035) 0%,transparent 70%);"></div>
-    <div class="absolute pointer-events-none" style="top:10%;left:-8%;width:45%;height:70%;background:radial-gradient(ellipse 55% 65% at 30% 50%,rgba(31,122,54,0.025) 0%,transparent 70%);"></div>
+<section id="council-members" class="relative overflow-hidden bg-white py-[clamp(56px,6vw,88px)]">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true" style="background:radial-gradient(ellipse 55% 70% at 80% 20%,rgba(23,107,50,.035),transparent 70%),radial-gradient(ellipse 45% 60% at 15% 80%,rgba(23,107,50,.025),transparent 70%);"></div>
 
-    <div style="width:100%;max-width:1280px;margin-left:auto;margin-right:auto;padding-left:clamp(16px,2.5vw,36px);padding-right:clamp(16px,2.5vw,36px);" class="relative z-10">
-
-        
-        
-        
-        <div class="flex flex-col items-center text-center mb-[clamp(52px,5vw,64px)]">
-            <span class="w-[60px] h-[2px] bg-[#1F7A36] rounded-full relative flex items-center justify-center">
-                <span class="w-[6px] h-[6px] bg-[#1F7A36] rounded-full"></span>
-            </span>
-            <h2 class="text-[clamp(30px,3.6vw,42px)] font-extrabold text-[#0F172A] leading-[1.25] tracking-[-0.01em] mt-[14px]">
+    <div class="relative z-10 mx-auto w-full max-w-[1400px] px-5 sm:px-8">
+        <header class="relative mb-10 flex flex-col items-center text-center">
+            <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#D4E8DA] bg-[#F0F7F2]">
+                <i data-lucide="users" class="h-7 w-7 text-[#176B32]" stroke-width="1.8"></i>
+            </div>
+            <div class="mb-3 flex items-center gap-4" aria-hidden="true">
+                <span class="h-0.5 w-14 rounded-full" style="background:linear-gradient(90deg,transparent,#C8A85A);"></span>
+                <span class="h-2 w-2 rounded-full bg-[#C8A85A]"></span>
+                <span class="h-0.5 w-14 rounded-full" style="background:linear-gradient(270deg,transparent,#C8A85A);"></span>
+            </div>
+            <h2 class="text-[clamp(28px,3.4vw,42px)] font-extrabold leading-tight tracking-tight text-[#17243A]">
                 <?php echo e($sectionTitle ?? 'أعضاء المجلس البلدي'); ?>
 
             </h2>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sectionSubtitle): ?>
-                <p class="text-[clamp(14px,1.15vw,18px)] text-[#64748B] leading-[1.8] mt-[14px] max-w-[760px]">
-                    <?php echo e($sectionSubtitle); ?>
+            <p class="mt-3 max-w-xl text-[clamp(14px,1.1vw,17px)] leading-relaxed text-[#64748B]">
+                <?php echo e($sectionSubtitle ?? 'نعمل معاً من أجل تطوير مدينتنا وخدمة المواطنين'); ?>
 
-                </p>
-            <?php else: ?>
-                <p class="text-[clamp(14px,1.15vw,18px)] text-[#64748B] leading-[1.8] mt-[14px] max-w-[760px]">
-                    تعرف على رئيس وأعضاء المجلس البلدي الذين يمثلون المجتمع ويقودون العمل البلدي
-                </p>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-        </div>
+            </p>
 
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasMembers): ?>
-
-        
-        
-        
-
-        <?php
-            $sliderData = $membersList->values()->toArray();
-        ?>
-
-        <div class="flex flex-col lg:flex-row gap-[clamp(24px,3vw,40px)] <?php if($chairman && $membersList->isNotEmpty()): ?> <?php else: ?> items-center <?php endif; ?>">
-
-            
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($chairman): ?>
-            <div class="w-full <?php if($chairman && $membersList->isNotEmpty()): ?> lg:w-[380px] shrink-0 <?php else: ?> max-w-[420px] mx-auto <?php endif; ?>">
-                <div class="bg-white rounded-[30px] border border-[#DDEDE0] flex flex-col items-center text-center px-[clamp(24px,2.5vw,32px)] pt-[clamp(32px,3.5vw,40px)] pb-[clamp(24px,2.5vw,30px)] min-h-[500px] lg:min-h-[520px] transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_24px_60px_rgba(15,23,42,0.12)] group relative overflow-hidden"
-                    style="background:linear-gradient(180deg,#F3FBF6 0%,#FFFFFF 35%);box-shadow:0 20px 50px rgba(15,23,42,0.10);">
-
-                    <div class="absolute right-0 top-0 bottom-0 w-[70px] opacity-[0.035] pointer-events-none"
-                        style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 60 600%27%3E%3Cpath d=%27M52,30 Q32,55 42,95 Q52,75 60,85 Q62,50 52,30%27 fill=%27%231F7A36%27/%3E%3Cpath d=%27M48,130 Q28,155 38,195 Q48,175 56,185 Q58,150 48,130%27 fill=%27%231F7A36%27/%3E%3Cpath d=%27M54,240 Q34,265 44,305 Q54,285 62,295 Q64,260 54,240%27 fill=%27%231F7A36%27/%3E%3Cpath d=%27M50,350 Q30,375 40,415 Q50,395 58,405 Q60,370 50,350%27 fill=%27%231F7A36%27/%3E%3Cpath d=%27M55,460 Q35,485 45,525 Q55,505 63,515 Q65,480 55,460%27 fill=%27%231F7A36%27/%3E%3C/svg%3E');
-                        background-repeat:repeat-y;
-                        background-position:right center;">
-                    </div>
-
-                    <div class="w-[150px] h-[150px] rounded-full ring-[4px] ring-white shadow-[0_0_0_3px_rgba(31,122,54,0.15),0_6px_20px_rgba(0,0,0,0.06)] overflow-hidden shrink-0 bg-[#F0F7F2] transition-all duration-300 group-hover:shadow-[0_0_0_3px_rgba(31,122,54,0.25),0_8px_28px_rgba(0,0,0,0.08)]">
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($chairmanPhoto): ?>
-                            <img src="<?php echo e($chairmanPhoto); ?>" alt="<?php echo e($chairmanName); ?>" class="w-full h-full object-cover object-[center_30%]" loading="lazy" decoding="async" width="150" height="150">
-                        <?php else: ?>
-                            <div class="w-full h-full bg-[#F0F7F2] flex items-center justify-center">
-                                <i data-lucide="user" class="w-[60px] h-[60px] text-[#1F7A36]/35" stroke-width="1.3"></i>
-                            </div>
-                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                    </div>
-
-                    <span class="inline-flex items-center h-[28px] px-[12px] rounded-full bg-[#1F7A36] text-white text-[12px] font-bold leading-none mt-[16px]">
-                        <?php echo e($isMayor ? 'رئيس البلدية' : 'رئيس المجلس'); ?>
-
-                    </span>
-
-                    <h3 class="text-[clamp(24px,2.5vw,30px)] font-extrabold text-[#0F172A] leading-[1.35] mt-[10px]">
-                        <?php echo e($chairmanName); ?>
-
-                    </h3>
-
-                    <p class="text-[16px] text-[#64748B] mt-[6px]">
-                        <?php echo e($chairmanRole); ?>
-
-                    </p>
-
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasChairmanBio): ?>
-                        <p class="text-[14px] text-[#64748B] leading-[1.8] mt-[18px] max-w-[290px] line-clamp-3">
-                            <?php echo e($chairmanBio); ?>
-
-                        </p>
-                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-                    <div class="flex-1 min-h-0"></div>
-
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($chairmanUrl !== '#'): ?>
-                        <a href="<?php echo e($chairmanUrl); ?>" wire:navigate
-                            class="inline-flex items-center justify-center h-[54px] w-full rounded-[16px] bg-[#1F7A36] text-white text-[16px] font-bold transition-all duration-200 hover:bg-[#16632B] hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(31,122,54,0.30)] no-underline gap-2 mt-[20px]">
-                            <span>عرض ملف الرئيس</span>
-                            <i data-lucide="chevron-left" class="w-[18px] h-[18px]" stroke-width="2.5"></i>
-                        </a>
-                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                </div>
-            </div>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-            
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($membersList->isNotEmpty()): ?>
-            <div class="min-w-0 relative <?php if($chairman): ?> flex-1 <?php else: ?> w-full <?php endif; ?>">
-
-                <div x-data="{
-                    slides: <?php echo \Illuminate\Support\Js::from($sliderData)->toHtml() ?>,
-                    currentIndex: 0,
-                    canPrev: false,
-                    canNext: false,
-                    sliderEl: null,
-                    init() {
-                        this.$nextTick(() => {
-                            this.sliderEl = this.$refs.track;
-                            if (this.sliderEl) {
-                                this.checkArrows();
-                                this.sliderEl.addEventListener('scroll', () => this.checkArrows(), { passive: true });
-                            }
-                        });
-                    },
-                    slidePrev() {
-                        if (!this.sliderEl) return;
-                        const cardWidth = this.sliderEl.querySelector('.member-slide')?.offsetWidth || 250;
-                        this.sliderEl.scrollBy({ left: -(cardWidth + 24), behavior: 'smooth' });
-                    },
-                    slideNext() {
-                        if (!this.sliderEl) return;
-                        const cardWidth = this.sliderEl.querySelector('.member-slide')?.offsetWidth || 250;
-                        this.sliderEl.scrollBy({ left: cardWidth + 24, behavior: 'smooth' });
-                    },
-                    checkArrows() {
-                        if (!this.sliderEl) return;
-                        const t = this.sliderEl;
-                        this.canPrev = t.scrollLeft > 10;
-                        this.canNext = t.scrollLeft < t.scrollWidth - t.clientWidth - 10;
-                        const children = t.querySelectorAll('.member-slide');
-                        let acc = 0;
-                        for (let i = 0; i < children.length; i++) {
-                            const w = (children[i]?.offsetWidth || 250) + 24;
-                            if (t.scrollLeft < acc + w / 2) { this.currentIndex = i; break; }
-                            acc += w;
-                        }
-                    },
-                    scrollToSlide(index) {
-                        if (!this.sliderEl) return;
-                        const children = this.sliderEl.querySelectorAll('.member-slide');
-                        if (!children[index]) return;
-                        let target = 0;
-                        for (let i = 0; i < index; i++) {
-                            target += (children[i]?.offsetWidth || 250) + 24;
-                        }
-                        this.sliderEl.scrollTo({ left: target, behavior: 'smooth' });
-                        this.currentIndex = index;
-                    }
-                }" class="relative">
-
-                    
-                    <button x-show="canPrev" x-transition.opacity.duration.200ms
-                        @click="slidePrev()"
-                        class="absolute -right-[18px] top-[calc(50%-24px)] -translate-y-1/2 z-20 w-[48px] h-[48px] rounded-full bg-white border border-[#E9EFEA] shadow-[0_4px_16px_rgba(15,23,42,0.06)] hover:bg-[#F0F7F2] hover:border-[#1F7A36]/30 transition-all flex items-center justify-center cursor-pointer"
-                        aria-label="السابق">
-                        <i data-lucide="chevron-right" class="w-[20px] h-[20px] text-[#1F7A36]" stroke-width="2.5"></i>
-                    </button>
-
-                    
-                    <div x-ref="track"
-                        @scroll.throttle.100ms="checkArrows()"
-                        class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-none pb-2">
-
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $membersList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $member): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                            <?php
-                                $mPhoto = $member['photo_url'] ?? null;
-                                $mSlug = $member['slug'] ?? $member['id'] ?? null;
-                                $mUrl = $mSlug && Route::has('public.council.show') ? route('public.council.show', ['councilMember' => $mSlug]) : '#';
-                                $mName = $member['full_name'] ?? '';
-                                $mRole = $member['position_label'] ?? $member['position'] ?? 'عضو المجلس البلدي';
-                                $mPhone = $member['phone'] ?? $member['mobile'] ?? null;
-                                $mEmail = $member['email'] ?? null;
-                                $mCommittee = $member['committee'] ?? null;
-                            ?>
-                            <div class="member-slide snap-start shrink-0 w-[calc((100%-72px)/4)] min-w-[220px] lg:min-w-[230px]">
-                                <div class="bg-white rounded-[24px] border border-[#E9EFEA] flex flex-col items-center text-center px-[24px] pt-[32px] pb-[24px] min-h-[430px] transition-all duration-300 hover:-translate-y-[6px] hover:shadow-[0_16px_40px_rgba(15,23,42,0.07)] hover:border-[#1F7A36]/18 group"
-                                    style="box-shadow:0 8px 25px rgba(15,23,42,0.06);">
-
-                                    <div class="w-[120px] h-[120px] rounded-full ring-[4px] ring-white shadow-[0_0_0_3px_rgba(31,122,54,0.12),0_4px_14px_rgba(0,0,0,0.04)] overflow-hidden shrink-0 bg-[#F0F7F2] transition-all duration-300 group-hover:shadow-[0_0_0_3px_rgba(31,122,54,0.22),0_6px_20px_rgba(0,0,0,0.06)]">
-                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($mPhoto): ?>
-                                            <img src="<?php echo e($mPhoto); ?>" alt="<?php echo e($mName); ?>" class="w-full h-full object-cover object-[center_30%]" loading="lazy" decoding="async" width="120" height="120">
-                                        <?php else: ?>
-                                            <div class="w-full h-full bg-[#F0F7F2] flex items-center justify-center">
-                                                <i data-lucide="user" class="w-[48px] h-[48px] text-[#1F7A36]/35" stroke-width="1.3"></i>
-                                            </div>
-                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                    </div>
-
-                                    <h3 class="text-[18px] font-extrabold text-[#0F172A] leading-[1.4] mt-[20px] line-clamp-2">
-                                        <?php echo e($mName); ?>
-
-                                    </h3>
-
-                                    <p class="text-[14px] text-[#64748B] mt-[8px]">
-                                        <?php echo e($mRole); ?>
-
-                                    </p>
-
-                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($mCommittee): ?>
-                                        <span class="inline-flex items-center text-[14px] text-[#1F7A36] font-semibold mt-[10px] leading-[1.4] max-w-full line-clamp-2">
-                                            <?php echo e($mCommittee); ?>
-
-                                        </span>
-                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-                                    <div class="flex-1 min-h-0"></div>
-
-                                    <div class="flex items-center justify-center gap-[12px] mt-auto pt-[18px]">
-                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($mPhone): ?>
-                                            <a href="tel:<?php echo e($mPhone); ?>"
-                                                class="w-[42px] h-[42px] rounded-full bg-[#EEF8F0] flex items-center justify-center transition-all duration-200 hover:bg-[#1F7A36] text-[#1F7A36] hover:text-white no-underline"
-                                                aria-label="اتصال بـ <?php echo e($mName); ?>">
-                                                <i data-lucide="phone" class="w-[18px] h-[18px]" stroke-width="2"></i>
-                                            </a>
-                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($mEmail): ?>
-                                            <a href="mailto:<?php echo e($mEmail); ?>"
-                                                class="w-[42px] h-[42px] rounded-full bg-[#EEF8F0] flex items-center justify-center transition-all duration-200 hover:bg-[#1F7A36] text-[#1F7A36] hover:text-white no-underline"
-                                                aria-label="بريد <?php echo e($mName); ?>">
-                                                <i data-lucide="envelope" class="w-[18px] h-[18px]" stroke-width="2"></i>
-                                            </a>
-                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                        <a href="<?php echo e($mUrl); ?>" wire:navigate
-                                            class="w-[42px] h-[42px] rounded-full bg-[#EEF8F0] flex items-center justify-center transition-all duration-200 hover:bg-[#1F7A36] text-[#1F7A36] hover:text-white no-underline"
-                                            aria-label="الملف الشخصي لـ <?php echo e($mName); ?>">
-                                            <i data-lucide="user" class="w-[18px] h-[18px]" stroke-width="2"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
-
-                    </div>
-
-                    
-                    <button x-show="canNext" x-transition.opacity.duration.200ms
-                        @click="slideNext()"
-                        class="absolute -left-[18px] top-[calc(50%-24px)] -translate-y-1/2 z-20 w-[48px] h-[48px] rounded-full bg-white border border-[#E9EFEA] shadow-[0_4px_16px_rgba(15,23,42,0.06)] hover:bg-[#F0F7F2] hover:border-[#1F7A36]/30 transition-all flex items-center justify-center cursor-pointer"
-                        aria-label="التالي">
-                        <i data-lucide="chevron-left" class="w-[20px] h-[20px] text-[#1F7A36]" stroke-width="2.5"></i>
-                    </button>
-
-                    
-                    <div class="flex items-center justify-center gap-[8px] mt-[28px]">
-                        <template x-for="(slide, index) in slides" :key="index">
-                            <button @click="scrollToSlide(index)"
-                                :class="{
-                                    'bg-[#1F7A36] w-[24px] rounded-[4px]': index === currentIndex,
-                                    'bg-[#DDE5DC] w-[8px] rounded-full': index !== currentIndex
-                                }"
-                                class="h-[8px] transition-all duration-300 cursor-pointer"
-                                :aria-label="'الانتقال إلى العضو ' + (index + 1)">
-                            </button>
-                        </template>
-                    </div>
-
-                </div>
-            </div>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-        </div>
-
-        
-        <div class="flex justify-center mt-[28px]">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('public.council.index')): ?>
                 <a href="<?php echo e(route('public.council.index')); ?>" wire:navigate
-                    class="inline-flex items-center gap-[10px] h-[48px] px-[28px] rounded-[16px] border border-[#1F7A36] bg-white text-[#1F7A36] text-[16px] font-bold transition-all duration-200 hover:bg-[#1F7A36] hover:text-white no-underline">
-                    <i data-lucide="users" class="w-[20px] h-[20px]" stroke-width="2"></i>
-                    <span>عرض جميع الأعضاء</span>
+                   class="absolute left-0 top-0 hidden h-10 items-center gap-2 rounded-xl border border-[#D4E8DA] bg-white px-4 text-sm font-semibold text-[#176B32] no-underline transition hover:border-[#176B32]/30 hover:bg-[#F0F7F2] lg:inline-flex">
+                    <i data-lucide="arrow-left" class="h-4 w-4" stroke-width="2"></i>
+                    عرض جميع الأعضاء
                 </a>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-        </div>
+        </header>
 
-        <?php else: ?>
-        <div class="flex flex-col items-center justify-center text-center py-[60px]">
-            <div class="w-[56px] h-[56px] rounded-full bg-[#F0F7F2] flex items-center justify-center mb-[16px]">
-                <i data-lucide="users" class="w-[28px] h-[28px] text-[#1F7A36]/50" stroke-width="1.5"></i>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($members->isNotEmpty()): ?>
+            <div class="homepage-council-composition flex flex-col items-start gap-6 lg:flex-row" dir="ltr">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($president): ?>
+                    <?php
+                        $presidentName = $president['full_name'] ?? '';
+                        $presidentPhoto = $photoUrl($president);
+                        $presidentProfile = $profileUrl($president);
+                    ?>
+                    <article class="homepage-council-president relative flex w-full shrink-0 flex-col overflow-hidden rounded-[28px] border border-[#0B4D28] bg-[#07552D] text-center text-white shadow-[0_18px_50px_rgba(8,70,34,.22)]" dir="rtl">
+                        <div class="pointer-events-none absolute inset-0 opacity-[.08]" aria-hidden="true" style="background-image:radial-gradient(circle at 15% 20%,#C8A85A 0 1px,transparent 2px),radial-gradient(circle at 80% 80%,#fff 0 1px,transparent 2px);background-size:28px 28px;"></div>
+                        <div class="pointer-events-none absolute -bottom-20 -left-12 h-64 w-64 rounded-full border border-[#C8A85A]/20" aria-hidden="true"></div>
+                        <div class="absolute right-5 top-0 z-10 flex h-14 w-11 items-center justify-center rounded-b-lg bg-[#C8A85A] text-white shadow-md" aria-label="رئيس المجلس البلدي">
+                            <i data-lucide="star" class="h-5 w-5" fill="currentColor"></i>
+                        </div>
+
+                        <div class="relative z-10 flex min-h-0 flex-1 flex-col items-center p-5 sm:p-6">
+                            <div class="flex h-[280px] w-full shrink-0 items-center justify-center overflow-hidden rounded-[20px] bg-[#0B4D28] ring-1 ring-white/15">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($presidentPhoto): ?>
+                                    <img src="<?php echo e($presidentPhoto); ?>" alt="<?php echo e($presidentName); ?>" class="h-full w-full object-cover object-[center_22%]" loading="lazy" decoding="async">
+                                <?php else: ?>
+                                    <span class="text-5xl font-black text-white/35" aria-hidden="true"><?php echo e($initials($presidentName)); ?></span>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </div>
+                            <span class="mt-4 inline-flex items-center rounded-full border border-[#C8A85A]/45 bg-[#C8A85A]/15 px-4 py-1.5 text-xs font-bold text-[#F5E6B8]">رئيس المجلس البلدي</span>
+                            <h3 class="mt-3 text-[clamp(20px,2vw,28px)] font-extrabold leading-tight"><?php echo e($presidentName); ?></h3>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($president['position_label'] ?? null)): ?>
+                                <p class="mt-2 text-sm font-semibold text-white/75"><?php echo e($president['position_label']); ?></p>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($president['bio'] ?? null)): ?>
+                                <p class="mt-2 text-[13px] leading-[1.8] text-white/60"><?php echo e($president['bio']); ?></p>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+                            <div class="mt-auto flex items-center justify-center gap-3 pt-4">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($president['phone'] ?? $president['mobile'] ?? null)): ?>
+                                    <a href="tel:<?php echo e($president['phone'] ?? $president['mobile']); ?>" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-[#C8A85A] hover:bg-[#C8A85A]" aria-label="اتصال بـ <?php echo e($presidentName); ?>"><i data-lucide="phone" class="h-4 w-4"></i></a>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($president['email'] ?? null)): ?>
+                                    <a href="mailto:<?php echo e($president['email']); ?>" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-[#C8A85A] hover:bg-[#C8A85A]" aria-label="بريد <?php echo e($presidentName); ?>"><i data-lucide="mail" class="h-4 w-4"></i></a>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($presidentProfile !== '#'): ?>
+                                    <a href="<?php echo e($presidentProfile); ?>" wire:navigate class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-[#C8A85A] hover:bg-[#C8A85A]" aria-label="الملف الشخصي لـ <?php echo e($presidentName); ?>"><i data-lucide="user" class="h-4 w-4"></i></a>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </div>
+                        </div>
+                    </article>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($regularMembers->isNotEmpty()): ?>
+                    <?php $sliderData = $regularMembers->all(); ?>
+                    <div class="homepage-council-slider min-w-0 flex-1" x-data="{
+                        slides: <?php echo \Illuminate\Support\Js::from($sliderData)->toHtml() ?>,
+                        slider: null,
+                        currentPage: 0,
+                        canPrev: false,
+                        canNext: false,
+                        init() {
+                            this.$nextTick(() => {
+                                this.slider = this.$refs.track;
+                                this.refresh();
+                            });
+                            window.addEventListener('resize', () => this.refresh(), { passive: true });
+                        },
+                        visible() {
+                            return window.innerWidth >= 1280 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+                        },
+                        step() {
+                            const card = this.slider?.querySelector('.homepage-council-slide');
+                            return card ? card.getBoundingClientRect().width + 24 : 0;
+                        },
+                        pages() {
+                            return Math.max(1, Math.ceil(this.slides.length / this.visible()));
+                        },
+                        refresh() {
+                            if (!this.slider) return;
+                            const max = this.slider.scrollWidth - this.slider.clientWidth;
+                            this.canPrev = this.slider.scrollLeft > 4;
+                            this.canNext = this.slider.scrollLeft < max - 4;
+                            this.currentPage = this.step() ? Math.round(this.slider.scrollLeft / (this.step() * this.visible())) : 0;
+                        },
+                        move(page) {
+                            if (this.slider) this.slider.scrollTo({ left: page * this.step() * this.visible(), behavior: 'smooth' });
+                        }
+                    }" dir="ltr">
+                        <div class="relative">
+                            <button x-show="canPrev" x-transition.opacity @click="move(Math.max(0, currentPage - 1))" class="homepage-council-prev absolute -left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#E9EFEA] bg-white text-[#176B32] shadow-lg transition hover:bg-[#F0F7F2]" aria-label="السابق">
+                                <i data-lucide="chevron-left" class="h-5 w-5"></i>
+                            </button>
+
+                            <div x-ref="track" @scroll.throttle.100ms="refresh()" tabindex="0" role="region" aria-label="أعضاء المجلس البلدي" class="homepage-council-track flex items-start gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#176B32]/30">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $regularMembers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $member): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                                    <?php
+                                        $name = $member['full_name'] ?? '';
+                                        $image = $photoUrl($member);
+                                        $url = $profileUrl($member);
+                                    ?>
+                                    <div class="homepage-council-slide flex shrink-0 snap-start" dir="rtl">
+                                        <article class="homepage-council-card flex w-full flex-col overflow-hidden rounded-[22px] border border-[#E9EFEA] bg-white text-center shadow-[0_6px_20px_rgba(15,23,42,.05)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_14px_36px_rgba(15,23,42,.1)]">
+                                            <div class="flex h-[230px] w-full shrink-0 items-center justify-center overflow-hidden rounded-t-[18px] bg-[#F0F7F2] p-4">
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($image): ?>
+                                                    <img src="<?php echo e($image); ?>" alt="<?php echo e($name); ?>" class="h-full w-full rounded-[14px] object-cover object-[center_25%]" loading="lazy" decoding="async">
+                                                <?php else: ?>
+                                                    <span class="text-4xl font-black text-[#176B32]/25" aria-hidden="true"><?php echo e($initials($name)); ?></span>
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                            </div>
+                                            <div class="flex flex-1 flex-col px-5 py-4">
+                                                <h3 class="text-[17px] font-extrabold leading-snug text-[#17243A]"><?php echo e($name); ?></h3>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($member['position_label'] ?? null)): ?>
+                                                    <p class="mt-1.5 text-[13px] font-semibold text-[#176B32]"><?php echo e($member['position_label']); ?></p>
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($member['committee'] ?? null)): ?>
+                                                    <span class="mt-1 text-[12px] leading-relaxed text-[#64748B]"><?php echo e($member['committee']); ?></span>
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($member['bio'] ?? null)): ?>
+                                                    <p class="mt-2 text-[12px] leading-[1.8] text-[#64748B]"><?php echo e($member['bio']); ?></p>
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                <div class="mt-auto flex items-center justify-center gap-3 pt-4">
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($member['phone'] ?? $member['mobile'] ?? null)): ?>
+                                                        <a href="tel:<?php echo e($member['phone'] ?? $member['mobile']); ?>" class="flex h-9 w-9 items-center justify-center rounded-full bg-[#EEF8F0] text-[#176B32] transition hover:bg-[#176B32] hover:text-white" aria-label="اتصال بـ <?php echo e($name); ?>"><i data-lucide="phone" class="h-4 w-4"></i></a>
+                                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! empty($member['email'] ?? null)): ?>
+                                                        <a href="mailto:<?php echo e($member['email']); ?>" class="flex h-9 w-9 items-center justify-center rounded-full bg-[#EEF8F0] text-[#176B32] transition hover:bg-[#176B32] hover:text-white" aria-label="بريد <?php echo e($name); ?>"><i data-lucide="mail" class="h-4 w-4"></i></a>
+                                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($url !== '#'): ?>
+                                                        <a href="<?php echo e($url); ?>" wire:navigate class="flex h-9 w-9 items-center justify-center rounded-full bg-[#EEF8F0] text-[#176B32] transition hover:bg-[#176B32] hover:text-white" aria-label="الملف الشخصي لـ <?php echo e($name); ?>"><i data-lucide="user" class="h-4 w-4"></i></a>
+                                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                            </div>
+
+                            <button x-show="canNext" x-transition.opacity @click="move(currentPage + 1)" class="homepage-council-next absolute -right-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#E9EFEA] bg-white text-[#176B32] shadow-lg transition hover:bg-[#F0F7F2]" aria-label="التالي">
+                                <i data-lucide="chevron-right" class="h-5 w-5"></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-6 flex items-center justify-center gap-2" x-show="pages() > 1">
+                            <template x-for="index in pages()" :key="index">
+                                <button @click="move(index - 1)" :class="currentPage === index - 1 ? 'h-2 w-7 rounded bg-[#176B32]' : 'h-2 w-2 rounded-full bg-[#DDE5DC]'" class="transition-all" :aria-label="'الانتقال إلى مجموعة الأعضاء ' + index"></button>
+                            </template>
+                        </div>
+                    </div>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
-            <h3 class="text-[18px] font-bold text-[#0F172A]">لا يوجد أعضاء مجلس حالياً</h3>
-            <p class="text-[14px] text-[#64748B] mt-[6px]">سيتم إضافة أعضاء المجلس البلدي قريباً</p>
-        </div>
+        <?php else: ?>
+            <div class="rounded-2xl border border-dashed border-[#DDE5DC] bg-[#F8FAF9] py-16 text-center">
+                <i data-lucide="users" class="mx-auto h-10 w-10 text-[#176B32]/30"></i>
+                <p class="mt-3 text-sm font-semibold text-[#64748B]">لا يوجد أعضاء مجلس حالياً</p>
+            </div>
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
+        <div class="mt-8 rounded-2xl border border-[#E8EDF2] bg-[#F8FAF9] px-6 py-5" dir="rtl">
+            <div class="flex flex-col items-center justify-center gap-5 divide-y divide-[#E2E8F0] sm:flex-row sm:divide-x sm:divide-y-0">
+                <div class="flex items-center gap-3 px-5 py-2">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F0F7F2]"><i data-lucide="users" class="h-5 w-5 text-[#176B32]"></i></div>
+                    <div><strong class="block text-2xl font-extrabold text-[#17243A]"><?php echo e($members->count()); ?></strong><span class="text-xs text-[#64748B]">أعضاء المجلس</span></div>
+                </div>
+                <div class="flex items-center gap-3 px-5 py-2">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F0F7F2]"><i data-lucide="shield-check" class="h-5 w-5 text-[#176B32]"></i></div>
+                    <div><strong class="block text-base font-bold text-[#17243A]">نعمل معاً</strong><span class="text-xs text-[#64748B]">من أجل خدمة المجتمع</span></div>
+                </div>
+                <div class="flex items-center gap-3 px-5 py-2">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F0F7F2]"><i data-lucide="building-2" class="h-5 w-5 text-[#176B32]"></i></div>
+                    <div><strong class="block text-base font-bold text-[#17243A]"><?php echo e($municipalityName ?? ''); ?></strong><span class="text-xs text-[#64748B]">شفافية · كفاءة · تطوير</span></div>
+                </div>
+            </div>
+        </div>
+
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('public.council.index')): ?>
+            <div class="mt-5 flex justify-center lg:hidden">
+                <a href="<?php echo e(route('public.council.index')); ?>" wire:navigate class="inline-flex h-11 items-center gap-2 rounded-xl border border-[#176B32] px-5 text-sm font-bold text-[#176B32] no-underline transition hover:bg-[#176B32] hover:text-white">
+                    <i data-lucide="users" class="h-4 w-4"></i> عرض جميع الأعضاء
+                </a>
+            </div>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
     <style>
-        .scrollbar-none::-webkit-scrollbar { display: none; width: 0; height: 0; }
-        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-        @media (prefers-reduced-motion: reduce) {
-            .flex { scroll-behavior: auto; }
+        .homepage-council-track::-webkit-scrollbar { display: none; }
+        .homepage-council-track { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .homepage-council-slide {
+            flex: 0 0 calc((100% - 48px) / 3);
+            min-width: 280px;
         }
-        .member-slide {
-            scroll-snap-align: start;
+
+        .homepage-council-card {
+            height: auto;
+            min-height: 420px;
+        }
+
+        .homepage-council-president {
+            width: 380px;
+        }
+
+        @media (max-width: 1279px) {
+            .homepage-council-composition { flex-direction: column; align-items: stretch; }
+            .homepage-council-president { width: min(100%, 380px); margin-inline: auto; }
+            .homepage-council-slider { width: 100%; }
+            .homepage-council-slide { flex: 0 0 calc((100% - 24px) / 2); min-width: 260px; }
+        }
+        @media (max-width: 639px) {
+            .homepage-council-slide { flex: 0 0 88%; min-width: 0; }
+            .homepage-council-president { width: 100%; }
+            .homepage-council-prev { left: -2px !important; }
+            .homepage-council-next { right: -2px !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .homepage-council-track { scroll-behavior: auto; }
+            .homepage-council-composition * { transition-duration: .01ms !important; }
         }
     </style>
-
 </section>
 <?php /**PATH C:\Users\ahmed\idna-org\resources\views/livewire/homepage/sections/council-members.blade.php ENDPATH**/ ?>

@@ -23,7 +23,7 @@
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
     <?php echo $__env->yieldPushContent('styles'); ?>
-    <style>[x-cloak] { display: none !important; } html { scroll-behavior: smooth; }
+    <style>[x-cloak] { display: none !important; } html { scroll-behavior: smooth; } @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
         /* Global mobile overflow prevention */
         @media (max-width: 768px) {
             html, body { overflow-x: hidden; max-width: 100vw; }
@@ -32,6 +32,11 @@
     </style>
 </head>
 <body class="bg-background font-sans text-text antialiased">
+
+    
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg focus:text-sm focus:font-bold focus:no-underline focus:outline-none focus:ring-2 focus:ring-white">
+        انتقال إلى المحتوى الرئيسي
+    </a>
 
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if (! ($hideDefaultHeader ?? false)): ?>
         <?php echo $__env->make('livewire.homepage.sections.header', [
@@ -80,8 +85,7 @@
         </div>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    <?php echo e($slot); ?>
-
+    <main id="main-content"><?php echo e($slot); ?></main>
 
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if (! ($hideDefaultFooter ?? false)): ?>
         <?php echo $__env->make('livewire.homepage.sections.footer', [

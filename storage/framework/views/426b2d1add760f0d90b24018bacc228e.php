@@ -21,9 +21,13 @@
     if ($featured && $showRouteExists && !empty($featured['id'])) {
         $featuredUrl = route('public.council.decisions.show', $featured['id']);
     }
+
+    $carouselConfig = \App\Domains\Homepage\Services\CarouselRegistry::getConfigArray('homepage-council-decisions');
+    $resolvedTitle = $sectionTitle ?? $carouselConfig['title'] ?? 'قرارات المجلس البلدي';
+    $resolvedSubtitle = $sectionSubtitle ?? $carouselConfig['subtitle'] ?? 'اطلع على أحدث قرارات المجلس البلدي';
 ?>
 
-<section id="council-decisions" class="bg-white relative overflow-hidden" style="padding-top:80px;padding-bottom:80px;">
+<section id="council-decisions" class="bg-white relative overflow-hidden" style="padding-top:56px;padding-bottom:80px;background:linear-gradient(180deg, #F7FAF7 0%, #FFFFFF 140px);">
 
     
     <div class="absolute pointer-events-none" style="top:-30%;right:-10%;width:55%;height:100%;background:radial-gradient(ellipse 60% 70% at 70% 40%,rgba(31,122,54,0.03) 0%,transparent 70%);"></div>
@@ -32,12 +36,12 @@
 
         
         <div class="text-center mb-[52px]">
-            <h2 class="text-[clamp(30px,3.6vw,42px)] font-extrabold text-[#0F172A] leading-[1.2]">
-                <?php echo e($sectionTitle ?? 'قرارات المجلس البلدي'); ?>
+            <h2 class="text-[clamp(32px,3.8vw,46px)] font-extrabold text-[#0F172A] leading-[1.2]">
+                <?php echo e($resolvedTitle); ?>
 
             </h2>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sectionSubtitle): ?>
-                <p class="text-[clamp(14px,1.15vw,18px)] text-[#64748B] leading-[1.8] mt-[14px] max-w-[600px] mx-auto"><?php echo e($sectionSubtitle); ?></p>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($resolvedSubtitle): ?>
+                <p class="text-[clamp(14px,1.15vw,18px)] text-[#64748B] leading-[1.8] mt-[14px] max-w-[600px] mx-auto"><?php echo e($resolvedSubtitle); ?></p>
             <?php else: ?>
                 <p class="text-[clamp(14px,1.15vw,18px)] text-[#64748B] leading-[1.8] mt-[14px] max-w-[600px] mx-auto">اطلع على أحدث القرارات والمصادقات الرسمية الصادرة عن المجلس البلدي</p>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -73,7 +77,7 @@
                     </div>
 
                     
-                    <div class="relative z-10 flex flex-col" style="padding:clamp(24px,2.8vw,36px);padding-left:clamp(24px,2.8vw,36px) 38%;padding-right:38%;min-height:100%;">
+                    <div class="relative z-10 flex flex-col" style="padding:clamp(24px,2.8vw,36px);padding-inline-end:38%;min-height:100%;">
 
                         
                         <div class="flex items-center justify-between mb-[18px]">
@@ -91,14 +95,14 @@
                         </div>
 
                         
-                        <h3 class="text-[clamp(20px,2.2vw,28px)] font-extrabold text-[#0F172A] leading-[1.35]">
+                        <h3 class="text-[clamp(22px,2.4vw,30px)] font-extrabold text-[#0F172A] leading-[1.35]">
                             <?php echo e($featured['title'] ?? ''); ?>
 
                         </h3>
 
                         
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($featured['summary'])): ?>
-                        <p class="text-[14px] text-[#64748B] leading-[1.8] mt-[14px] line-clamp-3">
+                        <p class="text-[15px] text-[#64748B] leading-[1.8] mt-[14px] line-clamp-3">
                             <?php echo e($featured['summary']); ?>
 
                         </p>
@@ -166,7 +170,7 @@
                                     <i data-lucide="file-text" class="w-[19px] h-[19px] text-[#1F7A36] transition-all duration-300 group-hover:text-white"></i>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="text-[14px] font-extrabold text-[#0F172A] leading-[1.4] line-clamp-1 transition-colors duration-300 group-hover:text-[#1F7A36]">
+                                    <h4 class="text-[15px] font-extrabold text-[#0F172A] leading-[1.4] line-clamp-1 transition-colors duration-300 group-hover:text-[#1F7A36]">
                                         <?php echo e($decision['title'] ?? ''); ?>
 
                                     </h4>

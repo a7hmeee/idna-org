@@ -136,6 +136,16 @@
         ];
     }
 
+    if ($can('announcements.view')) {
+        $navGroups['الخدمات'][] = [
+            'icon' => 'megaphone',
+            'label' => 'الإعلانات',
+            'route' => 'dashboard.announcements',
+            'permission' => 'announcements.view',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.announcements'),
+        ];
+    }
+
     if ($can('projects.view')) {
         $navGroups['الخدمات'][] = [
             'icon' => 'folder-kanban',
@@ -267,6 +277,24 @@
     $navGroups = array_filter($navGroups, fn ($items) => !empty($items));
 
     $bottomItems = [];
+
+    if ($can('homepage.slides.view')) {
+        $bottomItems[] = [
+            'icon' => 'sliders',
+            'label' => 'إدارة الكاروسيلات',
+            'route' => 'dashboard.carousel-config',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.page-carousels') || str_starts_with($currentRoute ?? '', 'dashboard.carousel-config'),
+        ];
+    }
+
+    if ($can('password.change')) {
+        $bottomItems[] = [
+            'icon' => 'key-round',
+            'label' => 'تغيير كلمة المرور',
+            'route' => 'password.change',
+            'active' => $currentRoute === 'password.change',
+        ];
+    }
 
     $isActive = fn($item) => $item['active'] || ($item['route'] && $currentRoute === $item['route']);
 @endphp

@@ -11,15 +11,14 @@
                     <i data-lucide="folder-kanban" class="w-3.5 h-3.5"></i>
                     مشاريع البلدية
                 </span>
-                <h2 class="text-3xl sm:text-4xl lg:text-[34px] font-black text-text leading-tight">{{ $sectionTitle ?? 'مشاريعنا' }}</h2>
+                <h2 class="text-3xl sm:text-4xl lg:text-[38px] font-black text-text leading-tight">{{ $sectionTitle ?? 'مشاريعنا' }}</h2>
                 @if ($sectionSubtitle)
                     <p class="text-sm sm:text-base text-text-secondary mt-3 max-w-xl leading-relaxed">{{ $sectionSubtitle }}</p>
                 @endif
             </div>
             @if (Route::has('public.projects.index'))
-                <a href="{{ route('public.projects.index') }}" class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors no-underline shrink-0">
-                    <span>جميع المشاريع</span>
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <a href="{{ route('public.projects.index') }}" wire:navigate class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors no-underline shrink-0">
+                    <span>جميع المشاريع</span>                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
                 </a>
             @endif
         </div>
@@ -52,7 +51,7 @@
                                     <span class="text-text-secondary">نسبة الإنجاز</span>
                                     <span style="color: #2563EB;">{{ $project['progress'] }}%</span>
                                 </div>
-                                <div class="w-full h-2 rounded-full" style="background: #E2E8F0;">
+                                <div class="w-full h-2 rounded-full" style="background: #E2E8F0;" role="progressbar" aria-valuenow="{{ $project['progress'] }}" aria-valuemin="0" aria-valuemax="100">
                                     <div class="h-full rounded-full transition-all duration-700" style="width: {{ $project['progress'] }}%; background: linear-gradient(90deg, #2563EB, #3B82F6);"></div>
                                 </div>
                             </div>

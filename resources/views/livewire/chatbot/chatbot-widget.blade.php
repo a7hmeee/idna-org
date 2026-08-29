@@ -26,7 +26,7 @@
                          class="relative w-9 h-9 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
                 </div>
                 <div>
-                    <h1 class="text-sm font-bold text-white">المساعد الذكي</h1>
+                    <h2 class="text-sm font-bold text-white">المساعد الذكي</h2>
                     <div class="flex items-center gap-1.5">
                         <span class="w-1.5 h-1.5 rounded-full" style="background:#6BAA3B;"></span>
                         <span class="text-[11px] text-white/70">متاح الآن</span>
@@ -50,7 +50,7 @@
         </header>
 
         {{-- Messages --}}
-        <div class="flex-1 overflow-y-auto px-3 py-3 space-y-2.5 scroll-smooth" x-ref="msgList">
+        <div role="log" aria-live="polite" class="flex-1 overflow-y-auto px-3 py-3 space-y-2.5 scroll-smooth" x-ref="msgList">
             @if ($chatEnabled)
                 @forelse ($messages as $msg)
                     @if ($msg['role'] === 'user')
@@ -131,6 +131,7 @@
                     <div class="flex-1">
                         <textarea wire:model="message"
                                   placeholder="اكتب سؤالك هنا..."
+                                  aria-label="اكتب رسالتك"
                                   maxlength="{{ config('chatbot.max_message_length', 500) }}"
                                   rows="1"
                                   @if($loading) disabled @endif
@@ -158,7 +159,8 @@
          dir="rtl"
          role="button"
          tabindex="0"
-         @keydown.enter.prevent="openChat()">
+         @keydown.enter.prevent="openChat()"
+         @keydown.space.prevent="openChat()">
         <p class="text-sm font-bold text-text leading-snug">أنا إذناوي 👋</p>
         <p class="text-xs font-bold text-primary mt-0.5">مساعدك الذكي من بلدية إذنا</p>
         <p class="text-[11px] text-text-secondary mt-1.5 leading-snug">شو حاب تعرف؟ أنا جاهز أساعدك!</p>

@@ -19,16 +19,27 @@
             total: {{ count($slides) }},
             interval: null,
             autoplay: {{ $singleSlide ? 'false' : 'true' }},
+            paused: false,
             init() {
                 if (this.total > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     this.startAutoplay();
+                } else {
+                    this.autoplay = false;
                 }
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) { this.stopAutoplay(); }
+                    else if (this.autoplay && !this.paused && this.total > 1) { this.startAutoplay(); }
+                });
             },
             startAutoplay() {
-                this.interval = setInterval(() => { this.next(); }, 8000);
+                this.stopAutoplay();
+                this.interval = setInterval(() => { if (!this.paused) { this.next(); } }, 8000);
             },
             stopAutoplay() {
                 if (this.interval) { clearInterval(this.interval); this.interval = null; }
+            },
+            togglePause() {
+                this.paused = !this.paused;
             },
             next() { this.current = (this.current + 1) % this.total; },
             prev() { this.current = (this.current - 1 + this.total) % this.total; },
@@ -76,6 +87,28 @@
             <div class="relative z-20 w-full h-full ih-hero-content" dir="rtl">
                 <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="max-w-[600px] lg:max-w-[680px] mx-auto lg:ml-0 lg:mr-[5%] text-center lg:text-right">
+
+                        @if (count($slides) === 0)
+                            {{-- Guaranteed fallback: hero never renders without a meaningful heading --}}
+                            <div class="ih-hero-badge">بلدية إذنا</div>
+                            <h1 class="ih-hero-title">
+                                <span class="ih-hero-title-white">مرحباً بكم في بلدية إذنا</span>
+                            </h1>
+                            <div class="ih-hero-buttons">
+                                @if (Route::has('public.services.index'))
+                                    <a href="{{ route('public.services.index') }}" wire:navigate class="ih-hero-btn ih-hero-btn-primary">
+                                        <i data-lucide="laptop" style="width:14px;height:14px;"></i>
+                                        <span>الخدمات الإلكترونية</span>
+                                    </a>
+                                @endif
+                                @if (Route::has('public.complaints.submit'))
+                                    <a href="{{ route('public.complaints.submit') }}" wire:navigate class="ih-hero-btn ih-hero-btn-secondary">
+                                        <i data-lucide="message-square-warning" style="width:14px;height:14px;"></i>
+                                        <span>تقديم شكوى</span>
+                                    </a>
+                                @endif
+                            </div>
+                        @else
                         @foreach ($slides as $index => $slide)
                             <div x-show="current === {{ $index }}" x-transition:enter="transition-all duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
 
@@ -106,21 +139,30 @@
                                     <p class="ih-hero-desc">{{ $slide['description'] }}</p>
                                 @endif
 
-                                {{-- Buttons --}}
+                                {{-- Buttons — citizen-first hierarchy --}}
                                 <div class="ih-hero-buttons">
+                                    @if (Route::has('public.services.index'))
+                                        <a href="{{ route('public.services.index') }}" wire:navigate class="ih-hero-btn ih-hero-btn-primary">
+                                            <i data-lucide="laptop" style="width:14px;height:14px;"></i>
+                                            <span>الخدمات الإلكترونية</span>
+                                        </a>
+                                    @endif
+                                    @if (Route::has('public.complaints.submit'))
+                                        <a href="{{ route('public.complaints.submit') }}" wire:navigate class="ih-hero-btn ih-hero-btn-secondary">
+                                            <i data-lucide="message-square-warning" style="width:14px;height:14px;"></i>
+                                            <span>تقديم شكوى</span>
+                                        </a>
+                                    @endif
                                     @if ($portalUrl)
-                                        <a href="{{ $portalUrl }}" target="_blank" rel="noopener noreferrer" class="ih-hero-btn ih-hero-btn-primary">
+                                        <a href="{{ $portalUrl }}" target="_blank" rel="noopener noreferrer" class="ih-hero-btn ih-hero-btn-secondary !bg-transparent !border-white/30 hover:!bg-white/10">
                                             <i data-lucide="arrow-up-left" style="width:14px;height:14px;"></i>
                                             <span>{{ $primaryBtn }}</span>
                                         </a>
                                     @endif
-                                    <a href="{{ $secondaryBtnUrl }}" class="ih-hero-btn ih-hero-btn-secondary">
-                                        <i data-lucide="info" style="width:14px;height:14px;"></i>
-                                        <span>{{ $secondaryBtn }}</span>
-                                    </a>
                                 </div>
                             </div>
                         @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
@@ -128,16 +170,26 @@
 
         {{-- Slider Controls --}}
         @if (!$singleSlide && count($slides) > 1)
-            <div class="absolute left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5" style="bottom:12px;" role="tablist" aria-label="اختيار الشريحة">
+            <div class="absolute left-1/2 -translate-x-1/2 z-30 flex items-center gap-3" style="bottom:12px;" role="group" aria-label="أدوات العرض">
+                <button x-show="autoplay" @click="togglePause()"
+                        :aria-label="paused ? 'تشغيل العرض التلقائي' : 'إيقاف العرض التلقائي مؤقتاً'"
+                        :aria-pressed="paused ? 'true' : 'false'"
+                        class="w-7 h-7 rounded-full bg-white/15 hover:bg-white/30 border border-white/25 backdrop-blur-sm flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3BAF56]/60"
+                        style="color:white;">
+                    <i data-lucide="pause" class="w-3.5 h-3.5" x-show="!paused"></i>
+                    <i data-lucide="play" class="w-3.5 h-3.5" x-show="paused" x-cloak></i>
+                </button>
+                <div class="flex items-center gap-1.5" role="tablist" aria-label="اختيار الشريحة">
                 @foreach ($slides as $index => $slide)
                     <button @click="goTo({{ $index }})"
                             :class="current === {{ $index }} ? 'bg-[#3BAF56] w-6' : 'bg-white/40 w-2 hover:bg-white/70'"
-                            class="h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3BAF56]/60"
+                            class="relative h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3BAF56]/60 [&::after]:content-[''] [&::after]:absolute [&::after]:-inset-2.5"
                             role="tab"
                             :aria-selected="current === {{ $index }}"
                             :aria-label="'الانتقال إلى الشريحة ' + ({{ $index }} + 1)">
                     </button>
                 @endforeach
+                </div>
             </div>
         @endif
     </div>
@@ -147,14 +199,14 @@
     @once
         <style>
             /* ===== HERO STAGE HEIGHT ===== */
-            .ih-hero-stage { height: clamp(520px, 80vh, 720px); overflow: hidden; position: relative; }
+            .ih-hero-stage { min-height: clamp(560px, 85vh, 780px); height: auto; overflow: hidden; position: relative; }
             .ih-hero-content {
                 width: 100%;
-                height: 100%;
+                min-height: clamp(560px, 85vh, 780px);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: clamp(40px, 6vw, 96px) 0 clamp(48px, 7vw, 96px);
+                padding: clamp(60px, 8vw, 120px) 0 clamp(60px, 8vw, 120px);
             }
 
             /* ===== BADGE ===== */
@@ -205,13 +257,13 @@
 
             /* ===== DESCRIPTION ===== */
             .ih-hero-desc {
-                color: rgba(255,255,255,0.85);
-                line-height: 1.85;
-                margin: 0 0 30px;
-                max-width: 520px;
+                color: rgba(255,255,255,0.9);
+                line-height: 1.9;
+                margin: 0 0 36px;
+                max-width: 560px;
                 margin-left: auto;
                 margin-right: auto;
-                font-size: 15px;
+                font-size: 17px;
                 text-shadow: 0 1px 8px rgba(0,0,0,0.12);
                 font-weight: 400;
                 letter-spacing: 0.01em;
@@ -264,62 +316,63 @@
 
             /* ===== DESKTOP (>= 1024px) ===== */
             @media (min-width: 1024px) {
-                .ih-hero-stage { height: clamp(520px, 80vh, 720px); }
-                .ih-hero-content { padding: 96px 0; }
-                .ih-hero-badge { font-size: 13px; padding: 6px 18px; margin-bottom: 22px; }
-                .ih-hero-title { font-size: clamp(40px, 5vw, 68px); margin-bottom: 18px; }
-                .ih-hero-desc { font-size: 17px; margin-bottom: 36px; }
-                .ih-hero-btn { padding: 16px 36px; font-size: 16px; border-radius: 14px; gap: 10px; }
+                .ih-hero-stage { min-height: clamp(600px, 85vh, 780px); }
+                .ih-hero-content { padding: 120px 0; min-height: clamp(600px, 85vh, 780px); }
+                .ih-hero-badge { font-size: 14px; padding: 7px 20px; margin-bottom: 24px; }
+                .ih-hero-title { font-size: clamp(44px, 5vw, 72px); margin-bottom: 20px; }
+                .ih-hero-desc { font-size: 18px; margin-bottom: 40px; }
+                .ih-hero-btn { padding: 18px 40px; font-size: 17px; border-radius: 14px; gap: 10px; }
             }
 
             /* ===== TABLET (768px – 1023px) ===== */
             @media (min-width: 768px) and (max-width: 1023.98px) {
-                .ih-hero-stage { height: 480px; }
-                .ih-hero-content { padding: 60px 0; }
-                .ih-hero-title { font-size: clamp(32px, 5vw, 48px); }
-                .ih-hero-desc { font-size: 16px; margin-bottom: 28px; }
-                .ih-hero-btn { padding: 14px 30px; font-size: 14px; }
+                .ih-hero-stage { min-height: 520px; }
+                .ih-hero-content { padding: 72px 0; min-height: 520px; }
+                .ih-hero-title { font-size: clamp(34px, 5vw, 50px); }
+                .ih-hero-desc { font-size: 16px; margin-bottom: 30px; }
+                .ih-hero-btn { padding: 15px 32px; font-size: 15px; }
             }
 
             /* ===== MOBILE (< 768px) ===== */
             @media (max-width: 767.98px) {
                 .ih-hero-stage {
-                    height: 400px;
+                    min-height: 440px;
                 }
                 .ih-hero-content {
-                    padding: 40px 20px 24px;
+                    padding: 48px 20px 32px;
                     align-items: center;
+                    min-height: 440px;
                 }
                 .ih-hero-badge {
-                    font-size: 11px;
-                    padding: 4px 12px;
-                    margin-bottom: 12px;
+                    font-size: 12px;
+                    padding: 5px 14px;
+                    margin-bottom: 14px;
                 }
                 .ih-hero-title {
-                    font-size: clamp(26px, 8vw, 38px);
-                    margin-bottom: 10px;
-                    line-height: 1.12;
+                    font-size: clamp(28px, 8vw, 40px);
+                    margin-bottom: 12px;
+                    line-height: 1.15;
                 }
                 .ih-hero-desc {
-                    font-size: 14px;
-                    line-height: 1.7;
-                    margin-bottom: 24px;
+                    font-size: 15px;
+                    line-height: 1.75;
+                    margin-bottom: 28px;
                 }
                 .ih-hero-buttons {
                     gap: 12px;
-                    flex-wrap: nowrap;
+                    flex-wrap: wrap;
                     justify-content: center;
                 }
                 .ih-hero-btn {
-                    padding: 12px 22px;
-                    font-size: 13px;
+                    padding: 14px 24px;
+                    font-size: 14px;
                     border-radius: 12px;
                     gap: 7px;
                     flex-shrink: 0;
                 }
                 .ih-hero-btn i, .ih-hero-btn svg {
-                    width: 14px !important;
-                    height: 14px !important;
+                    width: 15px !important;
+                    height: 15px !important;
                 }
             }
 

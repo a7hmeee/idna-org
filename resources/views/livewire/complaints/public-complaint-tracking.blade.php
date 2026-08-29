@@ -9,8 +9,9 @@
         <div class="bg-surface rounded-2xl border border-border p-6 mb-6">
             <form wire:submit="track" class="flex flex-col sm:flex-row gap-3">
                 <div class="flex-1">
-                    <input type="text" wire:model="trackingNumber" class="w-full bg-surface-secondary border border-border rounded-xl px-4 py-3 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all" placeholder="أدخل رقم التتبع (مثال: CMP-XXXXXXXXXX)" />
-                    @error('trackingNumber') <p class="text-xs text-danger mt-1">{{ $message }}</p> @enderror
+                    <label for="trackingNumber" class="block text-sm font-semibold text-text mb-1.5">رقم التتبع *</label>
+                    <input type="text" id="trackingNumber" wire:model="trackingNumber" aria-required="true" @error('trackingNumber') aria-invalid="true" aria-describedby="trackingNumber-error" @enderror class="w-full bg-surface-secondary border border-border rounded-xl px-4 py-3 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all" placeholder="أدخل رقم التتبع (مثال: CMP-XXXXXXXXXX)" />
+                    @error('trackingNumber') <p id="trackingNumber-error" class="text-xs text-danger mt-1">{{ $message }}</p> @enderror
                 </div>
                 <button type="submit" class="px-6 py-3 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors shrink-0" wire:loading.attr="disabled">
                     <span wire:loading.remove>بحث</span>
@@ -22,7 +23,7 @@
         {{-- Result --}}
         @if ($searched)
             @if ($complaint)
-                <div class="bg-surface rounded-2xl border border-border overflow-hidden">
+                <div role="status" class="bg-surface rounded-2xl border border-border overflow-hidden">
                     {{-- Header --}}
                     <div class="p-6 border-b border-border">
                         <div class="flex items-center justify-between mb-4">
@@ -92,23 +93,9 @@
                                 <span class="text-xs font-semibold text-text-tertiary block mb-2">المرفقات</span>
                                 <div class="flex flex-wrap gap-2">
                                     @foreach ($complaint->attachments_urls as $url)
-                                        <a href="{{ $url }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-secondary text-xs text-primary font-semibold hover:bg-border transition-colors">
+                                        <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-secondary text-xs text-primary font-semibold hover:bg-border transition-colors">
                                             <i data-lucide="file" class="w-3.5 h-3.5"></i>
-                                            <span>مرفق</span>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-
-                        @if ($complaint->attachments && count($complaint->attachments) > 0)
-                            <div class="pt-4 border-t border-border">
-                                <span class="text-xs font-semibold text-text-tertiary block mb-2">المرفقات</span>
-                                <div class="flex flex-wrap gap-2">
-                                    @foreach ($complaint->attachments_urls as $url)
-                                        <a href="{{ $url }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-secondary text-xs text-primary font-semibold hover:bg-border transition-colors">
-                                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                                            <span>عرض المرفق</span>
+                                            <span>مرفق {{ $loop->iteration }}</span>
                                         </a>
                                     @endforeach
                                 </div>
@@ -117,7 +104,7 @@
                     </div>
                 </div>
             @else
-                <div class="bg-surface rounded-2xl border border-border p-8 text-center">
+                <div role="status" class="bg-surface rounded-2xl border border-border p-8 text-center">
                     <div class="w-14 h-14 rounded-full bg-warning/10 flex items-center justify-center mx-auto mb-3">
                         <i data-lucide="search-x" class="w-6 h-6 text-warning"></i>
                     </div>

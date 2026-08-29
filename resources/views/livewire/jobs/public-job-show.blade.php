@@ -183,7 +183,7 @@
 
                     {{-- Download Attachment --}}
                     @if ($job->attachment_url)
-                        <a href="{{ $job->attachment_url }}" target="_blank" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
+                        <a href="{{ $job->attachment_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
                             <i data-lucide="download" class="w-4 h-4"></i>
                             <span>تحميل إعلان الوظيفة</span>
                         </a>
@@ -191,7 +191,7 @@
 
                     {{-- Apply Button --}}
                     @if ($job->application_method->value === 'external_link' && $job->application_url)
-                        <a href="{{ $job->application_url }}" target="_blank" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors">
+                        <a href="{{ $job->application_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors">
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                             <span>تقديم على الوظيفة</span>
                         </a>
@@ -211,7 +211,7 @@
                             <p>يرجى مراجعة مبنى بلدية إذنا لتقديم الطلب</p>
                         </div>
                     @elseif ($job->application_method->value === 'download_form' && $job->attachment_url)
-                        <a href="{{ $job->attachment_url }}" target="_blank" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors">
+                        <a href="{{ $job->attachment_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors">
                             <i data-lucide="download" class="w-4 h-4"></i>
                             <span>تحميل استمارة التقديم</span>
                         </a>

@@ -327,9 +327,7 @@ unset($__defined_vars, $__key, $__value); ?>
                             <i data-lucide="globe" style="width:11px;height:11px;flex-shrink:0;"></i>
                             <span style="font-size:11px;">البوابة الإلكترونية</span>
                         </a>
-                        <span style="display:none;width:1px;height:10px;background:rgba(255,255,255,0.12);" class="sm-block"></span>
                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                    <button style="color:rgba(255,255,255,0.65);font-size:11px;font-weight:600;padding:0.15rem 0.4rem;border-radius:3px;cursor:pointer;background:none;border:none;">EN</button>
                 </div>
             </div>
         </div>
@@ -366,7 +364,7 @@ unset($__defined_vars, $__key, $__value); ?>
                            class="ih-nav-link <?php echo e($isActive('public.municipality.about') ? 'ih-nav-link--active' : ''); ?>">عن البلدية</a>
 
                         
-                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @keydown.escape.window="open = false" @mouseenter="open = true" @mouseleave="open = false">
                             <button class="ih-nav-link <?php echo e($isActive('public.services.*') ? 'ih-nav-link--active' : ''); ?>" @click="open = !open" :aria-expanded="open">
                                 الخدمات
                                 <svg class="ih-chevron" :class="open ? 'ih-chevron--open' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -384,7 +382,7 @@ unset($__defined_vars, $__key, $__value); ?>
                         </div>
 
                         
-                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @keydown.escape.window="open = false" @mouseenter="open = true" @mouseleave="open = false">
                             <button class="ih-nav-link <?php echo e($isActive('public.council.*') ? 'ih-nav-link--active' : ''); ?>" @click="open = !open" :aria-expanded="open">
                                 المجلس البلدي
                                 <svg class="ih-chevron" :class="open ? 'ih-chevron--open' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -411,7 +409,7 @@ unset($__defined_vars, $__key, $__value); ?>
                            class="ih-nav-link <?php echo e($isActive('public.jobs.*') ? 'ih-nav-link--active' : ''); ?>">الوظائف</a>
 
                         
-                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="ih-dd" x-data="{ open: false }" @click.away="open = false" @keydown.escape.window="open = false" @mouseenter="open = true" @mouseleave="open = false">
                             <button class="ih-nav-link" @click="open = !open" :aria-expanded="open">
                                 المزيد
                                 <svg class="ih-chevron" :class="open ? 'ih-chevron--open' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -460,7 +458,12 @@ unset($__defined_vars, $__key, $__value); ?>
                     </div>
                 </nav>
 
-               
+                
+                <div class="ih-actions">
+                    <a href="<?php echo e(route('login')); ?>" wire:navigate class="ih-login-btn">
+                        الدخول
+                    </a>
+                </div>
 
             </div>
 

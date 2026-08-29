@@ -36,7 +36,7 @@
                     </div>
                 @else
                     <div class="bg-surface border border-border rounded-2xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed text-text shadow-sm">
-                        <p class="whitespace-pre-line">{{ e($content) }}</p>
+                        <p class="whitespace-pre-line break-words">{{ e($content) }}</p>
 
                 {{-- Service Cards --}}
                 @if (($type ?? '') === 'service_cards' && !empty($items))

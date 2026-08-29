@@ -6,8 +6,8 @@
                     <i data-lucide="handshake" class="w-3.5 h-3.5"></i>
                     شركاؤنا
                 </span>
-                <h2 class="text-3xl lg:text-[34px] font-black text-text">شركاؤنا في العمل</h2>
-                <p class="text-text-secondary mt-2 text-sm">نفخر بشراكتنا مع هذه المؤسسات والجهات</p>
+                <h2 class="text-3xl lg:text-[38px] font-black text-text">{{ $sectionTitle ?? 'شركاؤنا في العمل' }}</h2>
+                <p class="text-text-secondary mt-2 text-base">{{ $sectionSubtitle ?? 'نفخر بشراكتنا مع هذه المؤسسات والجهات' }}</p>
             </div>
 
             <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">

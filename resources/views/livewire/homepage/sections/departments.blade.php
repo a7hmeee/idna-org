@@ -38,10 +38,10 @@
                     <span style="display:block;width:4px;height:4px;border-radius:50%;background:#176B32;"></span>
                     <span style="display:block;width:26px;height:2px;border-radius:9999px;background:#176B32;"></span>
                 </div>
-                <h2 style="text-align:center;color:#17243A;font-size:clamp(23px,2.8vw,32px);font-weight:700;line-height:1.3;margin:0;">
+                <h2 style="text-align:center;color:#17243A;font-size:clamp(26px,3vw,36px);font-weight:800;line-height:1.3;margin:0;">
                     {{ $sectionTitle ?? 'أقسام البلدية' }}
                 </h2>
-                <p style="text-align:center;max-width:640px;margin:8px auto 0;font-size:13px;line-height:1.8;color:#66756D;">
+                <p style="text-align:center;max-width:640px;margin:10px auto 0;font-size:15px;line-height:1.8;color:#66756D;">
                     {{ $sectionSubtitle ?? 'نضع بين يديك أهم أقسام البلدية والخدمات التي يقدمها كل قسم للمواطنين.' }}
                 </p>
             </div>
@@ -62,7 +62,7 @@
         {{-- DEPARTMENTS GRID            --}}
         {{-- ============================= --}}
         @if ($departments->isNotEmpty())
-            <div class="departments-grid" style="display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr 1fr;gap:16px;margin-top:44px;min-width:0;">
+            <div class="departments-grid" style="display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:18px;margin-top:44px;min-width:0;">
 
                 {{-- FEATURED DEPARTMENT --}}
                 @if ($highlight)
@@ -87,7 +87,7 @@
                             </div>
 
                             {{-- Title --}}
-                            <h3 style="margin:12px 0 0;font-size:18px;font-weight:700;color:white;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                            <h3 style="margin:12px 0 0;font-size:19px;font-weight:700;color:white;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                 {{ $highlight['name'] ?? '' }}
                             </h3>
 
@@ -145,13 +145,13 @@
                         </div>
 
                         {{-- Title --}}
-                        <h4 style="margin:14px 0 0;font-size:15px;font-weight:700;color:#17243A;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                        <h4 style="margin:14px 0 0;font-size:16px;font-weight:700;color:#17243A;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                             {{ $department['name'] ?? '' }}
                         </h4>
 
                         {{-- Description --}}
                         @if (!empty($department['short_description']))
-                            <p style="margin:8px 0 0;font-size:12px;line-height:1.7;color:#66756D;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+                            <p style="margin:8px 0 0;font-size:13px;line-height:1.75;color:#66756D;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
                                 {{ $department['short_description'] }}
                             </p>
                         @endif
@@ -236,5 +236,4 @@
             </style>
         @endpush
     @endonce
-</section>
 </section>

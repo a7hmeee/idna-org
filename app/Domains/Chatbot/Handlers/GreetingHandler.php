@@ -16,7 +16,6 @@ final readonly class GreetingHandler implements ChatResponseHandlerInterface
 
     public const MAIN_MENU_ACTIONS = [
         ['label' => 'الخدمات الإلكترونية', 'value' => 'الخدمات الإلكترونية'],
-        ['label' => 'الخدمات البلدية', 'value' => 'الخدمات البلدية'],
         ['label' => 'تقديم شكوى', 'value' => 'تقديم شكوى'],
         ['label' => 'طلب اتصال', 'value' => 'طلب اتصال'],
         ['label' => 'متابعة طلب', 'value' => 'تتبع طلب'],

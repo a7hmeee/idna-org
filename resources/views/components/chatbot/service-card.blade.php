@@ -1,6 +1,6 @@
 <div class="bg-surface border border-border rounded-xl p-3 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer"
-     @if(!empty($item['url']))
-     onclick="window.open('{{ $item['url'] }}', '_blank')"
+     @if(!empty($item['url']) && str_starts_with($item['url'], 'http'))
+     onclick="window.open('{{ $item['url'] }}', '_blank', 'noopener')"
      @endif
 >
     <div class="flex items-start gap-3">

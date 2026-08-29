@@ -211,16 +211,33 @@ final class EloquentCouncilDecisionRepository implements CouncilDecisionReposito
     public function getPublicYears(): array
     {
         return Cache::remember('public.council-decisions.years', 600, function (): array {
+            $yearExpr = $this->yearExtractExpression('decision_date');
+
             return CouncilDecision::query()
                 ->where('status', CouncilDecisionStatus::Published->value)
                 ->where('is_public', true)
                 ->whereNotNull('published_at')
                 ->whereNotNull('decision_date')
-                ->selectRaw('DISTINCT YEAR(decision_date) as year')
-                ->orderBy('year', 'desc')
+                ->selectRaw("DISTINCT {$yearExpr} as year")
+                ->orderByRaw('year DESC')
                 ->pluck('year')
+                ->map(fn ($year): int => (int) $year)
                 ->toArray();
         });
+    }
+
+    /**
+     * Build a database-portable YEAR extraction expression for the given column.
+     */
+    private function yearExtractExpression(string $column): string
+    {
+        $driver = DB::connection()->getDriverName();
+
+        return match ($driver) {
+            'pgsql' => "EXTRACT(YEAR FROM {$column})",
+            'sqlite' => "strftime('%Y', {$column})",
+            default => "YEAR({$column})",
+        };
     }
 
     public function getPublicStatistics(): array

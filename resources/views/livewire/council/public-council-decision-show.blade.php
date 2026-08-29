@@ -65,10 +65,10 @@
                     {{-- Summary --}}
                     @if ($decision->summary)
                         <div style="padding:28px 24px;">
-                            <h3 style="font-size:13px;font-weight:700;color:#1F2937;margin:0 0 10px;display:flex;align-items:center;gap:6px;">
+                            <h2 style="font-size:13px;font-weight:700;color:#1F2937;margin:0 0 10px;display:flex;align-items:center;gap:6px;">
                                 <i data-lucide="file-text" style="width:14px;height:14px;color:#0F6A3D;"></i>
                                 ملخص القرار
-                            </h3>
+                            </h2>
                             <p style="font-size:13px;color:#6B7280;line-height:1.8;margin:0;">{{ $decision->summary }}</p>
                         </div>
                         @if ($decision->content)
@@ -79,10 +79,10 @@
                     {{-- Full Content --}}
                     @if ($decision->content)
                         <div style="padding:28px 24px;">
-                            <h3 style="font-size:13px;font-weight:700;color:#1F2937;margin:0 0 10px;display:flex;align-items:center;gap:6px;">
+                            <h2 style="font-size:13px;font-weight:700;color:#1F2937;margin:0 0 10px;display:flex;align-items:center;gap:6px;">
                                 <i data-lucide="scroll-text" style="width:14px;height:14px;color:#0F6A3D;"></i>
                                 نص القرار
-                            </h3>
+                            </h2>
                             <div style="font-size:13px;color:#6B7280;line-height:1.8;">{{ $decision->content }}</div>
                         </div>
                     @endif
@@ -190,7 +190,7 @@
                                     <p style="font-size:12px;font-weight:600;color:#1F2937;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $attachmentName ?? 'ملف القرار' }}</p>
                                     <p style="font-size:10px;color:#9CA3AF;margin:0;">PDF</p>
                                 </div>
-                                <a href="{{ $attachmentUrl }}" target="_blank" rel="noopener noreferrer" style="width:32px;height:32px;border-radius:8px;background:#0F6A3D;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='#0D5C34'" onmouseout="this.style.background='#0F6A3D'">
+                                <a href="{{ $attachmentUrl }}" target="_blank" rel="noopener noreferrer" aria-label="تحميل مرفق القرار" style="width:32px;height:32px;border-radius:8px;background:#0F6A3D;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='#0D5C34'" onmouseout="this.style.background='#0F6A3D'">
                                     <i data-lucide="download" style="width:14px;height:14px;"></i>
                                 </a>
                             </div>

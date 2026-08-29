@@ -75,7 +75,7 @@ final class OpenDataAdminForm extends Component
             'type' => 'required|string|in:datasets,reports',
             'category' => 'nullable|string|max:100',
             'description' => 'nullable|string',
-            'file' => 'nullable|file|max:102400',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,csv,ppt,pptx,zip,jpg,jpeg,png|max:20480',
             'external_url' => 'nullable|url|max:500',
             'status' => 'required|string|in:draft,published,archived',
             'is_featured' => 'boolean',

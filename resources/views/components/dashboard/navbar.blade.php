@@ -1,4 +1,4 @@
-<header class="sticky top-4 z-40 mx-4 mt-4 bg-white/80 backdrop-blur-xl rounded-2xl border border-[#E6EEE5] shadow-sm">
+<header class="sticky top-4 z-[51] mx-4 mt-4 bg-white/80 backdrop-blur-xl rounded-2xl border border-[#E6EEE5] shadow-sm isolation-isolate">
     <div class="flex items-center justify-between h-14 px-5">
         {{-- Right: Breadcrumb + Mobile Menu --}}
         <div class="flex items-center gap-3">
@@ -6,7 +6,7 @@
                 <i data-lucide="menu" class="w-5 h-5 text-[#4A6B3F]"></i>
             </button>
             <nav class="hidden sm:flex items-center gap-2 text-xs">
-                <a href="#" class="text-[#7A9A6E] hover:text-[#2E6F1F] transition-colors duration-200 font-semibold">الرئيسية</a>
+                <a href="{{ route('dashboard') }}" wire:navigate class="text-[#7A9A6E] hover:text-[#2E6F1F] transition-colors duration-200 font-semibold">الرئيسية</a>
                 <i data-lucide="chevron-left" class="w-3 h-3 text-[#A8C09E]"></i>
                 <span class="text-[#1A2E15] font-bold">لوحة التحكم</span>
             </nav>
@@ -21,12 +21,12 @@
             </div>
 
             {{-- Notifications --}}
-            <div class="relative" x-data="{ notifOpen: false }">
-                <button @click="notifOpen = !notifOpen" class="relative p-2 rounded-xl hover:bg-[#EDF5EB] transition-colors duration-200">
+            <div class="relative" x-data="{ notifOpen: false, _h: false, _t: null }" @click.outside="if (!_h) notifOpen = false">
+                <button @click="notifOpen = !notifOpen" @mouseenter="_h = true; clearTimeout(_t)" @mouseleave="_t = setTimeout(() => _h = false, 150)" class="relative p-2 rounded-xl hover:bg-[#EDF5EB] transition-colors duration-200">
                     <div class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#EF4444] rounded-full ring-2 ring-white"></div>
                     <i data-lucide="bell" class="w-[18px] h-[18px] text-[#4A6B3F]"></i>
                 </button>
-                <div x-show="notifOpen" @click.outside="notifOpen = false" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute left-0 mt-2 w-72 bg-white rounded-2xl shadow-dropdown border border-[#E6EEE5] py-1.5 z-50">
+                <div x-show="notifOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" @mouseenter="_h = true; clearTimeout(_t)" @mouseleave="_t = setTimeout(() => _h = false, 150)" class="absolute left-0 mt-2 w-72 bg-white rounded-2xl shadow-dropdown border border-[#E6EEE5] py-1.5 z-50">
                     <div class="px-4 py-3 border-b border-[#E6EEE5] flex items-center justify-between">
                         <p class="text-xs font-bold text-[#1A2E15]">الإشعارات</p>
                         <span class="text-[10px] font-bold text-[#2E6F1F] cursor-pointer hover:underline">تحديد الكل كمقروء</span>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="px-4 py-2.5 border-t border-[#E6EEE5] text-center">
-                        <a href="#" class="text-[11px] font-bold text-[#2E6F1F] hover:underline">عرض كل الإشعارات</a>
+                        <span class="text-[11px] font-bold text-[#7A9A6E]">لا توجد إشعارات جديدة</span>
                     </div>
                 </div>
             </div>
@@ -67,24 +67,27 @@
             <div class="w-px h-6 bg-[#E6EEE5] mx-1"></div>
 
             {{-- Profile --}}
-            <div x-data="{ open: false }" class="relative">
-                <button @click="open = !open" class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-[#EDF5EB] transition-colors duration-200">
+            <div x-data="{ open: false, _h: false, _t: null }" class="relative" @click.outside="if (!_h) open = false">
+                <button @click="open = !open" @mouseenter="_h = true; clearTimeout(_t)" @mouseleave="_t = setTimeout(() => _h = false, 150)" class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-[#EDF5EB] transition-colors duration-200">
                     <div class="w-8 h-8 rounded-full bg-[#2E6F1F] text-white font-bold text-xs flex items-center justify-center shadow-sm">{{ mb_substr(auth()->user()->name, 0, 2, 'UTF-8') }}</div>
                     <div class="hidden sm:block text-right">
                         <p class="text-xs font-bold text-[#1A2E15] leading-tight">{{ auth()->user()->name }}</p>
-                        <p class="text-[9px] text-[#7A9A6E] leading-tight font-medium">مدير البلدية</p>
+                        <p class="text-[9px] text-[#7A9A6E] leading-tight font-medium">{{ auth()->user()->roles->first()?->name ?? 'مستخدم' }}</p>
                     </div>
                     <svg class="w-[14px] h-[14px] text-[#A8C09E] transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 </button>
-                <div x-show="open" @click.outside="open = false" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute left-0 mt-2 w-56 bg-white rounded-2xl shadow-dropdown border border-[#E6EEE5] py-1.5 z-50">
+                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" @mouseenter="_h = true; clearTimeout(_t)" @mouseleave="_t = setTimeout(() => _h = false, 150)" class="absolute left-0 mt-2 w-56 bg-white rounded-2xl shadow-dropdown border border-[#E6EEE5] py-1.5 z-50">
                     <div class="px-4 py-3 border-b border-[#E6EEE5]">
                         <p class="text-sm font-bold text-[#1A2E15]">{{ auth()->user()->name }}</p>
                         <p class="text-[11px] text-[#7A9A6E]">{{ auth()->user()->email }}</p>
                     </div>
-                    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-xs text-[#4A6B3F] hover:bg-[#EDF5EB] transition-colors duration-150 font-semibold"><i data-lucide="user" class="w-4 h-4"></i>الملف الشخصي</a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-xs text-[#4A6B3F] hover:bg-[#EDF5EB] transition-colors duration-150 font-semibold"><i data-lucide="key-round" class="w-4 h-4"></i>تغيير كلمة المرور</a>
+                    <a href="{{ route('password.change') }}" wire:navigate class="flex items-center gap-3 px-4 py-2.5 text-xs text-[#4A6B3F] hover:bg-[#EDF5EB] transition-colors duration-150 font-semibold"><i data-lucide="user" class="w-4 h-4"></i>الملف الشخصي</a>
+                    <a href="{{ route('password.change') }}" wire:navigate class="flex items-center gap-3 px-4 py-2.5 text-xs text-[#4A6B3F] hover:bg-[#EDF5EB] transition-colors duration-150 font-semibold"><i data-lucide="key-round" class="w-4 h-4"></i>تغيير كلمة المرور</a>
                     <div class="border-t border-[#E6EEE5] my-1"></div>
-                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs text-[#DC2626] hover:bg-[#FEE2E2] transition-colors duration-150 font-semibold"><i data-lucide="log-out" class="w-4 h-4"></i>تسجيل الخروج</button>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs text-[#DC2626] hover:bg-[#FEE2E2] transition-colors duration-150 font-semibold"><i data-lucide="log-out" class="w-4 h-4"></i>تسجيل الخروج</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -28,8 +28,8 @@ final readonly class ContactDTO
             value: $validated['value'] ?? null,
             icon: $validated['icon'] ?? null,
             url: $validated['url'] ?? null,
-            displayOrder: (int) ($validated['display_order'] ?? 0),
-            isActive: (bool) ($validated['is_active'] ?? true),
+            displayOrder: (int) ($validated['display_order'] ?? $validated['displayOrder'] ?? 0),
+            isActive: (bool) ($validated['is_active'] ?? $validated['isActive'] ?? true),
         );
     }
 

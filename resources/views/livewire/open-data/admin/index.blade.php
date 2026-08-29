@@ -1,4 +1,6 @@
 <div>
+    <x-slot name="title">البيانات المفتوحة</x-slot>
+
     <div class="flex items-center justify-between mb-6">
         <div>
             <h2 class="text-xl font-bold text-gray-900">البيانات المفتوحة</h2>

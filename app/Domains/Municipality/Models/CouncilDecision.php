@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Domains\Municipality\Models;
 
 use App\Domains\Authentication\Models\User;
+use Database\Factories\CouncilDecisionFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $id
@@ -35,6 +38,22 @@ use Illuminate\Support\Carbon;
 final class CouncilDecision extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected static function newFactory(): Factory
+    {
+        return CouncilDecisionFactory::new();
+    }
+
+    protected static function booted(): void
+    {
+        self::saved(function (): void {
+            Cache::forget('homepage.public.data');
+        });
+
+        self::deleted(function (): void {
+            Cache::forget('homepage.public.data');
+        });
+    }
 
     protected $fillable = [
         'decision_number',

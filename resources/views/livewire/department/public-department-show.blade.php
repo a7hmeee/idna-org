@@ -24,13 +24,13 @@
             @if ($department->phone)
                 <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(46,125,50,0.9);color:rgba(255,255,255,0.9);">
                     <i data-lucide="phone" style="width:12px;height:12px;"></i>
-                    <span dir="ltr">{{ $department->phone }}</span>
+                    <span dir="ltr"><a href="tel:{{ $department->phone }}" style="color:inherit;text-decoration:none;">{{ $department->phone }}</a></span>
                 </span>
             @endif
             @if ($department->email)
                 <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(46,125,50,0.9);color:rgba(255,255,255,0.9);">
                     <i data-lucide="mail" style="width:12px;height:12px;"></i>
-                    <span>{{ $department->email }}</span>
+                    <span><a href="mailto:{{ $department->email }}" style="color:inherit;text-decoration:none;">{{ $department->email }}</a></span>
                 </span>
             @endif
             @if ($services->count() > 0)
@@ -175,7 +175,7 @@
                                     </div>
                                     <div>
                                         <p style="font-size:11px;color:#9CA3AF;margin:0;font-weight:600;">الهاتف</p>
-                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;" dir="ltr">{{ $department->phone }}</p>
+                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;" dir="ltr"><a href="tel:{{ $department->phone }}" style="color:inherit;text-decoration:none;">{{ $department->phone }}</a></p>
                                     </div>
                                 </div>
                             @endif
@@ -187,7 +187,7 @@
                                     </div>
                                     <div>
                                         <p style="font-size:11px;color:#9CA3AF;margin:0;font-weight:600;">البريد الإلكتروني</p>
-                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;">{{ $department->email }}</p>
+                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;"><a href="mailto:{{ $department->email }}" style="color:inherit;text-decoration:none;">{{ $department->email }}</a></p>
                                     </div>
                                 </div>
                             @endif
@@ -235,7 +235,7 @@
                                     </div>
                                     <div>
                                         <p style="font-size:11px;color:#9CA3AF;margin:0;font-weight:600;">الجوال</p>
-                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;" dir="ltr">{{ $department->mobile }}</p>
+                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;" dir="ltr"><a href="tel:{{ $department->mobile }}" style="color:inherit;text-decoration:none;">{{ $department->mobile }}</a></p>
                                     </div>
                                 </div>
                             @endif

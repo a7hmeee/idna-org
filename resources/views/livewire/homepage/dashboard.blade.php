@@ -40,7 +40,7 @@
         <div class="bg-surface rounded-xl border border-border p-6">
             <h3 class="font-semibold text-text mb-4">روابط سريعة</h3>
             <div class="space-y-3">
-                <a href="{{ route('dashboard.homepage.settings') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
+                <a href="{{ route('dashboard.homepage.settings') }}" wire:navigate class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
                     <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                         <i data-lucide="settings" class="w-4 h-4 text-primary"></i>
                     </div>
@@ -49,7 +49,7 @@
                         <p class="text-xs text-text-tertiary">تعديل عنوان الموقع، رابط البورتال، رسالة رئيس البلدية</p>
                     </div>
                 </a>
-                <a href="{{ route('dashboard.homepage.slides') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
+                <a href="{{ route('dashboard.homepage.slides') }}" wire:navigate class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
                     <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                         <i data-lucide="images" class="w-4 h-4 text-primary"></i>
                     </div>
@@ -58,7 +58,7 @@
                         <p class="text-xs text-text-tertiary">إدارة الشرائح المعروضة في الواجهة الرئيسية</p>
                     </div>
                 </a>
-                <a href="{{ route('dashboard.homepage.sections') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
+                <a href="{{ route('dashboard.homepage.sections') }}" wire:navigate class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
                     <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                         <i data-lucide="layers" class="w-4 h-4 text-primary"></i>
                     </div>
@@ -67,7 +67,7 @@
                         <p class="text-xs text-text-tertiary">إظهار، إخفاء، وترتيب أقسام الصفحة الرئيسية</p>
                     </div>
                 </a>
-                <a href="{{ route('dashboard.homepage.quick-links') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
+                <a href="{{ route('dashboard.homepage.quick-links') }}" wire:navigate class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
                     <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                         <i data-lucide="link" class="w-4 h-4 text-primary"></i>
                     </div>
@@ -76,7 +76,7 @@
                         <p class="text-xs text-text-tertiary">إدارة روابط الوصول السريع في الصفحة الرئيسية</p>
                     </div>
                 </a>
-                <a href="{{ route('dashboard.homepage.statistics') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
+                <a href="{{ route('dashboard.homepage.statistics') }}" wire:navigate class="flex items-center gap-3 p-3 rounded-xl hover:bg-municipal-50 transition-colors group">
                     <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                         <i data-lucide="bar-chart-3" class="w-4 h-4 text-primary"></i>
                     </div>

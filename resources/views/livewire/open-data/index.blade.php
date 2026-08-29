@@ -17,17 +17,20 @@
                 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                         <button wire:click="$set('type', 'datasets')"
+                                aria-pressed="{{ $type == 'datasets' }}"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $type == 'datasets' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $type == 'datasets' ? '#0F6A3D' : 'white' }};color:{{ $type == 'datasets' ? 'white' : '#6B7280' }};">
                             مجموعات البيانات
                         </button>
                         <button wire:click="$set('type', 'reports')"
+                                aria-pressed="{{ $type == 'reports' }}"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $type == 'reports' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $type == 'reports' ? '#0F6A3D' : 'white' }};color:{{ $type == 'reports' ? 'white' : '#6B7280' }};">
                             التقارير
                         </button>
                     </div>
                     <div style="position:relative;width:100%;max-width:340px;">
                         <i data-lucide="search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#9CA3AF;pointer-events:none;"></i>
-                        <input type="text" wire:model.live.debounce.400ms="search"
+                        <span class="sr-only" role="status" wire:loading wire:target="search">جاري تحديث النتائج…</span>
+<input type="text" wire:model.live.debounce.400ms="search" aria-label="ابحث في البيانات المفتوحة"
                                placeholder="ابحث في البيانات..."
                                style="width:100%;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:11px 44px 11px 16px;font-size:13px;color:#1F2937;outline:none;transition:all 0.2s;"
                                onfocus="this.style.borderColor='#0F6A3D';this.style.boxShadow='0 0 0 3px rgba(15,106,61,0.1)'"
@@ -47,7 +50,7 @@
                     <div style="width:80px;height:80px;border-radius:20px;background:rgba(15,106,61,0.06);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
                         <i data-lucide="file-text" style="width:40px;height:40px;color:#9CA3AF;"></i>
                     </div>
-                    <h3 style="font-size:20px;font-weight:700;color:#1F2937;margin:0 0 8px;">البيانات المفتوحة</h3>
+                    <h2 style="font-size:20px;font-weight:700;color:#1F2937;margin:0 0 8px;">البيانات المفتوحة</h2>
                     <p style="font-size:14px;color:#9CA3AF;max-width:400px;margin:0 auto;line-height:1.7;">
                         سيتم نشر البيانات المفتوحة والتقارير قريباً. تابعونا للاطلاع على أحدث الإحصاءات والدراسات.
                     </p>
@@ -57,7 +60,7 @@
                     <div style="width:64px;height:64px;border-radius:16px;background:rgba(15,106,61,0.06);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
                         <i data-lucide="search-x" style="width:32px;height:32px;color:#9CA3AF;"></i>
                     </div>
-                    <h3 style="font-size:16px;font-weight:700;color:#1F2937;margin:0 0 8px;">لا توجد نتائج</h3>
+                    <h2 style="font-size:16px;font-weight:700;color:#1F2937;margin:0 0 8px;">لا توجد نتائج</h2>
                     <p style="font-size:13px;color:#9CA3AF;margin:0;">جرّب البحث بكلمات مختلفة أو غيّر التصنيف</p>
                 </div>
             @else
@@ -70,7 +73,7 @@
                                     <i data-lucide="file-text" style="width:20px;height:20px;color:#0F6A3D;"></i>
                                 </div>
                                 <div style="min-width:0;flex:1;">
-                                    <h3 style="font-size:14px;font-weight:700;color:#1F2937;margin:0 0 4px;">{{ $dataset->title }}</h3>
+                                    <h2 style="font-size:14px;font-weight:700;color:#1F2937;margin:0 0 4px;">{{ $dataset->title }}</h2>
                                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                                         @if ($dataset->category)
                                             <span style="font-size:11px;color:#0F6A3D;font-weight:600;background:rgba(15,106,61,0.06);padding:2px 8px;border-radius:6px;">{{ $dataset->category }}</span>
@@ -90,7 +93,7 @@
                             <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #F3F4F6;">
                                 <span style="font-size:11px;color:#9CA3AF;">{{ $dataset->published_at ? \Carbon\Carbon::parse($dataset->published_at)->format('Y-m-d') : '' }}</span>
                                 @if ($dataset->download_url)
-                                    <a href="{{ $dataset->download_url }}" target="_blank"
+                                    <a href="{{ $dataset->download_url }}" target="_blank" rel="noopener noreferrer" aria-label="تحميل {{ $dataset->title }}"
                                        style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#0F6A3D;text-decoration:none;">
                                         <i data-lucide="download" style="width:12px;height:12px;"></i>
                                         <span>تحميل</span>
@@ -104,7 +107,7 @@
 
             @if ($datasets->hasPages())
                 <div class="mt-10">
-                    {{ $datasets->links() }}
+                    <x-ui.pagination :paginator="$datasets" />
                 </div>
             @endif
         </div>

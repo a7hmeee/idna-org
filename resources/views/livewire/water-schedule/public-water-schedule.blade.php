@@ -1,4 +1,13 @@
 <div>
+    {{-- Print-only rules; screen rendering unaffected --}}
+    <style>
+        @media print {
+            .bg-gradient-to-l { background: #ffffff !important; border-bottom: 1px solid #DDE5DC; }
+            .bg-gradient-to-l h3, .bg-gradient-to-l p, .bg-gradient-to-l span { color: #13251C !important; }
+            .bg-white\/20 { background: #EAF3EC !important; }
+        }
+    </style>
+    <div class="print:hidden">
     @livewire('public-page-carousel', [
         'pageKey' => 'water-schedule',
         'fallbackTitle' => "جدول توزيع المياه",
@@ -8,6 +17,7 @@
         'fallbackImage' => $slides->isNotEmpty() ? $slides->first()->image_url : null,
         'compact' => true,
     ])
+    </div>
 
     <section class="py-12 sm:py-16 lg:py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -151,11 +161,11 @@
                                                 @endphp
                                                 <div class="flex items-center justify-between py-1.5">
                                                     <div class="flex items-center gap-3">
-                                                        <div class="w-10 h-10 rounded-lg bg-surface-secondary flex flex-col items-center justify-center shrink-0">
-                                                            <span class="text-[9px] font-bold text-text-muted leading-none">{{ $hDay }}</span>
+                                                        <div class="w-10 h-10 rounded-lg {{ \Carbon\Carbon::parse($hDate)->isToday() ? 'bg-primary/10' : 'bg-surface-secondary' }} flex flex-col items-center justify-center shrink-0">
+                                                            <span class="text-[11px] font-bold text-text-muted leading-none">{{ $hDay }}</span>
                                                             <span class="text-sm font-black text-text leading-none mt-0.5">{{ $hDate ? \Carbon\Carbon::parse($hDate)->format('d') : '—' }}</span>
                                                         </div>
-                                                        <div>
+                                                        <div class="flex items-center gap-2">
                                                             @if ($h['start_time'] ?? null)
                                                                 <span class="text-xs text-text-secondary">
                                                                     {{ \Carbon\Carbon::parse($h['start_time'])->format('h:i') }} — {{ \Carbon\Carbon::parse($h['end_time'])->format('h:i') }}
@@ -163,9 +173,12 @@
                                                             @else
                                                                 <span class="text-xs text-text-muted">غير محدد</span>
                                                             @endif
+                                                            @if ($hDate && \Carbon\Carbon::parse($hDate)->isToday())
+                                                                <span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">اليوم</span>
+                                                            @endif
                                                         </div>
                                                     </div>
-                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold {{ $hStInfo['color'] }}">
+                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold {{ $hStInfo['color'] }}">
                                                         {{ $hStInfo['label'] }}
                                                     </span>
                                                 </div>
@@ -186,7 +199,7 @@
                 </div>
             @endif
 
-            <div class="text-center pt-8 mt-12 border-t border-border/30">
+            <div class="text-center pt-8 mt-12 border-t border-border/30 print:hidden">
                 <p class="text-xs text-text-muted">جميع الحقوق محفوظة &copy; {{ date('Y') }} بلدية إذنا</p>
             </div>
         </div>

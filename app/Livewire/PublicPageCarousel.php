@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;
+use App\Domains\Homepage\Services\CarouselRegistry;
 use Livewire\Component;
 
 final class PublicPageCarousel extends Component
@@ -40,6 +41,8 @@ final class PublicPageCarousel extends Component
     {
         $slides = app(HomepageRepositoryInterface::class)->getPageSlides($this->pageKey);
 
+        $carouselConfig = CarouselRegistry::getConfigArray($this->pageKey);
+
         if (empty($this->breadcrumb)) {
             $this->breadcrumb = $this->generateBreadcrumb();
         }
@@ -48,6 +51,7 @@ final class PublicPageCarousel extends Component
             'slides' => $slides,
             'hasMultiple' => $slides->count() > 1,
             'hasSingle' => $slides->count() === 1,
+            'carouselConfig' => $carouselConfig,
         ]);
     }
 

@@ -23,10 +23,12 @@
                 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                         <button wire:click="$set('filter', 'latest')"
+                                aria-pressed="{{ $filter == 'latest' }}"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $filter == 'latest' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $filter == 'latest' ? '#0F6A3D' : 'white' }};color:{{ $filter == 'latest' ? 'white' : '#6B7280' }};">
                             الأحدث
                         </button>
                         <button wire:click="$set('filter', 'featured')"
+                                aria-pressed="{{ $filter == 'featured' }}"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $filter == 'featured' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $filter == 'featured' ? '#0F6A3D' : 'white' }};color:{{ $filter == 'featured' ? 'white' : '#6B7280' }};">
                             <i data-lucide="star" style="width:12px;height:12px;"></i>
                             المميزة
@@ -36,6 +38,7 @@
                     <div style="position:relative;width:100%;max-width:340px;">
                         <i data-lucide="search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#9CA3AF;pointer-events:none;"></i>
                         <input type="text" wire:model.live.debounce.400ms="search"
+                               aria-label="ابحث عن خبر"
                                placeholder="ابحث عن خبر..."
                                style="width:100%;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:11px 44px 11px 16px;font-size:13px;color:#1F2937;outline:none;transition:all 0.2s;"
                                onfocus="this.style.borderColor='#0F6A3D';this.style.boxShadow='0 0 0 3px rgba(15,106,61,0.1)'"
@@ -46,11 +49,13 @@
                 {{-- Category Tabs --}}
                 <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
                     <button wire:click="$set('category', '')"
+                            aria-pressed="{{ $category == '' }}"
                             style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;border:1px solid {{ $category == '' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $category == '' ? '#0F6A3D' : 'white' }};color:{{ $category == '' ? 'white' : '#6B7280' }};">
                         الكل
                     </button>
                     @foreach ($categories as $cat)
                         <button wire:click="$set('category', '{{ $cat->value }}')"
+                                aria-pressed="{{ $category == $cat->value }}"
                                 style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;border:1px solid {{ $category == $cat->value ? '#0F6A3D' : '#E5E7EB' }};background:{{ $category == $cat->value ? '#0F6A3D' : 'white' }};color:{{ $category == $cat->value ? 'white' : '#6B7280' }};">
                             {{ $cat->label() }}
                         </button>
@@ -157,7 +162,7 @@
             {{-- Pagination --}}
             @if ($news->hasPages())
                 <div class="mt-10">
-                    {{ $news->links() }}
+                    <x-ui.pagination :paginator="$news" />
                 </div>
             @endif
         </div>

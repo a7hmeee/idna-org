@@ -136,23 +136,49 @@ final readonly class EloquentAnnouncementRepository implements AnnouncementRepos
 
     public function getFeatured(): Collection
     {
-        return Cache::remember('announcements_featured_v5', 3600, function (): Collection {
-            return $this->model->published()->featured()->orderByDesc('published_at')->take(5)->get();
+        $cached = Cache::remember('announcements_featured_v6', 3600, function (): array {
+            return $this->model->published()->featured()->orderByDesc('published_at')->take(5)->get()->toArray();
         });
+
+        return $this->hydrateCollection($cached);
     }
 
     public function getLatest(int $limit = 5): Collection
     {
-        return Cache::remember('announcements_latest_v5', 3600, function () use ($limit): Collection {
-            return $this->model->published()->orderByDesc('published_at')->take($limit)->get();
+        $cached = Cache::remember('announcements_latest_v6', 3600, function () use ($limit): array {
+            return $this->model->published()->orderByDesc('published_at')->take($limit)->get()->toArray();
         });
+
+        return $this->hydrateCollection($cached);
     }
 
     public function getUrgent(): Collection
     {
-        return Cache::remember('announcements_urgent_v5', 3600, function (): Collection {
-            return $this->model->published()->urgent()->orderByDesc('published_at')->take(5)->get();
+        $cached = Cache::remember('announcements_urgent_v6', 3600, function (): array {
+            return $this->model->published()->urgent()->orderByDesc('published_at')->take(5)->get()->toArray();
         });
+
+        return $this->hydrateCollection($cached);
+    }
+
+    /**
+     * Reconstruct Eloquent models from cached arrays.
+     *
+     * This avoids __PHP_Incomplete_Class by storing only primitive data
+     * in cache and hydrating fresh model instances on read.
+     */
+    private function hydrateCollection(array $rows): Collection
+    {
+        $models = new Collection;
+
+        foreach ($rows as $row) {
+            $model = new Announcement;
+            $model->forceFill($row);
+            $model->exists = true;
+            $models->push($model);
+        }
+
+        return $models;
     }
 
     private function findOrFail(int $id): Announcement
@@ -168,6 +194,9 @@ final readonly class EloquentAnnouncementRepository implements AnnouncementRepos
 
     private function forgetCache(): void
     {
+        Cache::forget('announcements_featured_v6');
+        Cache::forget('announcements_latest_v6');
+        Cache::forget('announcements_urgent_v6');
         Cache::forget('announcements_featured_v5');
         Cache::forget('announcements_latest_v5');
         Cache::forget('announcements_urgent_v5');

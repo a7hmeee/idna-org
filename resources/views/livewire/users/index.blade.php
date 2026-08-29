@@ -357,7 +357,10 @@
             </div>
             <div class="flex items-center justify-center gap-3 px-6 pb-6">
                 <button wire:click="closeDeleteModal" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-text-secondary hover:bg-surface-secondary transition-colors">إلغاء</button>
-                <button wire:click="deleteUser" class="px-5 py-2.5 rounded-xl bg-danger text-white text-sm font-semibold hover:bg-danger/90 transition-colors">نعم، حذف</button>
+                <button wire:click="deleteUser" wire:loading.attr="disabled" class="px-5 py-2.5 rounded-xl bg-danger text-white text-sm font-semibold hover:bg-danger/90 transition-colors disabled:opacity-50">
+                    <span wire:loading.remove wire:target="deleteUser">نعم، حذف</span>
+                    <span wire:loading wire:target="deleteUser">جاري الحذف...</span>
+                </button>
             </div>
         </div>
     </div>
@@ -386,7 +389,10 @@
                 </div>
                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-border">
                     <button type="button" wire:click="closeResetPasswordModal" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-text-secondary hover:bg-surface-secondary transition-colors">إلغاء</button>
-                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors">إعادة التعيين</button>
+                    <button type="submit" wire:loading.attr="disabled" class="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors disabled:opacity-50">
+                        <span wire:loading.remove wire:target="resetPassword">إعادة التعيين</span>
+                        <span wire:loading wire:target="resetPassword">جاري التنفيذ...</span>
+                    </button>
                 </div>
             </form>
         </div>

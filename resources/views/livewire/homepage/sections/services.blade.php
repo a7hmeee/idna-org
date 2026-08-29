@@ -1,5 +1,8 @@
 @php
     $services = collect($featuredServices)->take(6);
+    $carouselConfig = \App\Domains\Homepage\Services\CarouselRegistry::getConfigArray('homepage-services');
+    $resolvedTitle = $sectionTitle ?? $carouselConfig['title'] ?? 'الخدمات الإلكترونية';
+    $resolvedSubtitle = $sectionSubtitle ?? $carouselConfig['subtitle'] ?? 'نقدم مجموعة متكاملة من الخدمات الإلكترونية لتسهيل معاملات المواطنين بسرعة ووضوح.';
 @endphp
 
 <section id="services" class="services-section" style="background:#FFFFFF;padding-top:clamp(16px,3vw,66px);padding-bottom:clamp(24px,4vw,78px);overflow:hidden;position:relative;">
@@ -27,12 +30,12 @@
                     <span style="display:block;width:26px;height:2px;border-radius:9999px;background:#176B32;"></span>
                 </div>
 
-                <h2 class="services-title" style="text-align:center;color:#17243A;font-size:clamp(23px,2.8vw,32px);font-weight:700;line-height:1.3;margin:0;">
-                    {{ $sectionTitle ?? 'الخدمات الإلكترونية' }}
+                <h2 class="services-title" style="text-align:center;color:#17243A;font-size:clamp(26px,3vw,36px);font-weight:800;line-height:1.3;margin:0;">
+                    {{ $resolvedTitle }}
                 </h2>
 
-                <p style="text-align:center;max-width:640px;margin:8px auto 0;font-size:13px;line-height:1.8;color:#66756D;">
-                    {{ $sectionSubtitle ?? 'نقدم مجموعة متكاملة من الخدمات الإلكترونية لتسهيل معاملات المواطنين بسرعة ووضوح.' }}
+                <p style="text-align:center;max-width:640px;margin:10px auto 0;font-size:15px;line-height:1.8;color:#66756D;">
+                    {{ $resolvedSubtitle }}
                 </p>
             </div>
 
@@ -83,13 +86,13 @@
                         </div>
 
                         {{-- SERVICE TITLE --}}
-                        <h3 style="margin:18px 0 0;font-size:17px;font-weight:700;color:#17243A;line-height:1.55;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
+                        <h3 style="margin:18px 0 0;font-size:18px;font-weight:700;color:#17243A;line-height:1.55;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
                             {{ $serviceName }}
                         </h3>
 
                         {{-- DESCRIPTION --}}
                         @if ($serviceSummary)
-                            <p style="margin:8px 0 0;font-size:13px;line-height:1.75;color:#66756D;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
+                            <p style="margin:8px 0 0;font-size:14px;line-height:1.75;color:#66756D;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
                                 {{ $serviceSummary }}
                             </p>
                         @endif
@@ -185,33 +188,33 @@
                 /* Mobile — single column, tighter spacing */
                 @media (max-width: 640px) {
                     .services-section {
-                        padding-top: 12px !important;
-                        padding-bottom: 20px !important;
+                        padding-top: 40px !important;
+                        padding-bottom: 48px !important;
                     }
                     .services-header-center p {
-                        font-size: 12px !important;
-                        margin-top: 4px !important;
-                        line-height: 1.6 !important;
+                        font-size: 14px !important;
+                        margin-top: 6px !important;
+                        line-height: 1.7 !important;
                     }
                     .services-grid {
                         grid-template-columns: 1fr !important;
-                        margin-top: 16px !important;
-                        gap: 12px !important;
+                        margin-top: 28px !important;
+                        gap: 14px !important;
                     }
                     .service-card {
-                        padding: 12px 14px !important;
-                        min-height: 180px !important;
+                        padding: 16px 18px !important;
+                        min-height: 200px !important;
                     }
                     .services-pattern {
                         display: none !important;
                     }
                     .services-header-action {
-                        margin-top: 12px !important;
+                        margin-top: 16px !important;
                     }
                     .services-view-all-btn {
-                        height: 36px !important;
-                        font-size: 12px !important;
-                        padding: 0 16px !important;
+                        height: 40px !important;
+                        font-size: 13px !important;
+                        padding: 0 18px !important;
                     }
                 }
 

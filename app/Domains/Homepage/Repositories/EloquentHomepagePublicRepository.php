@@ -16,6 +16,7 @@ use App\Domains\Homepage\Models\HomepageSetting;
 use App\Domains\Homepage\Models\HomepageSlide;
 use App\Domains\Homepage\Models\HomepageStatistic;
 use App\Domains\Jobs\Models\Job;
+use App\Domains\Municipality\Contracts\CouncilMemberRepositoryInterface;
 use App\Domains\Municipality\Enums\CouncilMemberPosition;
 use App\Domains\Municipality\Models\CouncilDecision;
 use App\Domains\Municipality\Models\CouncilMember;
@@ -32,6 +33,7 @@ use App\Domains\WaterSchedule\Models\WaterSchedule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 final class EloquentHomepagePublicRepository implements HomepagePublicRepositoryInterface
 {
@@ -246,6 +248,12 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
             ->latest()
             ->first(['path', 'alt']);
 
+        $aboutImage = $municipality->media()
+            ->where('collection', 'about_image')
+            ->where('is_active', true)
+            ->latest()
+            ->first(['path', 'alt', 'title']);
+
         return [
             'name_ar' => $municipality->name_ar,
             'name_en' => $municipality->name_en,
@@ -259,6 +267,8 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
             'area' => $municipality->area,
             'logo_url' => $logo ? asset('storage/'.$logo->path) : null,
             'mayor_image_url' => $mayorImg ? asset('storage/'.$mayorImg->path) : null,
+            'about_image_url' => $aboutImage ? asset('storage/'.$aboutImage->path) : null,
+            'about_image_alt' => $aboutImage?->alt,
             'images' => $images->map(fn ($img) => [
                 'url' => asset('storage/'.$img->path),
                 'alt' => $img->alt,
@@ -358,17 +368,34 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
             return [];
         }
 
-        $members = CouncilMember::query()
-            ->where('status', 'active')
-            ->where('is_public', true)
-            ->orderBy('is_featured', 'desc')
-            ->orderBy('display_order')
-            ->limit($limit)
-            ->get(['id', 'full_name', 'slug', 'position', 'bio', 'qualification', 'committee', 'photo_path', 'years_of_experience', 'is_featured', 'display_order'])
+        $memberRepository = app(CouncilMemberRepositoryInterface::class);
+        $members = $memberRepository->getPublicMembers();
+        $mayor = $memberRepository->getMayor();
+
+        // Merge mayor into collection (avoid duplicate by id)
+        if ($mayor && ! $members->contains('id', $mayor->id)) {
+            $members = $mayor->newCollection([$mayor])->concat($members);
+        }
+
+        // Sort by position priority then display_order
+        $positionOrder = [
+            'mayor' => 0,
+            'deputy_mayor' => 1,
+            'secretary' => 2,
+            'treasurer' => 3,
+            'council_member' => 4,
+        ];
+
+        $members = $members
+            ->sortBy(fn ($m) => [
+                $positionOrder[$m->position] ?? 5,
+                $m->display_order,
+            ])
+            ->take($limit)
             ->toArray();
 
         foreach ($members as &$member) {
-            if (! empty($member['photo_path'])) {
+            if (! empty($member['photo_path']) && Storage::disk('public')->exists($member['photo_path'])) {
                 $member['photo_url'] = asset('storage/'.$member['photo_path']);
             }
             try {
@@ -384,20 +411,22 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
     public function getMayorData(): ?array
     {
         if (! class_exists(CouncilMember::class)) {
-            return $this->getMayorFromSettings();
+            return null;
         }
 
         try {
-            $mayor = CouncilMember::query()
-                ->where('position', 'mayor')
-                ->where('status', 'active')
-                ->where('is_public', true)
-                ->first(['id', 'full_name', 'slug', 'position', 'bio', 'qualification', 'committee', 'photo_path', 'years_of_experience']);
+            // Load mayor by position — ignore is_public flag (mayor may have is_public=false)
+            $mayor = app(CouncilMemberRepositoryInterface::class)->getMayor();
 
             if ($mayor) {
                 $data = $mayor->toArray();
-                if (! empty($data['photo_path'])) {
+                if (! empty($data['photo_path']) && Storage::disk('public')->exists($data['photo_path'])) {
                     $data['photo_url'] = asset('storage/'.$data['photo_path']);
+                }
+                try {
+                    $data['position_label'] = CouncilMemberPosition::tryFrom($data['position'] ?? '')?->label() ?? ($data['position'] ?? '');
+                } catch (\Throwable) {
+                    $data['position_label'] = $data['position'] ?? '';
                 }
 
                 return $data;
@@ -405,29 +434,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
         } catch (\Exception) {
         }
 
-        return $this->getMayorFromSettings();
-    }
-
-    private function getMayorFromSettings(): ?array
-    {
-        $settings = HomepageSetting::first(['site_title', 'mayor_message', 'mayor_image_path', 'show_mayor_message']);
-        if (! $settings) {
-            return null;
-        }
-
-        if (! $settings->show_mayor_message && ! $settings->mayor_message) {
-            return null;
-        }
-
-        return [
-            'full_name' => $settings->site_title ?? 'رئيس البلدية',
-            'position' => 'mayor',
-            'position_label' => 'رئيس المجلس البلدي',
-            'bio' => $settings->mayor_message,
-            'photo_url' => $settings->mayor_image_path
-                ? asset('storage/'.$settings->mayor_image_path)
-                : null,
-        ];
+        return null;
     }
 
     public function getLatestCouncilDecisions(int $limit = 5): array
@@ -642,7 +649,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                 ->where('schedule_date', $today)
                 ->where('is_public', true)
                 ->orderBy('display_order')
-                ->get(['id', 'area_id', 'schedule_date', 'start_time', 'end_time', 'status', 'notes', 'display_order', 'is_public']);
+                ->get(['id', 'water_area_id', 'schedule_date', 'start_time', 'end_time', 'status', 'notes', 'display_order', 'is_public']);
 
             if ($schedules->isEmpty()) {
                 $latestDate = WaterSchedule::query()
@@ -656,7 +663,7 @@ final class EloquentHomepagePublicRepository implements HomepagePublicRepository
                         ->where('schedule_date', $latestDate)
                         ->where('is_public', true)
                         ->orderBy('display_order')
-                        ->get(['id', 'area_id', 'schedule_date', 'start_time', 'end_time', 'status', 'notes', 'display_order', 'is_public']);
+                        ->get(['id', 'water_area_id', 'schedule_date', 'start_time', 'end_time', 'status', 'notes', 'display_order', 'is_public']);
                 }
             }
 

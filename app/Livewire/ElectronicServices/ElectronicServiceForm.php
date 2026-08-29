@@ -13,6 +13,7 @@ use App\Domains\ElectronicServices\Enums\ElectronicServiceStatus;
 use App\Domains\ElectronicServices\Models\ElectronicService;
 use App\Domains\ElectronicServices\Models\ServiceCategory;
 use App\Domains\ElectronicServices\Requests\StoreElectronicServiceRequest;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -59,7 +60,13 @@ final class ElectronicServiceForm extends Component
 
     protected function rules(): array
     {
-        return (new StoreElectronicServiceRequest)->rules();
+        $rules = (new StoreElectronicServiceRequest)->rules();
+
+        if ($this->serviceId) {
+            $rules['slug'] = ['nullable', 'string', 'max:255', Rule::unique('electronic_services')->ignore($this->serviceId)];
+        }
+
+        return $rules;
     }
 
     public function mount(?ElectronicService $service = null): void
@@ -153,8 +160,11 @@ final class ElectronicServiceForm extends Component
     {
         $validated = $this->validate();
 
-        $validated['created_by'] = auth()->id();
         $validated['updated_by'] = auth()->id();
+
+        if (! $this->serviceId) {
+            $validated['created_by'] = auth()->id();
+        }
 
         $dto = ElectronicServiceData::fromRequest($validated);
 

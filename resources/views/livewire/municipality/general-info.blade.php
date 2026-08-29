@@ -15,6 +15,10 @@
         </div>
     @endif
 
+    <div class="mb-6">
+        <livewire:municipality.about-image />
+    </div>
+
     <form wire:submit="save" class="bg-surface rounded-xl border border-border p-6 space-y-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>

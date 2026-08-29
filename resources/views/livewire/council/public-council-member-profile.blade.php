@@ -124,7 +124,7 @@
                                         <div style="width:32px;height:32px;border-radius:8px;background:rgba(15,106,61,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                             <i data-lucide="phone" style="width:14px;height:14px;color:#0F6A3D;"></i>
                                         </div>
-                                        <div><p style="font-size:13px;color:#4B5563;margin:0;font-weight:600;" dir="ltr">{{ $member->phone }}</p></div>
+                                        <div><p style="font-size:13px;color:#4B5563;margin:0;font-weight:600;" dir="ltr"><a href="tel:{{ $member->phone }}" style="color:inherit;text-decoration:none;">{{ $member->phone }}</a></p></div>
                                     </div>
                                 @endif
                                 @if ($member->mobile)
@@ -132,7 +132,7 @@
                                         <div style="width:32px;height:32px;border-radius:8px;background:rgba(15,106,61,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                             <i data-lucide="smartphone" style="width:14px;height:14px;color:#0F6A3D;"></i>
                                         </div>
-                                        <div><p style="font-size:13px;color:#4B5563;margin:0;font-weight:600;" dir="ltr">{{ $member->mobile }}</p></div>
+                                        <div><p style="font-size:13px;color:#4B5563;margin:0;font-weight:600;" dir="ltr"><a href="tel:{{ $member->mobile }}" style="color:inherit;text-decoration:none;">{{ $member->mobile }}</a></p></div>
                                     </div>
                                 @endif
                                 @if ($member->email)
@@ -140,7 +140,7 @@
                                         <div style="width:32px;height:32px;border-radius:8px;background:rgba(15,106,61,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                             <i data-lucide="mail" style="width:14px;height:14px;color:#0F6A3D;"></i>
                                         </div>
-                                        <div><p style="font-size:13px;color:#4B5563;margin:0;font-weight:600;">{{ $member->email }}</p></div>
+                                        <div><p style="font-size:13px;color:#4B5563;margin:0;font-weight:600;"><a href="mailto:{{ $member->email }}" style="color:inherit;text-decoration:none;">{{ $member->email }}</a></p></div>
                                     </div>
                                 @endif
                             </div>

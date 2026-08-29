@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -113,6 +114,14 @@ final class CouncilMember extends Model
 
     protected static function booted(): void
     {
+        self::saved(function (): void {
+            Cache::forget('homepage.public.data');
+        });
+
+        self::deleted(function (): void {
+            Cache::forget('homepage.public.data');
+        });
+
         self::creating(function (CouncilMember $member): void {
             if (empty($member->slug)) {
                 $base = Str::slug($member->full_name);

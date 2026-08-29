@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://unpkg.com/lucide@latest"></script>
     @livewireStyles
     <style>
         [x-cloak] { display: none !important; }
@@ -110,12 +109,6 @@
 </svg>
 
 <script>
-    function initIcons() {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
         var currentDateEl = document.getElementById('currentDate');
         if (currentDateEl) {
@@ -123,16 +116,6 @@
             var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             currentDateEl.textContent = now.toLocaleDateString('ar-SA', options);
         }
-        initIcons();
-
-        var observer = new MutationObserver(function() {
-            requestAnimationFrame(initIcons);
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-    });
-
-    document.addEventListener('livewire:navigated', function() {
-        initIcons();
     });
 </script>
 @livewireScripts

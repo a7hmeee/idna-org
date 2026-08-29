@@ -19,22 +19,12 @@
     <section id="services" class="py-12 sm:py-16 lg:py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {{-- Top Bar: Search + View Toggle --}}
+            {{-- Top Bar: Filters + Search --}}
             <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;">
                 <div style="display:flex;align-items:center;gap:8px;">
-                    {{-- View Toggle --}}
-                    <div style="display:flex;align-items:center;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;overflow:hidden;">
-                        <button style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#F3F4F6;color:#6B7280;border:none;cursor:pointer;transition:all 0.2s;">
-                            <i data-lucide="list" style="width:16px;height:16px;"></i>
-                        </button>
-                        <button style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#0F6A3D;color:white;border:none;cursor:pointer;">
-                            <i data-lucide="grid-3x2" style="width:16px;height:16px;"></i>
-                        </button>
-                    </div>
-
                     {{-- Filter Button --}}
                     <button style="display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;background:#0F6A3D;color:white;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;"
-                            wire:click="toggleFilters"
+                            wire:click="toggleFilters" :aria-expanded="$wire.showFilters" aria-controls="portal-filters"
                             onmouseover="this.style.background='#0D5C34'"
                             onmouseout="this.style.background='#0F6A3D'">
                         <i data-lucide="filter" style="width:14px;height:14px;"></i>
@@ -47,7 +37,8 @@
                 {{-- Search Input --}}
                 <div style="flex:1;max-width:400px;position:relative;">
                     <i data-lucide="search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#9CA3AF;pointer-events:none;"></i>
-                    <input type="text" wire:model.live.debounce.400ms="search"
+                    <input type="text" wire:model.live.debounce.400ms="search" id="services-search"
+                           aria-label="ابحث عن خدمة"
                            placeholder="ابحث عن خدمة..."
                            style="width:100%;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:12px 44px 12px 16px;font-size:13px;color:#1F2937;outline:none;transition:all 0.2s;"
                            onfocus="this.style.borderColor='#0F6A3D';this.style.boxShadow='0 0 0 3px rgba(15,106,61,0.1)'"
@@ -56,15 +47,17 @@
             </div>
 
             {{-- Category Tags --}}
-            <div x-data x-show="$wire.showFilters" x-transition x-cloak style="margin-bottom:24px;">
+            <div id="portal-filters" x-data x-show="$wire.showFilters" x-transition x-cloak style="margin-bottom:24px;">
                 <p style="font-size:13px;font-weight:600;color:#4B5563;margin:0 0 10px;">القائمة</p>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;">
                     <button wire:click="$set('filterCategoryId', '')"
+                            aria-pressed="{{ $filterCategoryId == '' ? 'true' : 'false' }}"
                             style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $filterCategoryId == '' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $filterCategoryId == '' ? '#0F6A3D' : 'white' }};color:{{ $filterCategoryId == '' ? 'white' : '#6B7280' }};">
                         الكل
                     </button>
                     @foreach ($categories as $cat)
                         <button wire:click="$set('filterCategoryId', '{{ $cat->id }}')"
+                                aria-pressed="{{ $filterCategoryId == $cat->id ? 'true' : 'false' }}"
                                 style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid {{ $filterCategoryId == $cat->id ? '#0F6A3D' : '#E5E7EB' }};background:{{ $filterCategoryId == $cat->id ? '#0F6A3D' : 'white' }};color:{{ $filterCategoryId == $cat->id ? 'white' : '#6B7280' }};">
                             {{ $cat->name }}
                         </button>
@@ -76,6 +69,7 @@
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
                 <p style="font-size:13px;color:#6B7280;margin:0;">
                     يوجد <span style="font-weight:700;color:#1F2937;">{{ $services->total() ?? 0 }}</span> خدمة
+                    <span class="sr-only" role="status" wire:loading wire:target="search, filterCategoryId">جاري تحديث النتائج…</span>
                 </p>
                 @if ($filterDepartmentSlug)
                     <div style="display:flex;align-items:center;gap:8px;">
@@ -102,7 +96,7 @@
                     <p style="font-size:13px;color:#9CA3AF;margin:0;">جرّب البحث بكلمات مختلفة أو غيّر التصفية</p>
                 </div>
             @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-200" wire:loading.class="opacity-50" wire:loading.attr="aria-busy" wire:target="search, filterCategoryId">
                     @foreach ($services as $service)
                         <a href="{{ route('public.services.show', ['category' => $service->category?->slug ?? 'general', 'service' => $service->slug]) }}" wire:navigate
                            class="svc-card block bg-white rounded-2xl border border-gray-100 p-5 transition-all duration-200"

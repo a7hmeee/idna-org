@@ -48,10 +48,12 @@ unset($__split);
                 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                         <button wire:click="$set('filter', 'latest')"
+                                aria-pressed="<?php echo e($filter == 'latest'); ?>"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid <?php echo e($filter == 'latest' ? '#0F6A3D' : '#E5E7EB'); ?>;background:<?php echo e($filter == 'latest' ? '#0F6A3D' : 'white'); ?>;color:<?php echo e($filter == 'latest' ? 'white' : '#6B7280'); ?>;">
                             الأحدث
                         </button>
                         <button wire:click="$set('filter', 'featured')"
+                                aria-pressed="<?php echo e($filter == 'featured'); ?>"
                                 style="padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;border:1px solid <?php echo e($filter == 'featured' ? '#0F6A3D' : '#E5E7EB'); ?>;background:<?php echo e($filter == 'featured' ? '#0F6A3D' : 'white'); ?>;color:<?php echo e($filter == 'featured' ? 'white' : '#6B7280'); ?>;">
                             <i data-lucide="star" style="width:12px;height:12px;"></i>
                             المميزة
@@ -61,6 +63,7 @@ unset($__split);
                     <div style="position:relative;width:100%;max-width:340px;">
                         <i data-lucide="search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#9CA3AF;pointer-events:none;"></i>
                         <input type="text" wire:model.live.debounce.400ms="search"
+                               aria-label="ابحث عن خبر"
                                placeholder="ابحث عن خبر..."
                                style="width:100%;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:11px 44px 11px 16px;font-size:13px;color:#1F2937;outline:none;transition:all 0.2s;"
                                onfocus="this.style.borderColor='#0F6A3D';this.style.boxShadow='0 0 0 3px rgba(15,106,61,0.1)'"
@@ -71,11 +74,13 @@ unset($__split);
                 
                 <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
                     <button wire:click="$set('category', '')"
+                            aria-pressed="<?php echo e($category == ''); ?>"
                             style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;border:1px solid <?php echo e($category == '' ? '#0F6A3D' : '#E5E7EB'); ?>;background:<?php echo e($category == '' ? '#0F6A3D' : 'white'); ?>;color:<?php echo e($category == '' ? 'white' : '#6B7280'); ?>;">
                         الكل
                     </button>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                         <button wire:click="$set('category', '<?php echo e($cat->value); ?>')"
+                                aria-pressed="<?php echo e($category == $cat->value); ?>"
                                 style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;border:1px solid <?php echo e($category == $cat->value ? '#0F6A3D' : '#E5E7EB'); ?>;background:<?php echo e($category == $cat->value ? '#0F6A3D' : 'white'); ?>;color:<?php echo e($category == $cat->value ? 'white' : '#6B7280'); ?>;">
                             <?php echo e($cat->label()); ?>
 
@@ -185,8 +190,28 @@ unset($__split);
             
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($news->hasPages()): ?>
                 <div class="mt-10">
-                    <?php echo e($news->links()); ?>
+                    <?php if (isset($component)) { $__componentOriginal4d04f29578652eb91560cfbf2ab48c57 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal4d04f29578652eb91560cfbf2ab48c57 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.ui.pagination','data' => ['paginator' => $news]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('ui.pagination'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['paginator' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($news)]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal4d04f29578652eb91560cfbf2ab48c57)): ?>
+<?php $attributes = $__attributesOriginal4d04f29578652eb91560cfbf2ab48c57; ?>
+<?php unset($__attributesOriginal4d04f29578652eb91560cfbf2ab48c57); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal4d04f29578652eb91560cfbf2ab48c57)): ?>
+<?php $component = $__componentOriginal4d04f29578652eb91560cfbf2ab48c57; ?>
+<?php unset($__componentOriginal4d04f29578652eb91560cfbf2ab48c57); ?>
+<?php endif; ?>
                 </div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>

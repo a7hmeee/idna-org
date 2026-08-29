@@ -21,6 +21,10 @@ final readonly class ToggleHomepageSectionAction
             throw new \RuntimeException("Section with key '{$key}' not found.");
         }
 
-        return $this->repository->updateSection($key, ['is_enabled' => ! $section->is_enabled]);
+        $result = $this->repository->updateSection($key, ['is_enabled' => ! $section->is_enabled]);
+
+        app(CacheForgetHomepageDataAction::class)->execute();
+
+        return $result;
     }
 }

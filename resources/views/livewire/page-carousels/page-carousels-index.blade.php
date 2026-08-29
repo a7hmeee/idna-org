@@ -15,6 +15,18 @@
         @endcan
     </div>
 
+    {{-- Tabs --}}
+    <div class="flex items-center gap-1 mb-6 border-b border-border">
+        <a href="{{ route('dashboard.page-carousels') }}" wire:navigate
+           class="px-4 py-2.5 text-sm font-semibold text-primary border-b-2 border-primary">
+            <span>الشرائح</span>
+        </a>
+        <a href="{{ route('dashboard.carousel-config') }}" wire:navigate
+           class="px-4 py-2.5 text-sm font-semibold text-text-tertiary hover:text-text transition-colors border-b-2 border-transparent">
+            <span>إعدادات الكاروسيلات</span>
+        </a>
+    </div>
+
     @if (session('debug'))
         <div class="mb-4 rounded-xl bg-warning-light border border-warning/20 px-4 py-3">
             <span class="text-sm text-warning font-medium">{{ session('debug') }}</span>

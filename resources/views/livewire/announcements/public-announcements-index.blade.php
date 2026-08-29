@@ -23,11 +23,13 @@
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div class="flex items-center gap-2">
                         <button wire:click="$set('sort', 'latest')"
+                                aria-pressed="{{ $sort == 'latest' }}"
                                 class="px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all duration-200 border"
                                 style="border-color:{{ $sort == 'latest' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $sort == 'latest' ? '#0F6A3D' : 'white' }};color:{{ $sort == 'latest' ? 'white' : '#6B7280' }};">
                             الأحدث
                         </button>
                         <button wire:click="$set('sort', 'oldest')"
+                                aria-pressed="{{ $sort == 'oldest' }}"
                                 class="px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all duration-200 border"
                                 style="border-color:{{ $sort == 'oldest' ? '#0F6A3D' : '#E5E7EB' }};background:{{ $sort == 'oldest' ? '#0F6A3D' : 'white' }};color:{{ $sort == 'oldest' ? 'white' : '#6B7280' }};">
                             الأقدم
@@ -35,7 +37,8 @@
                     </div>
                     <div class="relative w-full max-w-xs">
                         <i data-lucide="search" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-tertiary pointer-events-none"></i>
-                        <input type="text" wire:model.live.debounce.400ms="search"
+                        <span class="sr-only" role="status" wire:loading wire:target="search">جاري تحديث النتائج…</span>
+<input type="text" wire:model.live.debounce.400ms="search" aria-label="ابحث في الإعلانات"
                                placeholder="ابحث في الإعلانات..."
                                class="w-full bg-surface-secondary border border-border rounded-lg py-2.5 pr-10 pl-4 text-sm text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all" />
                     </div>
@@ -43,13 +46,13 @@
 
                 {{-- Filter Pills --}}
                 <div class="flex flex-wrap items-center gap-2">
-                    <select wire:model.live="type" class="bg-surface-secondary border border-border rounded-lg px-3 py-1.5 text-xs text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                    <select wire:model.live="type" aria-label="نوع الإعلان" class="bg-surface-secondary border border-border rounded-lg px-3 py-1.5 text-xs text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
                         <option value="">جميع الأنواع</option>
                         @foreach ($types as $t)
                             <option value="{{ $t->value }}">{{ $t->label() }}</option>
                         @endforeach
                     </select>
-                    <select wire:model.live="priority" class="bg-surface-secondary border border-border rounded-lg px-3 py-1.5 text-xs text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
+                    <select wire:model.live="priority" aria-label="الأولوية" class="bg-surface-secondary border border-border rounded-lg px-3 py-1.5 text-xs text-text focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all">
                         <option value="">جميع الأولويات</option>
                         @foreach ($priorities as $p)
                             <option value="{{ $p->value }}">{{ $p->label() }}</option>
@@ -94,7 +97,7 @@
                                         </span>
                                         <span class="text-[10px] text-text-tertiary">{{ $announcement->type->label() }}</span>
                                     </div>
-                                    <h3 class="text-sm font-bold text-text group-hover:text-primary transition-colors leading-snug">{{ $announcement->title }}</h3>
+                                    <h2 class="text-sm font-bold text-text group-hover:text-primary transition-colors leading-snug">{{ $announcement->title }}</h2>
                                     <p class="text-xs text-text-tertiary mt-1 line-clamp-2">{{ $announcement->short_description }}</p>
                                     <p class="text-[10px] text-text-tertiary mt-2">{{ $announcement->published_at?->format('Y/m/d') }}</p>
                                 </div>
@@ -125,7 +128,7 @@
                                     </span>
                                     <span class="text-[10px] text-text-tertiary">{{ $announcement->type->label() }}</span>
                                 </div>
-                                <h3 class="text-sm font-bold text-text group-hover:text-primary transition-colors leading-snug">{{ $announcement->title }}</h3>
+                                <h2 class="text-sm font-bold text-text group-hover:text-primary transition-colors leading-snug">{{ $announcement->title }}</h2>
                                 <p class="text-xs text-text-tertiary mt-1 line-clamp-2">{{ $announcement->short_description }}</p>
                                 <div class="flex items-center justify-between mt-2">
                                     <p class="text-[10px] text-text-tertiary">{{ $announcement->published_at?->format('Y/m/d') }}</p>
@@ -141,7 +144,7 @@
 
                 @if ($announcements->hasPages())
                     <div class="mt-8">
-                        {{ $announcements->links() }}
+                        <x-ui.pagination :paginator="$announcements" />
                     </div>
                 @endif
             @else

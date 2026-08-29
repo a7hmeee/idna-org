@@ -24,7 +24,7 @@
             @if ($facility->phone)
                 <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(46,125,50,0.9);color:rgba(255,255,255,0.9);">
                     <i data-lucide="phone" style="width:12px;height:12px;"></i>
-                    <span dir="ltr">{{ $facility->phone }}</span>
+                    <span dir="ltr"><a href="tel:{{ $facility->phone }}" style="color:inherit;text-decoration:none;">{{ $facility->phone }}</a></span>
                 </span>
             @endif
             @if ($facility->is_featured)
@@ -169,7 +169,7 @@
                                     </div>
                                     <div>
                                         <p style="font-size:11px;color:#9CA3AF;margin:0;font-weight:600;">الهاتف</p>
-                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;" dir="ltr">{{ $facility->phone }}</p>
+                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;" dir="ltr"><a href="tel:{{ $facility->phone }}" style="color:inherit;text-decoration:none;">{{ $facility->phone }}</a></p>
                                     </div>
                                 </div>
                             @endif
@@ -181,7 +181,7 @@
                                     </div>
                                     <div>
                                         <p style="font-size:11px;color:#9CA3AF;margin:0;font-weight:600;">البريد الإلكتروني</p>
-                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;">{{ $facility->email }}</p>
+                                        <p style="font-size:13px;color:#1F2937;margin:0;font-weight:600;"><a href="mailto:{{ $facility->email }}" style="color:inherit;text-decoration:none;">{{ $facility->email }}</a></p>
                                     </div>
                                 </div>
                             @endif

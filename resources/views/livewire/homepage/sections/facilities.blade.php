@@ -37,10 +37,10 @@
                     <span style="font-size:12px;font-weight:700;color:#176B32;letter-spacing:0.3px;">مرافقنا</span>
                     <span style="display:block;width:20px;height:2px;border-radius:9999px;background:#176B32;"></span>
                 </div>
-                <h2 style="color:#17243A;font-size:clamp(23px,2.8vw,32px);font-weight:800;line-height:1.3;margin:0;">
+                <h2 style="color:#17243A;font-size:clamp(26px,3vw,36px);font-weight:800;line-height:1.3;margin:0;">
                     {{ $sectionTitle ?? 'المرافق العامة' }}
                 </h2>
-                <p style="max-width:650px;margin:8px 0 0;font-size:clamp(12px,1.1vw,14px);line-height:1.8;color:#66756D;">
+                <p style="max-width:650px;margin:10px 0 0;font-size:clamp(13px,1.1vw,15px);line-height:1.8;color:#66756D;">
                     {{ $sectionSubtitle ?? 'تعرف على المرافق العامة التي تديرها البلدية والخدمات التي تقدمها للمواطنين.' }}
                 </p>
             </div>
