@@ -12,6 +12,7 @@ use App\Domains\Department\Models\Department;
 use App\Domains\Department\Services\DepartmentCoverImageService;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -166,6 +167,18 @@ final class DepartmentForm extends Component
         session()->flash('success', $this->editingId ? 'تم تحديث الدائرة بنجاح.' : 'تم إنشاء الدائرة بنجاح.');
 
         $this->redirect(route('dashboard.departments'), navigate: true);
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target !== 'cover') {
+            return;
+        }
+
+        $this->cover_image = null;
+        $this->existingCoverImagePath = $path;
+        $this->existingCoverImageUrl = $url;
     }
 
     public function render()

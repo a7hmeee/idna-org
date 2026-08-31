@@ -21,4 +21,17 @@ interface MediaRepositoryInterface
     public function save(MediaDTO $dto, ?int $id = null): Media;
 
     public function delete(int $id): bool;
+
+    /**
+     * Search and filter media with advanced options.
+     *
+     * @param array{
+     *     search?: string,
+     *     collection?: string,
+     *     type?: string,
+     *     status?: string,
+     *     sort?: string,
+     * } $filters
+     */
+    public function search(Model $model, array $filters = [], int $perPage = 20): LengthAwarePaginator;
 }

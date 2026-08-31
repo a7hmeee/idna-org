@@ -13,6 +13,7 @@ use App\Domains\Announcements\Enums\AnnouncementType;
 use App\Domains\Announcements\Models\Announcement;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -133,6 +134,17 @@ final class AnnouncementForm extends Component
         }
         $this->existingImage = null;
         $this->image = null;
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target !== 'cover') {
+            return;
+        }
+
+        $this->image = null;
+        $this->existingImage = $path;
     }
 
     public function render()

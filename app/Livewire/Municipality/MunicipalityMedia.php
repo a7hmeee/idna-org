@@ -10,6 +10,7 @@ use App\Domains\SharedKernel\Actions\DeleteMediaAction;
 use App\Domains\SharedKernel\Actions\SaveMediaAction;
 use App\Domains\SharedKernel\Contracts\MediaRepositoryInterface;
 use App\Domains\SharedKernel\Enums\MediaCollection;
+use App\Domains\SharedKernel\Models\Media;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -25,9 +26,27 @@ final class MunicipalityMedia extends Component
 
     public bool $showDeleteModal = false;
 
+    public bool $showDetailsModal = false;
+
+    public bool $showUsageModal = false;
+
+    public bool $showPreviewModal = false;
+
+    public bool $showWarningModal = false;
+
+    public string $viewMode = 'grid';
+
     public ?int $editingId = null;
 
     public ?int $deletingId = null;
+
+    public ?int $warningId = null;
+
+    public ?int $detailsId = null;
+
+    public ?int $usageId = null;
+
+    public ?int $previewId = null;
 
     public $file = null;
 
@@ -42,6 +61,18 @@ final class MunicipalityMedia extends Component
     public int $displayOrder = 0;
 
     public bool $isActive = true;
+
+    public string $search = '';
+
+    public string $filterCollection = '';
+
+    public string $filterType = '';
+
+    public string $filterStatus = '';
+
+    public string $filterUsage = '';
+
+    public string $sortBy = 'created';
 
     public function mount(): void
     {
@@ -62,6 +93,53 @@ final class MunicipalityMedia extends Component
 
         $media = app(MunicipalityRepositoryInterface::class)->findMedia($id);
 
+        if ($media) {
+            $this->editingId = $id;
+            $this->collection = $media->collection;
+            $this->title = $media->title;
+            $this->alt = $media->alt;
+            $this->displayOrder = $media->display_order;
+            $this->isActive = $media->is_active;
+            $this->previewUrl = Storage::disk($media->disk)->exists($media->path)
+                ? asset('storage/'.$media->path)
+                : null;
+            $this->showForm = true;
+        }
+    }
+
+    public function openDetailsModal(int $id): void
+    {
+        $this->detailsId = $id;
+        $this->showDetailsModal = true;
+    }
+
+    public function openUsageModal(int $id): void
+    {
+        $this->usageId = $id;
+        $this->showUsageModal = true;
+    }
+
+    public function openPreviewModal(int $id): void
+    {
+        $this->previewId = $id;
+        $this->showPreviewModal = true;
+    }
+
+    public function copyUrl(int $id): void
+    {
+        $media = Media::find($id);
+        if ($media) {
+            $url = asset('storage/'.$media->path);
+            $this->dispatch('copy-to-clipboard', url: $url);
+            session()->flash('success', 'تم نسخ الرابط بنجاح.');
+        }
+    }
+
+    public function replaceMedia(int $id): void
+    {
+        $this->authorize('updateMedia', Municipality::class);
+
+        $media = Media::find($id);
         if ($media) {
             $this->editingId = $id;
             $this->collection = $media->collection;
@@ -141,8 +219,33 @@ final class MunicipalityMedia extends Component
     {
         $this->authorize('deleteMedia', Municipality::class);
 
+        $media = Media::find($id);
+        if ($media && $media->isUsed()) {
+            $this->warningId = $id;
+            $this->showWarningModal = true;
+
+            return;
+        }
+
         $this->deletingId = $id;
         $this->showDeleteModal = true;
+    }
+
+    public function deleteAnyway(DeleteMediaAction $action): void
+    {
+        $this->authorize('deleteMedia', Municipality::class);
+
+        $action->execute($this->warningId);
+
+        $this->showWarningModal = false;
+        $this->warningId = null;
+        session()->flash('success', 'تم حذف المرفق بنجاح.');
+    }
+
+    public function closeWarningModal(): void
+    {
+        $this->showWarningModal = false;
+        $this->warningId = null;
     }
 
     public function delete(DeleteMediaAction $action): void
@@ -168,6 +271,24 @@ final class MunicipalityMedia extends Component
         $this->deletingId = null;
     }
 
+    public function closeDetailsModal(): void
+    {
+        $this->showDetailsModal = false;
+        $this->detailsId = null;
+    }
+
+    public function closeUsageModal(): void
+    {
+        $this->showUsageModal = false;
+        $this->usageId = null;
+    }
+
+    public function closePreviewModal(): void
+    {
+        $this->showPreviewModal = false;
+        $this->previewId = null;
+    }
+
     private function resetForm(): void
     {
         $this->reset(['file', 'previewUrl', 'collection', 'title', 'alt', 'displayOrder', 'isActive', 'editingId']);
@@ -179,9 +300,21 @@ final class MunicipalityMedia extends Component
     {
         $municipality = app(MunicipalityRepositoryInterface::class)->getProfile();
 
+        $filters = [
+            'search' => $this->search,
+            'collection' => $this->filterCollection,
+            'type' => $this->filterType,
+            'status' => $this->filterStatus,
+            'usage' => $this->filterUsage,
+            'sort' => $this->sortBy,
+        ];
+
         return view('livewire.municipality.media', [
-            'mediaItems' => app(MediaRepositoryInterface::class)->paginateForModel($municipality),
+            'mediaItems' => app(MediaRepositoryInterface::class)->search($municipality, $filters, 20),
             'collectionOptions' => MediaCollection::options(),
+            'selectedMedia' => $this->detailsId ? Media::find($this->detailsId) : null,
+            'usageMedia' => $this->usageId ? Media::find($this->usageId) : null,
+            'previewMedia' => $this->previewId ? Media::find($this->previewId) : null,
         ]);
     }
 }

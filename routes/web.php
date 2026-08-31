@@ -491,6 +491,7 @@ Route::middleware('auth')->group(function (): void {
 
     Route::middleware('permission:municipality.media.manage')->group(function (): void {
         Route::get('dashboard/municipality/media', MunicipalityMedia::class)->name('dashboard.municipality.media');
+        Route::get('dashboard/media', MunicipalityMedia::class)->name('dashboard.media');
     });
 
     Route::middleware('permission:municipality.business-hours.manage')->group(function (): void {

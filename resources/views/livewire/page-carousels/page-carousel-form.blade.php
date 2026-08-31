@@ -79,6 +79,12 @@
                     <label class="block text-sm font-semibold text-text mb-1.5">رفع صورة</label>
                     <input type="file" wire:model="image" accept="image/jpeg,image/png,image/webp"
                            class="w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark transition-all" />
+                    <div class="flex items-center gap-3 mt-3">
+                        <button type="button" wire:click="$dispatch('open-media-picker', { target: 'image' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                            <i data-lucide="images" class="w-4 h-4"></i>
+                            اختيار من الوسائط
+                        </button>
+                    </div>
                     <p class="text-xs text-text-tertiary mt-1">jpg, jpeg, png, webp — كحد أقصى 2 ميجابايت</p>
                     @error('image') <p class="text-xs text-danger mt-1">{{ $message }}</p> @enderror
                 </div>
@@ -116,6 +122,12 @@
                     <label class="block text-sm font-semibold text-text mb-1.5">رفع صورة</label>
                     <input type="file" wire:model="mobileImage" accept="image/jpeg,image/png,image/webp"
                            class="w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark transition-all" />
+                    <div class="flex items-center gap-3 mt-3">
+                        <button type="button" wire:click="$dispatch('open-media-picker', { target: 'mobile_image' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                            <i data-lucide="images" class="w-4 h-4"></i>
+                            اختيار من الوسائط
+                        </button>
+                    </div>
                     <p class="text-xs text-text-tertiary mt-1">jpg, jpeg, png, webp — كحد أقصى 2 ميجابايت</p>
                     @error('mobileImage') <p class="text-xs text-danger mt-1">{{ $message }}</p> @enderror
                 </div>
@@ -185,4 +197,7 @@
             </button>
         </div>
     </form>
+
+    <livewire:shared.media-picker :target="'image'" :restrict-collection="'page_carousel'" />
+    <livewire:shared.media-picker :target="'mobile_image'" :restrict-collection="'page_carousel'" />
 </div>

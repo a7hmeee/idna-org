@@ -18,6 +18,7 @@ enum PageCarouselKey: string
     case OpenData = 'open-data';
     case WaterSchedule = 'water-schedule';
     case Announcements = 'announcements';
+    case News = 'news';
 
     public function label(): string
     {
@@ -34,6 +35,7 @@ enum PageCarouselKey: string
             self::OpenData => 'البيانات المفتوحة',
             self::WaterSchedule => 'جدول المياه',
             self::Announcements => 'الإعلانات',
+            self::News => 'الأخبار',
         };
     }
 

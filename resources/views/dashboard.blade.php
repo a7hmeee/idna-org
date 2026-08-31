@@ -205,7 +205,7 @@
         {{-- Logo --}}
         <div class="flex items-center gap-3 px-4 h-[64px] shrink-0 border-b border-[#E6EEE5]/50 mx-3">
             <a href="#" class="w-9 h-9 rounded-xl bg-[#2E6F1F] flex items-center justify-center shrink-0 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
-                <img src="{{ asset('logo.png') }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
+                <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::logoUrl() }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
             </a>
             <div x-show="sidebarOpen" x-transition:enter="transition-opacity duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="overflow-hidden whitespace-nowrap">
                 <p class="text-[#2E6F1F] font-bold text-sm leading-tight">بلدية إذنا</p>
@@ -293,7 +293,7 @@
         <div class="flex items-center justify-between px-4 h-[64px] border-b border-[#E6EEE5] shrink-0">
             <div class="flex items-center gap-3">
                 <a href="#" class="w-9 h-9 rounded-xl bg-[#2E6F1F] flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
-                    <img src="{{ asset('logo.png') }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
+                    <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::logoUrl() }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
                 </a>
                 <div>
                     <p class="text-[#2E6F1F] font-bold text-sm">بلدية إذنا</p>

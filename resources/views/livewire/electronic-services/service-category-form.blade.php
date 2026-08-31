@@ -67,6 +67,25 @@
         <div class="bg-surface rounded-xl border border-border p-6">
             <div class="flex items-center gap-3 mb-5">
                 <div class="w-9 h-9 rounded-lg bg-primary-50 flex items-center justify-center">
+                    <i data-lucide="image" class="w-4 h-4 text-primary"></i>
+                </div>
+                <h2 class="text-sm font-bold text-text">صورة التصنيف</h2>
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" wire:click="$dispatch('open-media-picker', { target: 'image' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                    <i data-lucide="images" class="w-4 h-4"></i>
+                    اختيار من الوسائط
+                </button>
+                @if ($image_path)
+                    <img src="{{ Storage::disk('public')->url($image_path) }}" class="w-16 h-16 rounded-lg object-cover border border-border" />
+                    <button type="button" wire:click="clearImage" class="text-xs text-danger hover:underline">إزالة</button>
+                @endif
+            </div>
+        </div>
+
+        <div class="bg-surface rounded-xl border border-border p-6">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-9 h-9 rounded-lg bg-primary-50 flex items-center justify-center">
                     <i data-lucide="settings" class="w-4 h-4 text-primary"></i>
                 </div>
                 <h2 class="text-sm font-bold text-text">إعدادات النشر</h2>
@@ -96,4 +115,6 @@
             </button>
         </div>
     </form>
+
+    <livewire:shared.media-picker :target="'image'" :restrict-collection="'services'" />
 </div>

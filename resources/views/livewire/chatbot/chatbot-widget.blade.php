@@ -21,7 +21,7 @@
             <div class="flex items-center gap-3">
                 <div class="relative w-9 h-9 shrink-0">
                     <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full" style="background:rgba(0,0,0,0.35);" aria-hidden="true"></span>
-                    <img src="{{ asset('robot.png') }}"
+                    <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::chatbotAvatarUrl() }}"
                          alt="مساعد بلدية إذنا"
                          class="relative w-9 h-9 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
                 </div>
@@ -99,7 +99,7 @@
                     <div class="flex justify-start gap-2">
                         <div class="relative w-8 h-8 shrink-0">
                             <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full" style="background:rgba(0,0,0,0.35);" aria-hidden="true"></span>
-                            <img src="{{ asset('robot.png') }}" alt="" class="relative w-8 h-8 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
+                            <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::chatbotAvatarUrl() }}" alt="" class="relative w-8 h-8 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
                         </div>
                         <div class="bg-white/10 text-white/80 rounded-2xl rounded-br-sm px-4 py-2.5 text-sm">
                             <span class="inline-flex items-center gap-1">
@@ -177,7 +177,7 @@
         <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[clamp(64px,8vw,94px)] h-[clamp(64px,8vw,94px)] rounded-full"
               style="background:radial-gradient(circle at 35% 30%, #0E4A2E, #031F10);box-shadow:0 0 0 6px rgba(200,168,90,0.18),0 14px 32px rgba(3,31,16,0.5);"
               aria-hidden="true"></span>
-        <img src="{{ asset('robot.png') }}"
+        <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::chatbotAvatarUrl() }}"
              alt="إذناوي - مساعد بلدية إذنا الرقمي"
              class="relative w-full h-full object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,0.35)] animate-chatbot-float"
              width="140"

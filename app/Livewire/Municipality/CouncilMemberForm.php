@@ -13,6 +13,7 @@ use App\Domains\Municipality\Models\CouncilMember;
 use App\Domains\Municipality\Services\CouncilMemberPhotoService;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -183,6 +184,18 @@ final class CouncilMemberForm extends Component
         session()->flash('success', $this->editingId ? 'تم تحديث العضو بنجاح.' : 'تم إنشاء العضو بنجاح.');
 
         $this->redirect(route('dashboard.municipality.council-members'), navigate: true);
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target !== 'photo') {
+            return;
+        }
+
+        $this->photo = null;
+        $this->existingPhotoPath = $path;
+        $this->existingPhotoUrl = $url;
     }
 
     public function render()

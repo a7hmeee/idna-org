@@ -162,6 +162,12 @@
                         <div>
                             <label class="block text-sm font-semibold text-text mb-1.5">رفع صورة</label>
                             <input type="file" wire:model="photo" accept="image/jpeg,image/png,image/gif,image/webp" class="w-full text-sm text-text-secondary file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-50 file:text-primary hover:file:bg-primary-100 transition-colors" />
+                            <div class="flex items-center gap-3 mt-3">
+                                <button type="button" wire:click="$dispatch('open-media-picker', { target: 'photo' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                                    <i data-lucide="images" class="w-4 h-4"></i>
+                                    اختيار من الوسائط
+                                </button>
+                            </div>
                             @error('photo') <p class="mt-1 text-xs text-danger">{{ $message }}</p> @enderror
                             <p class="text-[10px] text-text-muted mt-1">jpg, jpeg, png, gif, webp. الحد الأقصى 2MB</p>
                         </div>
@@ -214,4 +220,6 @@
             </button>
         </div>
     </form>
+
+    <livewire:shared.media-picker :target="'photo'" :restrict-collection="'council_members'" />
 </div>

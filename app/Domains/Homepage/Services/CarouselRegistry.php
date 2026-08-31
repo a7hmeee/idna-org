@@ -268,6 +268,18 @@ final class CarouselRegistry
             'show_pagination' => false,
         ],
         [
+            'key' => 'homepage-announcements',
+            'name' => 'قسم الإعلانات — الرئيسية',
+            'title' => 'الإعلانات',
+            'subtitle' => 'تابع آخر الإعلانات والتنبيهات البلدية',
+            'page' => 'home',
+            'section' => 'announcements',
+            'type' => 'section',
+            'autoplay' => false,
+            'show_navigation' => false,
+            'show_pagination' => false,
+        ],
+        [
             'key' => 'homepage-council-decisions',
             'name' => 'قسم قرارات المجلس — الرئيسية',
             'title' => 'قرارات المجلس البلدي',

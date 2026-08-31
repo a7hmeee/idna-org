@@ -10,6 +10,7 @@ use App\Domains\ElectronicServices\DTOs\ServiceCategoryData;
 use App\Domains\ElectronicServices\Models\ServiceCategory;
 use App\Domains\ElectronicServices\Requests\StoreServiceCategoryRequest;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
@@ -74,6 +75,21 @@ final class ServiceCategoryForm extends Component
         }
 
         $this->redirectRoute('dashboard.electronic-services.categories');
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target !== 'image') {
+            return;
+        }
+
+        $this->image_path = $path;
+    }
+
+    public function clearImage(): void
+    {
+        $this->image_path = null;
     }
 
     public function render()

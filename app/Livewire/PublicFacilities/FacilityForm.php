@@ -12,6 +12,7 @@ use App\Domains\PublicFacilities\Enums\FacilityStatus;
 use App\Domains\PublicFacilities\Models\Facility;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -180,6 +181,17 @@ final class FacilityForm extends Component
         }
 
         $this->redirect(route('dashboard.facilities'), navigate: true);
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target === 'cover') {
+            $this->coverImage = null;
+            $this->existingCoverImage = $path;
+        } elseif ($target === 'gallery') {
+            $this->existingGallery = array_values(array_merge($this->existingGallery ?? [], [$path]));
+        }
     }
 
     public function render()

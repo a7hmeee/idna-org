@@ -21,6 +21,8 @@ final readonly class SaveMediaAction
     public function execute(?UploadedFile $file, array $data, ?int $id = null): Media
     {
         if ($file) {
+            $uploadData = $this->uploadService->upload($file, $data['collection']);
+
             if ($id) {
                 $oldMedia = $this->repository->findById($id);
                 if ($oldMedia) {
@@ -28,7 +30,6 @@ final readonly class SaveMediaAction
                 }
             }
 
-            $uploadData = $this->uploadService->upload($file, $data['collection']);
             $dto = MediaDTO::fromUpload($uploadData, $data);
         } else {
             $dto = MediaDTO::fromRequest($data);

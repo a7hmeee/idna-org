@@ -1,19 +1,8 @@
 @php
-    $allNews = collect($latestNews)->take(4);
-    $featuredNews = $allNews->first();
-    $secondaryNews = $allNews->skip(1)->take(3);
+    $allNews = collect($latestNews ?? [])->take(6);
     $carouselConfig = \App\Domains\Homepage\Services\CarouselRegistry::getConfigArray('homepage-news');
     $resolvedTitle = $sectionTitle ?? $carouselConfig['title'] ?? 'آخر الأخبار';
     $resolvedSubtitle = $sectionSubtitle ?? $carouselConfig['subtitle'] ?? 'تابع آخر أخبار وفعاليات بلدية إذنا';
-
-    $emergencyItems = collect($municipality['emergency_contacts'] ?? [])->take(4);
-    $fallbackEmergency = collect([
-        ['name' => 'الشرطة', 'phone' => '100'],
-        ['name' => 'الدفاع المدني', 'phone' => '101'],
-        ['name' => 'الإسعاف الطبي', 'phone' => '102'],
-        ['name' => 'طوارئ البلدية', 'phone' => '106'],
-    ]);
-    $emergencyItems = $emergencyItems->isNotEmpty() ? $emergencyItems : $fallbackEmergency;
 
     $formatDay = function ($date): string {
         if (empty($date)) return '';
@@ -58,221 +47,219 @@
         </div>
 
         {{-- ═══════════════════════════════════════════════════════════ --}}
-        {{-- MAIN GRID: NEWS + SIDEBAR                                --}}
+        {{-- NEWS CAROUSEL                                             --}}
         {{-- ═══════════════════════════════════════════════════════════ --}}
-        <div class="grid xl:grid-cols-12 gap-8 lg:gap-10 items-start">
+        @if ($allNews->isNotEmpty())
+            @php
+                $featuredNews = $allNews->first();
+                $carouselNews = $allNews->skip(1)->values();
+            @endphp
 
-            {{-- ──────────── NEWS AREA (9 cols) ──────────── --}}
-            <div class="xl:col-span-9">
-                @if ($allNews->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-                        {{-- ═══ FEATURED NEWS ═══ --}}
-                        @if ($featuredNews)
-                            @php
-                                $day = $formatDay($featuredNews['date'] ?? '');
-                                $month = $formatMonth($featuredNews['date'] ?? '');
-                                $fullDate = $formatFullDate($featuredNews['date'] ?? '');
-                            @endphp
-                            <a href="{{ !empty($featuredNews['url']) ? $featuredNews['url'] : '#' }}"
-                               @if(!empty($featuredNews['url'])) wire:navigate @endif
-                               class="group block lg:col-span-7 bg-white rounded-2xl overflow-hidden no-underline transition-all duration-300"
-                               style="box-shadow:0 1px 3px rgba(0,0,0,0.04);"
-                               onmouseover="this.style.boxShadow='0 20px 50px rgba(23,107,50,0.10)';this.style.transform='translateY(-3px)'"
-                               onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.04)';this.style.transform='translateY(0)'">
-                                <div class="relative overflow-hidden" style="aspect-ratio:16/9;">
-                                    @if (!empty($featuredNews['image']))
-                                        <img src="{{ $featuredNews['image'] }}" alt="{{ $featuredNews['title'] ?? '' }}"
-                                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                             loading="eager">
-                                    @else
-                                        <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);">
-                                            <i data-lucide="newspaper" class="w-16 h-16" style="color:#176B32;opacity:0.15;"></i>
-                                        </div>
-                                    @endif
-                                    <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,0.55) 0%,transparent 50%;"></div>
-
-                                    {{-- Category Badge --}}
-                                    @if (!empty($featuredNews['category']))
-                                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold" style="background:#176B32;color:white;">
-                                            {{ $featuredNews['category'] }}
-                                        </span>
-                                    @endif
-
-                                    {{-- Bottom overlay content --}}
-                                    <div class="absolute bottom-0 right-0 left-0 p-5 sm:p-6">
-                                        <h3 class="text-lg sm:text-xl lg:text-2xl font-black text-white leading-snug m-0 line-clamp-2">
-                                            {{ $featuredNews['title'] ?? '' }}
-                                        </h3>
-                                        @if (!empty($featuredNews['summary']))
-                                            <p class="text-sm mt-2 leading-relaxed m-0 line-clamp-2" style="color:rgba(255,255,255,0.85);">
-                                                {{ $featuredNews['summary'] }}
-                                            </p>
-                                        @endif
-                                        <div class="flex items-center gap-3 mt-3">
-                                            @if ($fullDate)
-                                                <span class="flex items-center gap-1.5 text-xs font-medium" style="color:rgba(255,255,255,0.75);">
-                                                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                                                    {{ $fullDate }}
-                                                </span>
-                                            @endif
-                                            <span class="flex items-center gap-1 text-xs font-bold" style="color:#A5D6A7;">
-                                                اقرأ المزيد
-                                                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                                            </span>
-                                        </div>
-                                    </div>
+            {{-- Featured News Card --}}
+            @if ($featuredNews)
+                @php
+                    $fDay = $formatDay($featuredNews['date'] ?? '');
+                    $fMonth = $formatMonth($featuredNews['date'] ?? '');
+                    $fFullDate = $formatFullDate($featuredNews['date'] ?? '');
+                @endphp
+                <a href="{{ !empty($featuredNews['url']) ? $featuredNews['url'] : '#' }}"
+                   @if(!empty($featuredNews['url'])) wire:navigate @endif
+                   class="group block bg-white rounded-2xl overflow-hidden no-underline transition-all duration-300 mb-8"
+                   style="box-shadow:0 1px 3px rgba(0,0,0,0.04);"
+                   onmouseover="this.style.boxShadow='0 20px 50px rgba(23,107,50,0.10)';this.style.transform='translateY(-3px)'"
+                   onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.04)';this.style.transform='translateY(0)'">
+                    <div class="grid lg:grid-cols-2 gap-0">
+                        {{-- Image --}}
+                        <div class="relative overflow-hidden" style="aspect-ratio:16/9;min-height:240px;">
+                            @if (!empty($featuredNews['image']))
+                                <img src="{{ $featuredNews['image'] }}" alt="{{ $featuredNews['title'] ?? '' }}"
+                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                     loading="eager">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);">
+                                    <i data-lucide="newspaper" class="w-16 h-16" style="color:#176B32;opacity:0.15;"></i>
                                 </div>
-                            </a>
-                        @endif
+                            @endif
+                            @if (!empty($featuredNews['category']))
+                                <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold" style="background:#176B32;color:white;">
+                                    {{ $featuredNews['category'] }}
+                                </span>
+                            @endif
+                        </div>
+                        {{-- Content --}}
+                        <div class="flex flex-col justify-center p-6 sm:p-8">
+                            @if (!empty($featuredNews['category']))
+                                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-bold mb-3 w-fit" style="background:#E8F5E9;color:#176B32;">
+                                    {{ $featuredNews['category'] }}
+                                </span>
+                            @endif
+                            <h3 class="text-xl sm:text-2xl font-black leading-snug m-0" style="color:#0F1A14;">
+                                {{ $featuredNews['title'] ?? '' }}
+                            </h3>
+                            @if (!empty($featuredNews['summary']))
+                                <p class="text-sm mt-3 leading-relaxed line-clamp-3 m-0" style="color:#6B7B6E;">
+                                    {{ $featuredNews['summary'] }}
+                                </p>
+                            @endif
+                            <div class="flex items-center gap-4 mt-5">
+                                @if ($fFullDate)
+                                    <span class="flex items-center gap-1.5 text-xs font-medium" style="color:#8A9A8D;">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                                        {{ $fFullDate }}
+                                    </span>
+                                @endif
+                                <span class="flex items-center gap-1.5 text-sm font-bold" style="color:#176B32;">
+                                    اقرأ المزيد
+                                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            @endif
 
-                        {{-- ═══ SECONDARY NEWS ═══ --}}
-                        @if ($secondaryNews->isNotEmpty())
-                            <div class="lg:col-span-5 flex flex-col gap-5">
-                                @foreach ($secondaryNews as $newsItem)
-                                    @php
-                                        $sDay = $formatDay($newsItem['date'] ?? '');
-                                        $sMonth = $formatMonth($newsItem['date'] ?? '');
-                                    @endphp
+            {{-- Remaining News Carousel --}}
+            @if ($carouselNews->isNotEmpty())
+                <div x-data="{
+                    slides: @js($carouselNews->all()),
+                    slider: null,
+                    currentPage: 0,
+                    canPrev: false,
+                    canNext: false,
+                    init() {
+                        this.$nextTick(() => {
+                            this.slider = this.$refs.track;
+                            this.refresh();
+                        });
+                        window.addEventListener('resize', () => this.refresh(), { passive: true });
+                    },
+                    visible() {
+                        return window.innerWidth >= 1280 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+                    },
+                    step() {
+                        const card = this.slider?.querySelector('.news-slide');
+                        return card ? card.getBoundingClientRect().width + 24 : 0;
+                    },
+                    pages() {
+                        return Math.max(1, Math.ceil(this.slides.length / this.visible()));
+                    },
+                    refresh() {
+                        if (!this.slider) return;
+                        const max = this.slider.scrollWidth - this.slider.clientWidth;
+                        this.canPrev = this.slider.scrollLeft > 4;
+                        this.canNext = this.slider.scrollLeft < max - 4;
+                        this.currentPage = this.step() ? Math.round(this.slider.scrollLeft / (this.step() * this.visible())) : 0;
+                    },
+                    move(page) {
+                        if (this.slider) this.slider.scrollTo({ left: page * this.step() * this.visible(), behavior: 'smooth' });
+                    }
+                }" dir="rtl">
+                    <div class="relative">
+                        <button x-show="canPrev" x-transition.opacity @click="move(Math.max(0, currentPage - 1))"
+                                class="absolute -left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#E9EFEA] bg-white text-[#176B32] shadow-lg transition hover:bg-[#F0F7F2]"
+                                aria-label="السابق">
+                            <i data-lucide="chevron-left" class="h-5 w-5"></i>
+                        </button>
+
+                        <div x-ref="track" @scroll.throttle.100ms="refresh()" tabindex="0" role="region"
+                             aria-label="آخر الأخبار"
+                             class="flex items-start gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#176B32]/30"
+                             style="-ms-overflow-style:none;scrollbar-width:none;"
+                             ::style="'-ms-overflow-style:none;scrollbar-width:none;'">
+                            @foreach ($carouselNews as $index => $newsItem)
+                                @php
+                                    $sDay = $formatDay($newsItem['date'] ?? '');
+                                    $sMonth = $formatMonth($newsItem['date'] ?? '');
+                                @endphp
+                                <div class="news-slide flex shrink-0 snap-start" style="flex:0 0 calc((100% - 48px) / 3);min-width:280px;">
                                     <a href="{{ !empty($newsItem['url']) ? $newsItem['url'] : '#' }}"
                                        @if(!empty($newsItem['url'])) wire:navigate @endif
-                                       class="group flex gap-4 bg-white rounded-xl p-4 no-underline transition-all duration-200"
+                                       class="group flex flex-col w-full bg-white rounded-2xl overflow-hidden no-underline transition-all duration-300"
                                        style="box-shadow:0 1px 3px rgba(0,0,0,0.04);"
-                                       onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.06)';this.style.transform='translateY(-2px)'"
+                                       onmouseover="this.style.boxShadow='0 20px 50px rgba(23,107,50,0.10)';this.style.transform='translateY(-3px)'"
                                        onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.04)';this.style.transform='translateY(0)'">
                                         {{-- Image --}}
-                                        <div class="flex-shrink-0 rounded-lg overflow-hidden" style="width:110px;height:90px;">
+                                        <div class="relative overflow-hidden" style="aspect-ratio:16/10;">
                                             @if (!empty($newsItem['image']))
                                                 <img src="{{ $newsItem['image'] }}" alt="{{ $newsItem['title'] ?? '' }}"
-                                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                                      loading="lazy">
                                             @else
-                                                <div class="w-full h-full flex items-center justify-center" style="background:#E8F5E9;">
-                                                    <i data-lucide="image" class="w-6 h-6" style="color:#176B32;opacity:0.2;"></i>
+                                                <div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);">
+                                                    <i data-lucide="newspaper" class="w-12 h-12" style="color:#176B32;opacity:0.15;"></i>
                                                 </div>
+                                            @endif
+                                            @if (!empty($newsItem['category']))
+                                                <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[11px] font-bold" style="background:#176B32;color:white;">
+                                                    {{ $newsItem['category'] }}
+                                                </span>
                                             @endif
                                         </div>
                                         {{-- Content --}}
-                                        <div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-                                            <div>
-                                                @if (!empty($newsItem['type']))
-                                                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold mb-1.5" style="background:#E8F5E9;color:#176B32;">
-                                                        {{ $newsItem['type'] }}
-                                                    </span>
-                                                @endif
-                                                <h4 class="text-sm font-bold leading-snug line-clamp-2 m-0" style="color:#0F1A14;">
-                                                    {{ $newsItem['title'] ?? '' }}
-                                                </h4>
-                                            </div>
-                                            <div class="flex items-center gap-2 mt-1">
+                                        <div class="flex flex-col flex-1 p-5">
+                                            <h3 class="text-sm font-black leading-snug line-clamp-2 m-0" style="color:#0F1A14;">
+                                                {{ $newsItem['title'] ?? '' }}
+                                            </h3>
+                                            @if (!empty($newsItem['summary']))
+                                                <p class="text-xs mt-2 leading-relaxed line-clamp-2 m-0" style="color:#6B7B6E;">
+                                                    {{ $newsItem['summary'] }}
+                                                </p>
+                                            @endif
+                                            <div class="flex items-center gap-2 mt-auto pt-3" style="border-top:1px solid #F0F4F0;">
                                                 @if ($sDay && $sMonth)
                                                     <span class="flex items-center gap-1 text-[11px] font-medium" style="color:#8A9A8D;">
                                                         <i data-lucide="calendar" class="w-3 h-3"></i>
                                                         {{ $sDay }} {{ $sMonth }}
                                                     </span>
                                                 @endif
+                                                <span class="flex items-center gap-1 text-xs font-bold mr-auto" style="color:#176B32;">
+                                                    اقرأ المزيد
+                                                    <i data-lucide="arrow-left" class="w-3 h-3"></i>
+                                                </span>
                                             </div>
                                         </div>
                                     </a>
-                                @endforeach
-                            </div>
-                        @endif
-
-                    </div>
-                @else
-                    <x-empty-state-section icon="newspaper" title="لا توجد أخبار منشورة حالياً" description="سيتم إضافة الأخبار فور نشرها" />
-                @endif
-            </div>
-
-            {{-- ──────────── SIDEBAR (3 cols) ──────────── --}}
-            <aside class="xl:col-span-3 flex flex-col gap-6" aria-label="الإعلانات وأرقام الطوارئ">
-
-                {{-- ═══ ANNOUNCEMENTS ═══ --}}
-                @php $announcementsList = collect($latestAnnouncements ?? [])->take(3); @endphp
-                <div class="bg-white rounded-2xl overflow-hidden" style="box-shadow:0 1px 3px rgba(0,0,0,0.04);">
-                    {{-- Header --}}
-                    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid #F0F4F0;">
-                        <div class="flex items-center gap-2.5">
-                            <span class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#E8F5E9;">
-                                <i data-lucide="megaphone" class="w-4 h-4" style="color:#176B32;"></i>
-                            </span>
-                            <h3 class="text-sm font-black m-0" style="color:#0F1A14;">الإعلانات</h3>
-                        </div>
-                        @if (Route::has('public.announcements.index'))
-                            <a href="{{ route('public.announcements.index') }}" wire:navigate
-                               class="text-xs font-bold no-underline transition-colors" style="color:#176B32;"
-                               onmouseover="this.style.color='#0D5A28'"
-                               onmouseout="this.style.color='#176B32'">
-                                عرض الكل
-                            </a>
-                        @endif
-                    </div>
-                    {{-- List --}}
-                    @if ($announcementsList->isNotEmpty())
-                        <div>
-                            @foreach ($announcementsList as $index => $announcement)
-                                <a href="{{ !empty($announcement['url']) ? $announcement['url'] : (Route::has('public.announcements.index') ? route('public.announcements.index') : '#') }}"
-                                   @if(!empty($announcement['url'])) wire:navigate @endif
-                                   class="flex items-start gap-3 px-5 py-3.5 no-underline transition-colors duration-150"
-                                   style="{{ $index < $announcementsList->count() - 1 ? 'border-bottom:1px solid #F0F4F0;' : '' }}"
-                                   onmouseover="this.style.background='#F8FAF8'"
-                                   onmouseout="this.style.background='transparent'">
-                                    <span class="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style="background:#E8F5E9;">
-                                        <i data-lucide="megaphone" class="w-3 h-3" style="color:#176B32;"></i>
-                                    </span>
-                                    <span class="flex-1 min-w-0">
-                                        <span class="block text-[13px] font-bold leading-snug line-clamp-2" style="color:#0F1A14;">
-                                            {{ $announcement['title'] ?? '' }}
-                                        </span>
-                                        @if (!empty($announcement['date']))
-                                            <span class="block text-[11px] mt-1" style="color:#8A9A8D;">
-                                                {{ $announcement['date'] }}
-                                            </span>
-                                        @endif
-                                    </span>
-                                </a>
+                                </div>
                             @endforeach
                         </div>
-                    @else
-                        <div class="px-5 py-6 text-center">
-                            <p class="text-xs m-0" style="color:#8A9A8D;">لا توجد إعلانات حالياً</p>
-                        </div>
-                    @endif
-                </div>
 
-                {{-- ═══ EMERGENCY NUMBERS ═══ --}}
-                <div class="rounded-2xl overflow-hidden" style="background:#176B32;">
-                    {{-- Header --}}
-                    <div class="flex items-center gap-2.5 px-5 py-4">
-                        <span class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.15);">
-                            <i data-lucide="phone-call" class="w-4 h-4 text-white"></i>
-                        </span>
-                        <h3 class="text-sm font-black text-white m-0">أرقام الطوارئ</h3>
+                        <button x-show="canNext" x-transition.opacity @click="move(currentPage + 1)"
+                                class="absolute -right-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#E9EFEA] bg-white text-[#176B32] shadow-lg transition hover:bg-[#F0F7F2]"
+                                aria-label="التالي">
+                            <i data-lucide="chevron-right" class="h-5 w-5"></i>
+                        </button>
                     </div>
-                    {{-- List --}}
-                    <div class="px-3 pb-3">
-                        @foreach ($emergencyItems as $index => $emergency)
-                            @php
-                                $name = $emergency['name'] ?? $emergency['department'] ?? '';
-                                $phone = $emergency['phone'] ?? '';
-                            @endphp
-                            <a href="{{ $phone ? 'tel:' . preg_replace('/\s+/', '', $phone) : '#' }}"
-                               class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 no-underline transition-all duration-150"
-                               style="{{ $index < $emergencyItems->count() - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.12);' : '' }}"
-                               onmouseover="this.style.background='rgba(255,255,255,0.1)'"
-                               onmouseout="this.style.background='transparent'">
-                                <span class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.12);">
-                                    <i data-lucide="phone" class="w-3.5 h-3.5 text-white"></i>
-                                </span>
-                                <span class="flex-1 min-w-0 text-[13px] font-bold text-white truncate">{{ $name }}</span>
-                                <span class="text-sm font-black text-white flex-shrink-0" dir="ltr">{{ $phone }}</span>
-                            </a>
-                        @endforeach
+
+                    {{-- Dots --}}
+                    <div class="mt-6 flex items-center justify-center gap-2" x-show="pages() > 1">
+                        <template x-for="index in pages()" :key="index">
+                            <button @click="move(index - 1)"
+                                    :class="currentPage === index - 1 ? 'h-2 w-7 rounded bg-[#176B32]' : 'h-2 w-2 rounded-full bg-[#DDE5DC]'"
+                                    class="transition-all border-none cursor-pointer"
+                                    :aria-label="'الانتقال إلى مجموعة ' + index"></button>
+                        </template>
                     </div>
                 </div>
 
-            </aside>
-        </div>
+                <style>
+                    .news-slide::-webkit-scrollbar { display: none; }
+                    @media (max-width: 1279px) {
+                        .news-slide { flex: 0 0 calc((100% - 24px) / 2) !important; min-width: 260px !important; }
+                    }
+                    @media (max-width: 639px) {
+                        .news-slide { flex: 0 0 88% !important; min-width: 0 !important; }
+                    }
+                    @media (prefers-reduced-motion: reduce) {
+                        .news-slide { scroll-behavior: auto; }
+                    }
+                </style>
+            @endif
+        @else
+            <div class="rounded-2xl border border-dashed border-[#DDE5DC] bg-white py-16 text-center">
+                <i data-lucide="newspaper" class="mx-auto h-10 w-10" style="color:#176B32;opacity:0.3;"></i>
+                <p class="mt-3 text-sm font-semibold" style="color:#6B7B6E;">لا توجد أخبار منشورة حالياً</p>
+            </div>
+        @endif
 
     </div>
 </section>

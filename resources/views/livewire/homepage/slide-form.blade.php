@@ -40,6 +40,12 @@
                 <div class="flex items-start gap-4">
                     <div class="flex-1">
                         <input type="file" wire:model="image" accept="image/*" class="w-full text-sm text-text file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all @error('image') border-danger @enderror" />
+                        <div class="flex items-center gap-3 mt-3">
+                            <button type="button" wire:click="$dispatch('open-media-picker', { target: 'image' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                                <i data-lucide="images" class="w-4 h-4"></i>
+                                اختيار من الوسائط
+                            </button>
+                        </div>
                         @error('image') <p class="mt-1 text-xs text-danger">{{ $message }}</p> @enderror
                         <div wire:loading wire:target="image" class="mt-2 text-xs text-text-tertiary">جاري رفع الصورة...</div>
                     </div>
@@ -118,4 +124,6 @@
             </button>
         </div>
     </form>
+
+    <livewire:shared.media-picker :target="'image'" :restrict-collection="'hero'" />
 </div>

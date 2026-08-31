@@ -12,6 +12,7 @@ use App\Domains\Projects\Enums\ProjectStatus;
 use App\Domains\Projects\Models\Project;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -233,6 +234,17 @@ final class ProjectForm extends Component
         }
         $this->existingCoverImage = null;
         $this->coverImage = null;
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target !== 'cover') {
+            return;
+        }
+
+        $this->coverImage = null;
+        $this->existingCoverImage = $path;
     }
 
     public function render()

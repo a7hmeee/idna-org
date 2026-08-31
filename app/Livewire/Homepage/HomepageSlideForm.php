@@ -12,6 +12,7 @@ use App\Domains\Homepage\DTOs\HomepageSlideData;
 use App\Domains\Homepage\Models\HomepageSetting;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -149,6 +150,17 @@ final class HomepageSlideForm extends Component
         CacheForgetHomepageDataAction::execute();
 
         session()->flash('success', 'تم حذف الصورة بنجاح.');
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target !== 'image') {
+            return;
+        }
+
+        $this->image = null;
+        $this->existingImageUrl = $path;
     }
 
     public function render()

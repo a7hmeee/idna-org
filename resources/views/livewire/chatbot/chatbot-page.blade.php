@@ -4,7 +4,7 @@
         <header class="shrink-0 bg-surface border-b border-border px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full overflow-hidden border border-border">
-                    <img src="{{ asset('robot.png') }}" alt="المساعد الذكي" class="w-full h-full object-cover">
+                    <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::chatbotAvatarUrl() }}" alt="المساعد الذكي" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="text-sm font-bold text-text">المساعد الذكي لبلدية إذنا</h1>

@@ -306,7 +306,7 @@
     {{-- Logo --}}
     <div class="flex items-center gap-3 px-4 h-[64px] shrink-0 border-b border-border/50 mx-3">
         <a href="{{ route('dashboard') }}" class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shrink-0 shadow-sm">
-            <img src="{{ asset('logo.png') }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
+            <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::logoUrl() }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
         </a>
         <div x-show="sidebarOpen" x-transition class="overflow-hidden whitespace-nowrap">
             <p class="text-primary font-bold text-sm leading-tight">بلدية إذنا</p>
@@ -411,7 +411,7 @@
     <div class="flex items-center justify-between px-4 h-[64px] border-b border-border shrink-0">
         <div class="flex items-center gap-3">
             <a href="{{ route('dashboard') }}" class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shrink-0">
-                <img src="{{ asset('logo.png') }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
+                <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::logoUrl() }}" alt="بلدية إذنا" class="w-7 h-7 object-contain">
             </a>
             <div>
                 <p class="text-primary font-bold text-sm">بلدية إذنا</p>

@@ -12,7 +12,7 @@
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-start gap-5">
                         <div class="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center shrink-0 border border-white/10 shadow-sm">
-                            <img src="{{ asset('logo.png') }}" alt="بلدية إذنا" class="w-10 h-10 object-contain">
+                            <img src="{{ App\Domains\SharedKernel\Services\MediaResolver::logoUrl() }}" alt="بلدية إذنا" class="w-10 h-10 object-contain">
                         </div>
                         <div>
                             <div class="flex items-center gap-3 mb-2 flex-wrap">

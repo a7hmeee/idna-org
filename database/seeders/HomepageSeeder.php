@@ -116,9 +116,9 @@ final class HomepageSeeder extends Seeder
             ['key' => 'council_decisions', 'title' => 'قرارات المجلس البلدي', 'is_enabled' => true, 'sort_order' => 9, 'items_limit' => 5],
             ['key' => 'engineering_offices', 'title' => 'المكاتب الهندسية', 'is_enabled' => true, 'sort_order' => 10, 'items_limit' => 6],
             ['key' => 'tenders', 'title' => 'المناقصات', 'is_enabled' => false, 'sort_order' => 11, 'items_limit' => 4],
-            ['key' => 'latest_news', 'title' => 'آخر الأخبار', 'is_enabled' => false, 'sort_order' => 12, 'items_limit' => 3],
+            ['key' => 'latest_news', 'title' => 'آخر الأخبار', 'is_enabled' => true, 'sort_order' => 12, 'items_limit' => 3],
             ['key' => 'projects', 'title' => 'المشاريع', 'is_enabled' => false, 'sort_order' => 13, 'items_limit' => 3],
-            ['key' => 'announcements', 'title' => 'الإعلانات', 'is_enabled' => false, 'sort_order' => 14, 'items_limit' => 3],
+            ['key' => 'announcements', 'title' => 'الإعلانات', 'is_enabled' => true, 'sort_order' => 14, 'items_limit' => 3],
             ['key' => 'contact_cta', 'title' => 'تواصل معنا', 'is_enabled' => true, 'sort_order' => 15, 'items_limit' => null],
         ];
 

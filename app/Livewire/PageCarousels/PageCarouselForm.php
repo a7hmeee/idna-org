@@ -12,6 +12,7 @@ use App\Domains\Homepage\Enums\PageCarouselKey;
 use App\Domains\Homepage\Models\HomepageSetting;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -178,6 +179,18 @@ final class PageCarouselForm extends Component
         $this->mobileImage = null;
 
         session()->flash('success', 'تم حذف صورة الجوال بنجاح.');
+    }
+
+    #[On('media-selected')]
+    public function onMediaSelected(int $id, string $url, string $path, ?string $target = null): void
+    {
+        if ($target === 'image') {
+            $this->image = null;
+            $this->existingImageUrl = $path;
+        } elseif ($target === 'mobile_image') {
+            $this->mobileImage = null;
+            $this->existingMobileImageUrl = $path;
+        }
     }
 
     public function render()

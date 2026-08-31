@@ -22,7 +22,21 @@ enum MediaCollection: string
     case DecisionsHero = 'decisions-hero';
     case AboutImage = 'about_image';
     case MobileLogo = 'mobile_logo';
+    case ChatbotAvatar = 'chatbot_avatar';
     case Attachment = 'attachment';
+
+    case News = 'news';
+    case Announcements = 'announcements';
+    case Projects = 'projects';
+    case ProjectGallery = 'project_gallery';
+    case CouncilMembers = 'council_members';
+    case Departments = 'departments';
+    case Facilities = 'facilities';
+    case FacilityGallery = 'facility_gallery';
+    case Services = 'services';
+    case PartnerLogo = 'partner_logo';
+    case PageCarousel = 'page_carousel';
+    case Mayor = 'mayor';
 
     public function label(): string
     {
@@ -43,7 +57,20 @@ enum MediaCollection: string
             self::DecisionsHero => 'خلفية هيرو القرارات',
             self::AboutImage => 'صورة نبذة عن البلدية',
             self::MobileLogo => 'شعار الجوال',
+            self::ChatbotAvatar => 'صورة المساعد الآلي',
             self::Attachment => 'مرفق',
+            self::News => 'صور الأخبار',
+            self::Announcements => 'صور الإعلانات',
+            self::Projects => 'صور المشاريع',
+            self::ProjectGallery => 'معرض صور المشاريع',
+            self::CouncilMembers => 'صور أعضاء المجلس',
+            self::Departments => 'صور الأقسام',
+            self::Facilities => 'صور المرافق',
+            self::FacilityGallery => 'معرض صور المرافق',
+            self::Services => 'صور تصنيفات الخدمات',
+            self::PartnerLogo => 'شعارات الشركاء',
+            self::PageCarousel => 'صور كاروسيل الصفحات',
+            self::Mayor => 'صورة العمدة',
         };
     }
 

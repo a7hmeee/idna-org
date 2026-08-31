@@ -84,6 +84,12 @@
                     <div>
                         <label class="block text-sm font-semibold text-text mb-1.5">الصورة الرئيسية</label>
                         <input type="file" wire:model="coverImage" accept=".jpg,.jpeg,.png,.webp" class="w-full text-sm text-text file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
+                        <div class="flex items-center gap-3 mt-3">
+                            <button type="button" wire:click="$dispatch('open-media-picker', { target: 'cover' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                                <i data-lucide="images" class="w-4 h-4"></i>
+                                اختيار من الوسائط
+                            </button>
+                        </div>
                         @if ($existingCoverImage && !$coverImage)
                             <div class="mt-2 flex items-center gap-2">
                                 <img src="{{ Storage::disk('public')->url($existingCoverImage) }}" class="w-20 h-20 rounded-lg object-cover border border-border" />
@@ -95,6 +101,12 @@
                     <div>
                         <label class="block text-sm font-semibold text-text mb-1.5">معرض الصور</label>
                         <input type="file" wire:model="galleryUploads" multiple accept=".jpg,.jpeg,.png,.webp" class="w-full text-sm text-text file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
+                        <div class="flex items-center gap-3 mt-3">
+                            <button type="button" wire:click="$dispatch('open-media-picker', { target: 'gallery' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                                <i data-lucide="images" class="w-4 h-4"></i>
+                                إضافة من الوسائط
+                            </button>
+                        </div>
                         @if (count($existingGallery) > 0)
                             <div class="mt-2 flex items-center gap-2 flex-wrap">
                                 @foreach ($existingGallery as $img)
@@ -192,4 +204,7 @@
             <a href="{{ route('dashboard.facilities') }}" class="px-8 py-3 rounded-xl bg-surface-secondary text-text text-sm font-semibold hover:bg-border transition-colors" wire:navigate>إلغاء</a>
         </div>
     </form>
+
+    <livewire:shared.media-picker :target="'cover'" :restrict-collection="'facilities'" />
+    <livewire:shared.media-picker :target="'gallery'" :restrict-collection="'facility_gallery'" />
 </div>

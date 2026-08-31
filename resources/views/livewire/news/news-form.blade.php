@@ -68,6 +68,15 @@
                 <div>
                     <label class="block text-sm font-semibold text-text mb-1.5">رفع صورة (JPG, PNG, WebP - حد أقصى 5MB)</label>
                     <input type="file" wire:model="coverImage" accept=".jpg,.jpeg,.png,.webp" class="w-full text-sm text-text file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
+                    <div class="flex items-center gap-3 mt-3">
+                        <button type="button" wire:click="$dispatch('open-media-picker', { target: 'cover' })" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-sm font-semibold text-text hover:bg-surface transition-colors">
+                            <i data-lucide="images" class="w-4 h-4"></i>
+                            اختيار من الوسائط
+                        </button>
+                        @if ($existingCoverImage)
+                            <button type="button" wire:click="removeCoverImage" class="text-xs text-danger hover:underline">إزالة الصورة</button>
+                        @endif
+                    </div>
                     @if ($existingCoverImage && !$coverImage)
                         <div class="mt-3">
                             <p class="text-xs text-text-tertiary mb-2">الصورة الحالية:</p>
@@ -146,4 +155,6 @@
             <a href="{{ route('dashboard.news') }}" class="px-8 py-3 rounded-xl bg-surface-secondary text-text text-sm font-semibold hover:bg-border transition-colors" wire:navigate>إلغاء</a>
         </div>
     </form>
+
+    <livewire:shared.media-picker :target="'cover'" :restrict-collection="'news'" />
 </div>

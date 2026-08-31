@@ -140,7 +140,7 @@
             <div class="relative z-10 flex flex-col items-center justify-center w-full p-12 text-white">
                 <div class="mb-8">
                     <img
-                        src="{{ asset('logo.png') }}"
+                        src="{{ App\Domains\SharedKernel\Services\MediaResolver::logoUrl() }}"
                         alt="{{ config('app.name') }}"
                         class="w-28 h-28 object-contain drop-shadow-lg"
                     />
@@ -180,7 +180,7 @@
                 {{-- Mobile Logo --}}
                 <div class="lg:hidden text-center mb-10">
                     <img
-                        src="{{ asset('logo.png') }}"
+                        src="{{ App\Domains\SharedKernel\Services\MediaResolver::logoUrl() }}"
                         alt="{{ config('app.name') }}"
                         class="w-20 h-20 mx-auto object-contain mb-4"
                     />

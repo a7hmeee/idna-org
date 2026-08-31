@@ -105,14 +105,21 @@
     ])
 
     {{-- ============================================ --}}
-    {{-- 4. NEWS + ANNOUNCEMENTS --}}
+    {{-- 4. NEWS --}}
     {{-- ============================================ --}}
     @includeWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
         'latestNews' => $latestNews,
-        'latestAnnouncements' => $latestAnnouncements,
         'sectionTitle' => $sectionTitle('latest_news'),
         'sectionSubtitle' => $sectionSubtitle('latest_news'),
-        'municipality' => $municipality,
+    ])
+
+    {{-- ============================================ --}}
+    {{-- 4b. ANNOUNCEMENTS --}}
+    {{-- ============================================ --}}
+    @includeWhen(in_array('announcements', $sectionKeys), 'livewire.homepage.sections.announcements', [
+        'latestAnnouncements' => $latestAnnouncements,
+        'sectionTitle' => $sectionTitle('announcements'),
+        'sectionSubtitle' => $sectionSubtitle('announcements'),
     ])
 
     {{-- ============================================ --}}
