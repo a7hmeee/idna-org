@@ -109,10 +109,17 @@
     
     <?php echo $__env->renderWhen(in_array('latest_news', $sectionKeys), 'livewire.homepage.sections.news', [
         'latestNews' => $latestNews,
-        'latestAnnouncements' => $latestAnnouncements,
         'sectionTitle' => $sectionTitle('latest_news'),
         'sectionSubtitle' => $sectionSubtitle('latest_news'),
-        'municipality' => $municipality,
+    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
+
+    
+    
+    
+    <?php echo $__env->renderWhen(in_array('announcements', $sectionKeys), 'livewire.homepage.sections.announcements', [
+        'latestAnnouncements' => $latestAnnouncements,
+        'sectionTitle' => $sectionTitle('announcements'),
+        'sectionSubtitle' => $sectionSubtitle('announcements'),
     ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1])); ?>
 
     

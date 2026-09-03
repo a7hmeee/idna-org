@@ -12,7 +12,7 @@
 
 <div class="flex justify-start gap-2" dir="rtl">
     <div class="w-8 h-8 rounded-full overflow-hidden shrink-0 mt-1 border border-border">
-        <img src="<?php echo e(asset('robot.png')); ?>" alt="المساعد الذكي" class="w-full h-full object-cover">
+        <img src="<?php echo e(App\Domains\SharedKernel\Services\MediaResolver::chatbotAvatarUrl()); ?>" alt="المساعد الذكي" class="w-full h-full object-cover">
     </div>
             <div class="max-w-[85%] flex flex-col items-start gap-1">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(($isWorkflow)): ?>

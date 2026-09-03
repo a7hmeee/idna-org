@@ -229,7 +229,7 @@ unset($__defined_vars, $__key, $__value); ?>
 </section>
 
 <?php $__env->startPush('styles'); ?>
-    <?php if (! $__env->hasRenderedOnce('46003533-0818-4686-b337-0a844e00b66f')): $__env->markAsRenderedOnce('46003533-0818-4686-b337-0a844e00b66f'); ?>
+    <?php if (! $__env->hasRenderedOnce('2f1327a1-82c6-4c80-84b1-076a956cddae')): $__env->markAsRenderedOnce('2f1327a1-82c6-4c80-84b1-076a956cddae'); ?>
         <style>
             /* ===== HERO STAGE HEIGHT ===== */
             .ih-hero-stage { min-height: clamp(560px, 85vh, 780px); height: auto; overflow: hidden; position: relative; }

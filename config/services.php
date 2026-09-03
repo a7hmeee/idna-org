@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'clarity' => [
+        'enabled' => env('CLARITY_ENABLED', false),
+        'project_id' => env('CLARITY_PROJECT_ID'),
+    ],
+
 ];
