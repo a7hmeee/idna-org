@@ -37,6 +37,26 @@ final class RoleIndex extends Component
 
     public array $selectedPermissions = [];
 
+    public bool $canView = false;
+
+    public bool $canCreate = false;
+
+    public bool $canUpdate = false;
+
+    public bool $canDelete = false;
+
+    public function boot(): void
+    {
+        $this->canView = auth()->user()->can('view roles');
+        $this->canCreate = auth()->user()->can('create roles');
+        $this->canUpdate = auth()->user()->can('edit roles');
+        $this->canDelete = auth()->user()->can('delete roles');
+
+        if (! $this->canView) {
+            abort(403);
+        }
+    }
+
     public function updatedSearch(): void
     {
         $this->resetPage();
@@ -52,12 +72,20 @@ final class RoleIndex extends Component
 
     public function openCreateModal(): void
     {
+        if (! $this->canCreate) {
+            abort(403);
+        }
+
         $this->resetForm();
         $this->showCreateModal = true;
     }
 
     public function createRole(CreateRoleAction $action): void
     {
+        if (! $this->canCreate) {
+            abort(403);
+        }
+
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255', 'unique:roles,name'],
             'selectedPermissions' => ['nullable', 'array'],
@@ -76,6 +104,10 @@ final class RoleIndex extends Component
 
     public function openEditModal(int $roleId): void
     {
+        if (! $this->canUpdate) {
+            abort(403);
+        }
+
         $role = app(RoleRepositoryInterface::class)->findById($roleId);
 
         if ($role) {
@@ -88,6 +120,10 @@ final class RoleIndex extends Component
 
     public function updateRole(UpdateRoleAction $action): void
     {
+        if (! $this->canUpdate) {
+            abort(403);
+        }
+
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('roles')->ignore($this->editingRoleId)],
             'selectedPermissions' => ['nullable', 'array'],
@@ -109,12 +145,20 @@ final class RoleIndex extends Component
 
     public function confirmDelete(int $roleId): void
     {
+        if (! $this->canDelete) {
+            abort(403);
+        }
+
         $this->deletingRoleId = $roleId;
         $this->showDeleteModal = true;
     }
 
     public function deleteRole(DeleteRoleAction $action): void
     {
+        if (! $this->canDelete) {
+            abort(403);
+        }
+
         $role = app(RoleRepositoryInterface::class)->findById($this->deletingRoleId);
 
         if ($role && $role->name === 'Super Admin') {

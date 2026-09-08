@@ -18,10 +18,25 @@ final readonly class EloquentTenderRepository implements TenderRepositoryInterfa
         private Tender $model,
     ) {}
 
-    public function paginateDashboard(): LengthAwarePaginator
+    public function paginateDashboard(?string $search = null, ?string $status = null): LengthAwarePaginator
     {
-        return $this->model
-            ->with(['creator', 'updater'])
+        $query = $this->model
+            ->with(['creator', 'updater']);
+
+        if ($search) {
+            $query->where(function (Builder $q) use ($search): void {
+                $q->where('title_ar', 'like', "%{$search}%")
+                    ->orWhere('title_en', 'like', "%{$search}%")
+                    ->orWhere('tender_number', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        return $query
             ->orderBy('publication_date', 'desc')
             ->paginate(15);
     }

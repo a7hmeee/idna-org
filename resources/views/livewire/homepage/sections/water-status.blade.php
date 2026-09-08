@@ -1,11 +1,14 @@
 @php
-    $statusConfig = [
-        'available'     => ['label' => 'متوفر',   'color' => '#176B32', 'bg' => '#EAF5EE', 'dot' => '#176B32'],
-        'low_pressure'  => ['label' => 'ضغط منخفض', 'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
-        'maintenance'   => ['label' => 'صيانة',    'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
-        'emergency'     => ['label' => 'طارئ',     'color' => '#DC2626', 'bg' => '#FEE2E2', 'dot' => '#DC2626'],
-        'no_water'      => ['label' => 'مقطوع',    'color' => '#6B7280', 'bg' => '#F3F4F6', 'dot' => '#D1D5DB'],
-    ];
+    $statusConfig = App\Domains\WaterSchedule\Models\WaterStatusLabel::getAllActive();
+    if (empty($statusConfig)) {
+        $statusConfig = [
+            'available'     => ['label' => 'متوفر',   'color' => '#176B32', 'bg' => '#EAF5EE', 'dot' => '#176B32'],
+            'low_pressure'  => ['label' => 'ضغط منخفض', 'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
+            'maintenance'   => ['label' => 'صيانة',    'color' => '#B45309', 'bg' => '#FEF3C7', 'dot' => '#B45309'],
+            'emergency'     => ['label' => 'طارئ',     'color' => '#DC2626', 'bg' => '#FEE2E2', 'dot' => '#DC2626'],
+            'no_water'      => ['label' => 'مقطوع',    'color' => '#6B7280', 'bg' => '#F3F4F6', 'dot' => '#D1D5DB'],
+        ];
+    }
 
     $schedules = collect($waterSchedule);
     $hasData = $schedules->isNotEmpty();

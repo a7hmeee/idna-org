@@ -16,6 +16,10 @@ final class ContactRequest extends Model
         'email',
         'phone',
         'message',
+        'internal_notes',
+        'response_notes',
+        'assigned_to',
+        'assigned_department',
         'department',
         'status',
         'source',
@@ -23,6 +27,7 @@ final class ContactRequest extends Model
         'user_id',
         'submitted_at',
         'resolved_at',
+        'in_progress_at',
     ];
 
     protected function casts(): array
@@ -31,6 +36,7 @@ final class ContactRequest extends Model
             'status' => ContactRequestStatus::class,
             'submitted_at' => 'datetime',
             'resolved_at' => 'datetime',
+            'in_progress_at' => 'datetime',
         ];
     }
 

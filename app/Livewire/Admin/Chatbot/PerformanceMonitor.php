@@ -19,6 +19,10 @@ final class PerformanceMonitor extends Component
 
     public function mount(): void
     {
+        if (! auth()->user()->can('chatbot.performance')) {
+            abort(403);
+        }
+
         $this->loadReport();
     }
 

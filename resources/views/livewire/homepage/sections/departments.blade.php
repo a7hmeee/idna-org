@@ -1,7 +1,7 @@
 @php
-    $departments = collect($featuredDepartments)->take(5);
+    $departments = collect($featuredDepartments)->take(7);
     $highlight = $departments->first();
-    $otherDepartments = $departments->slice(1)->take(4);
+    $otherDepartments = $departments->slice(1)->take(6);
 
     $iconMap = [
         'هندسة' => 'DraftingCompass', 'تخطيط' => 'DraftingCompass',
@@ -13,6 +13,7 @@
         'زراعة' => 'Sprout', 'استثمار' => 'TrendingUp',
         'قانوني' => 'Scale', 'كهرباء' => 'Zap',
         'نظافة' => 'Trash2', 'طرق' => 'Route',
+        'سوق' => 'Store',
     ];
 
     $resolveIcon = function ($name, $configured) use ($iconMap) {
@@ -22,15 +23,15 @@
         }
         return 'Building2';
     };
+
+    $fallbackGradient = 'linear-gradient(145deg,#1C7736,#145D2B)';
 @endphp
 
 <section id="departments" class="departments-section" style="background:#FFFFFF;padding-top:clamp(54px,5.8vw,78px);padding-bottom:clamp(52px,5.8vw,78px);">
 
     <div style="width:100%;max-width:1280px;margin:0 auto;padding:0 clamp(16px,2.5vw,36px);">
 
-        {{-- ============================= --}}
-        {{-- SECTION HEADER              --}}
-        {{-- ============================= --}}
+        {{-- SECTION HEADER --}}
         <div class="departments-header">
             <div style="text-align:center;">
                 <div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:10px;">
@@ -58,128 +59,131 @@
             @endif
         </div>
 
-        {{-- ============================= --}}
-        {{-- DEPARTMENTS GRID            --}}
-        {{-- ============================= --}}
+        {{-- DEPARTMENTS LAYOUT --}}
         @if ($departments->isNotEmpty())
-            <div class="departments-grid" style="display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:18px;margin-top:44px;min-width:0;">
+            <div class="departments-layout" style="display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:44px;min-width:0;align-items:start;">
 
-                {{-- FEATURED DEPARTMENT --}}
+                {{-- LEFT: Regular Department Cards --}}
+                <div class="departments-regular" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+                    @foreach ($otherDepartments as $department)
+                        @php
+                            $regUrl = !empty($department['slug']) && Route::has('public.departments.show')
+                                ? route('public.departments.show', ['department' => $department['slug']])
+                                : '#';
+                            $regIcon = $resolveIcon($department['name'] ?? '', $department['icon'] ?? '');
+                            $regCover = $department['cover_image_url'] ?? null;
+                        @endphp
+                        <a href="{{ $regUrl }}" @if($regUrl !== '#') wire:navigate @endif
+                           class="dept-card"
+                           style="display:flex;flex-direction:column;border-radius:14px;overflow:hidden;position:relative;min-width:0;text-decoration:none;box-shadow:0 8px 24px rgba(10,50,25,0.12);transition:all 240ms ease-out;height:280px;{{ $regCover ? 'background:#145D2B;' : 'background:linear-gradient(145deg,#1C7736,#145D2B);' }}">
+                            {{-- Background Image --}}
+                            @if ($regCover)
+                                <img src="{{ $regCover }}" alt="{{ $department['name'] ?? '' }}"
+                                     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"
+                                     loading="lazy">
+                            @endif
+
+                            {{-- Green Overlay --}}
+                            <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,93,43,0.15) 0%,rgba(20,93,43,0.55) 50%,rgba(20,93,43,0.92) 100%);{{ $regCover ? '' : 'display:none;' }}"></div>
+                            @if (!$regCover)
+                                <div style="position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(255,255,255,0.1),transparent 55%);pointer-events:none;"></div>
+                            @endif
+
+                            {{-- Content --}}
+                            <div style="position:relative;z-index:1;display:flex;flex-direction:column;padding:18px;flex:1;justify-content:flex-end;">
+                                {{-- Icon --}}
+                                <div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);margin-bottom:auto;">
+                                    <i data-lucide="{{ $regIcon }}" style="width:18px;height:18px;stroke-width:1.7;color:white;"></i>
+                                </div>
+
+                                {{-- Title --}}
+                                <h4 style="margin:10px 0 0;font-size:15px;font-weight:700;color:white;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    {{ $department['name'] ?? '' }}
+                                </h4>
+
+                                {{-- Description --}}
+                                @if (!empty($department['short_description']))
+                                    <p style="margin:4px 0 0;font-size:11px;line-height:1.7;color:rgba(255,255,255,0.82);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                        {{ $department['short_description'] }}
+                                    </p>
+                                @endif
+
+                                {{-- Action --}}
+                                <span class="dept-card-action"
+                                   style="display:inline-flex;align-items:center;gap:4px;margin-top:10px;padding:0;color:rgba(255,255,255,0.9);font-size:11px;font-weight:600;text-decoration:none;transition:color 200ms;align-self:flex-start;">
+                                    <span>عرض التفاصيل</span>
+                                    <i data-lucide="arrow-left" style="width:11px;height:11px;transition:transform 200ms;"></i>
+                                </span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- RIGHT: Featured Department Card --}}
                 @if ($highlight)
                     @php
                         $fgUrl = !empty($highlight['slug']) && Route::has('public.departments.show')
                             ? route('public.departments.show', ['department' => $highlight['slug']])
                             : '#';
                         $fgIcon = $resolveIcon($highlight['name'] ?? '', $highlight['icon'] ?? '');
+                        $fgCover = $highlight['cover_image_url'] ?? null;
                     @endphp
-                    <article class="dept-featured" style="display:flex;flex-direction:column;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(145deg,#1C7736,#145D2B);box-shadow:0 14px 32px rgba(18,75,36,0.18);transition:all 240ms ease-out;min-width:0;">
-                        <div style="position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(255,255,255,0.12),transparent 55%);pointer-events:none;"></div>
-                        <div style="position:relative;z-index:1;display:flex;flex-direction:column;height:100%;padding:24px;">
-                            {{-- Badge --}}
-                            <span style="display:inline-flex;align-items:center;gap:1px;height:26px;padding:0 11px;border-radius:9999px;background:rgba(255,255,255,0.15);color:white;font-size:10px;font-weight:600;align-self:flex-start;backdrop-filter:blur(4px);">
-                                <i data-lucide="star" style="width:11px;height:11px;"></i>
-                                <span>القسم المميز</span>
-                            </span>
-
-                            {{-- Icon --}}
-                            <div style="margin-top:16px;">
-                                <i data-lucide="{{ $fgIcon }}" style="width:32px;height:32px;stroke-width:1.6;color:white;"></i>
-                            </div>
-
-                            {{-- Title --}}
-                            <h3 style="margin:12px 0 0;font-size:19px;font-weight:700;color:white;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
-                                {{ $highlight['name'] ?? '' }}
-                            </h3>
-
-                            {{-- Description --}}
-                            @if (!empty($highlight['short_description']))
-                                <p style="margin:8px 0 0;font-size:12px;line-height:1.75;color:rgba(255,255,255,0.85);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
-                                    {{ $highlight['short_description'] }}
-                                </p>
+                    <div class="departments-featured" style="position:sticky;top:100px;">
+                        <a href="{{ $fgUrl }}" @if($fgUrl !== '#') wire:navigate @endif
+                           class="dept-card dept-featured"
+                           style="display:flex;flex-direction:column;border-radius:16px;overflow:hidden;position:relative;min-width:0;text-decoration:none;box-shadow:0 14px 32px rgba(18,75,36,0.18);transition:all 240ms ease-out;height:100%;min-height:580px;{{ $fgCover ? 'background:#145D2B;' : 'background:linear-gradient(145deg,#1C7736,#145D2B);' }}">
+                            {{-- Background Image --}}
+                            @if ($fgCover)
+                                <img src="{{ $fgCover }}" alt="{{ $highlight['name'] ?? '' }}"
+                                     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"
+                                     loading="lazy">
                             @endif
 
-                            {{-- Spacer --}}
-                            <div style="flex:1;min-height:8px;"></div>
+                            {{-- Green Overlay --}}
+                            <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,93,43,0.1) 0%,rgba(20,93,43,0.5) 45%,rgba(20,93,43,0.93) 100%);{{ $fgCover ? '' : 'display:none;' }}"></div>
+                            @if (!$fgCover)
+                                <div style="position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(255,255,255,0.12),transparent 55%);pointer-events:none;"></div>
+                            @endif
 
-                            {{-- Metadata --}}
-                            <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-                                @if (!empty($highlight['manager_name']))
-                                    <div style="display:flex;align-items:center;gap:6px;">
-                                        <span style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.6);">مدير القسم</span>
-                                        <span style="font-size:12px;font-weight:600;color:white;">{{ $highlight['manager_name'] }}</span>
-                                    </div>
+                            {{-- Content --}}
+                            <div style="position:relative;z-index:1;display:flex;flex-direction:column;padding:24px;flex:1;justify-content:flex-end;">
+                                {{-- Badge --}}
+                                <span style="display:inline-flex;align-items:center;gap:1px;height:26px;padding:0 11px;border-radius:9999px;background:rgba(255,255,255,0.15);color:white;font-size:10px;font-weight:600;align-self:flex-start;backdrop-filter:blur(4px);margin-bottom:auto;">
+                                    <i data-lucide="star" style="width:11px;height:11px;"></i>
+                                    <span>القسم المميز</span>
+                                </span>
+
+                                {{-- Icon --}}
+                                <div style="width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);margin-top:auto;">
+                                    <i data-lucide="{{ $fgIcon }}" style="width:22px;height:22px;stroke-width:1.6;color:white;"></i>
+                                </div>
+
+                                {{-- Title --}}
+                                <h3 style="margin:10px 0 0;font-size:19px;font-weight:700;color:white;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    {{ $highlight['name'] ?? '' }}
+                                </h3>
+
+                                {{-- Description --}}
+                                @if (!empty($highlight['short_description']))
+                                    <p style="margin:6px 0 0;font-size:12px;line-height:1.75;color:rgba(255,255,255,0.85);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                        {{ $highlight['short_description'] }}
+                                    </p>
                                 @endif
-                                @if (($highlight['services_count'] ?? 0) > 0)
-                                    <div style="display:flex;align-items:center;gap:5px;">
-                                        <i data-lucide="list-checks" style="width:13px;height:13px;color:rgba(255,255,255,0.7);"></i>
-                                        <span style="font-size:12px;font-weight:600;color:white;">{{ $highlight['services_count'] }} خدمة</span>
-                                    </div>
-                                @endif
+
+                                {{-- Action --}}
+                                <span class="dept-card-action"
+                                   style="display:inline-flex;align-items:center;gap:5px;margin-top:14px;padding:0;color:rgba(255,255,255,0.9);font-size:12px;font-weight:600;text-decoration:none;transition:color 200ms;align-self:flex-start;">
+                                    <span>استكشف القسم</span>
+                                    <i data-lucide="chevron-left" style="width:14px;height:14px;transition:transform 200ms;"></i>
+                                </span>
                             </div>
-
-                            {{-- Action --}}
-                            <a href="{{ $fgUrl }}" @if($fgUrl !== '#') wire:navigate @endif
-                               class="dept-featured-action"
-                               style="display:inline-flex;align-items:center;gap:5px;margin-top:14px;padding:0;color:rgba(255,255,255,0.9);font-size:12px;font-weight:600;text-decoration:none;transition:color 200ms;align-self:flex-start;">
-                                <span>استكشف القسم</span>
-                                <i data-lucide="chevron-left" style="width:14px;height:14px;transition:transform 200ms;"></i>
-                            </a>
-                        </div>
-                    </article>
+                        </a>
+                    </div>
                 @endif
-
-                {{-- REGULAR DEPARTMENT CARDS --}}
-                @foreach ($otherDepartments as $department)
-                    @php
-                        $regUrl = !empty($department['slug']) && Route::has('public.departments.show')
-                            ? route('public.departments.show', ['department' => $department['slug']])
-                            : '#';
-                        $regIcon = $resolveIcon($department['name'] ?? '', $department['icon'] ?? '');
-                    @endphp
-                    <a href="{{ $regUrl }}" @if($regUrl !== '#') wire:navigate @endif
-                       class="dept-regular"
-                       style="display:flex;flex-direction:column;border-radius:14px;border:1px solid #E4E9E5;background:white;padding:20px;text-decoration:none;box-shadow:0 5px 18px rgba(20,50,30,0.05);transition:all 240ms ease-out;min-width:0;">
-                        {{-- Icon --}}
-                        <div style="width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#EAF5EE;">
-                            <i data-lucide="{{ $regIcon }}" style="width:30px;height:30px;stroke-width:1.7;color:#176B32;transition:transform 240ms;"></i>
-                        </div>
-
-                        {{-- Title --}}
-                        <h4 style="margin:14px 0 0;font-size:16px;font-weight:700;color:#17243A;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
-                            {{ $department['name'] ?? '' }}
-                        </h4>
-
-                        {{-- Description --}}
-                        @if (!empty($department['short_description']))
-                            <p style="margin:8px 0 0;font-size:13px;line-height:1.75;color:#66756D;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
-                                {{ $department['short_description'] }}
-                            </p>
-                        @endif
-
-                        {{-- Spacer --}}
-                        <div style="flex:1;min-height:8px;"></div>
-
-                        {{-- Manager --}}
-                        @if (!empty($department['manager_name']))
-                            <div style="margin-top:12px;display:flex;align-items:center;gap:6px;">
-                                <span style="font-size:10px;font-weight:500;color:#94A3B8;">مدير القسم</span>
-                                <span style="font-size:12px;font-weight:600;color:#17243A;">{{ $department['manager_name'] }}</span>
-                            </div>
-                        @endif
-
-                        {{-- Service count --}}
-                        @if (($department['services_count'] ?? 0) > 0)
-                            <div style="margin-top:8px;display:flex;align-items:center;gap:5px;">
-                                <i data-lucide="list-checks" style="width:12px;height:12px;color:#7BBC9D;"></i>
-                                <span style="font-size:11px;font-weight:600;color:#7BBC9D;">{{ $department['services_count'] }} خدمة</span>
-                            </div>
-                        @endif
-                    </a>
-                @endforeach
 
             </div>
         @else
-            {{-- Compact empty state --}}
+            {{-- Empty state --}}
             <div style="display:flex;align-items:center;justify-content:center;min-height:180px;margin-top:44px;">
                 <div style="text-align:center;">
                     <i data-lucide="building-2" style="width:36px;height:36px;color:#A0CFB8;margin-bottom:10px;"></i>
@@ -193,45 +197,38 @@
     @once
         @push('styles')
             <style>
-                /* View-all hover */
                 .departments-view-all-btn:hover { background:#0F4F28 !important; box-shadow:0 6px 20px rgba(23,107,50,0.3) !important; }
                 .departments-view-all-btn:hover i { transform:translateX(-2px); }
 
-                /* Desktop: absolute left for view-all */
                 @media (min-width:1025px) {
                     .departments-header { position:relative; }
                     .departments-header-action { position:absolute; left:0; top:50%; transform:translateY(-50%); }
                 }
 
-                /* Tablet: stack header, featured full-width, regulars 2 columns */
                 @media (max-width:1024px) {
                     .departments-header-action { text-align:center; margin-top:20px; }
-                    .departments-grid { grid-template-columns:repeat(2,1fr) !important; margin-top:36px !important; }
-                    .dept-featured { grid-column:1 / -1 !important; }
+                    .departments-layout { grid-template-columns:1fr !important; margin-top:36px !important; }
+                    .departments-regular { grid-template-columns:repeat(2,1fr) !important; }
+                    .departments-featured { position:static !important; }
+                    .dept-featured { min-height:400px !important; }
                 }
 
-                /* Mobile: 1-column grid, smaller spacing */
                 @media (max-width:640px) {
-                    .departments-grid { grid-template-columns:1fr !important; gap:14px !important; margin-top:32px !important; }
+                    .departments-regular { grid-template-columns:1fr !important; gap:14px !important; }
+                    .departments-layout { gap:16px !important; margin-top:32px !important; }
+                    .dept-card { height:260px !important; }
+                    .dept-featured { min-height:340px !important; }
                 }
 
-                /* Featured card hover */
-                .dept-featured:hover { transform:translateY(-3px); box-shadow:0 18px 40px rgba(18,75,36,0.25) !important; }
-                .dept-featured:hover .dept-featured-action i { transform:translateX(-3px); }
-                .dept-featured:hover .dept-featured-action { color:white !important; }
+                .dept-card:hover { transform:translateY(-3px); box-shadow:0 18px 40px rgba(10,50,25,0.2) !important; }
+                .dept-card:hover .dept-card-action i { transform:translateX(-3px); }
+                .dept-card:hover .dept-card-action { color:white !important; }
 
-                /* Regular card hover */
-                .dept-regular:hover { transform:translateY(-3px); border-color:rgba(23,107,50,0.25) !important; box-shadow:0 10px 28px rgba(20,50,30,0.1) !important; }
-                .dept-regular:hover i { transform:translateY(-1px); }
-
-                /* Focus */
-                .dept-featured a:focus-visible,
-                .dept-regular:focus-visible,
+                .dept-card:focus-visible,
                 .departments-view-all-btn:focus-visible { outline:2px solid #176B32; outline-offset:2px; border-radius:8px; }
 
-                /* Reduced motion */
                 @media (prefers-reduced-motion:reduce) {
-                    .dept-featured,.dept-regular,.dept-featured *,.dept-regular *,.departments-view-all-btn { transition-duration:0.01ms !important; transform:none !important; }
+                    .dept-card,.dept-card *,.departments-view-all-btn { transition-duration:0.01ms !important; transform:none !important; }
                 }
             </style>
         @endpush

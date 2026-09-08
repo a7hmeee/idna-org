@@ -49,6 +49,10 @@ final class SearchTermManager extends Component
 
     public function render(): View
     {
+        if (! auth()->user()->can('chatbot.search-terms')) {
+            abort(403);
+        }
+
         $services = ElectronicService::where('is_public', true)
             ->where('status', 'active')
             ->orderBy('name')
@@ -77,6 +81,10 @@ final class SearchTermManager extends Component
 
     public function save(): void
     {
+        if (! auth()->user()->can('chatbot.search-terms')) {
+            abort(403);
+        }
+
         $this->validate();
 
         $normalizer = app(ArabicTextNormalizer::class);
@@ -115,6 +123,10 @@ final class SearchTermManager extends Component
 
     public function toggleActive(int $termId): void
     {
+        if (! auth()->user()->can('chatbot.search-terms')) {
+            abort(403);
+        }
+
         $term = ServiceSearchTerm::findOrFail($termId);
         $term->update(['is_active' => ! $term->is_active]);
         $this->clearCache();
@@ -123,6 +135,10 @@ final class SearchTermManager extends Component
 
     public function delete(int $termId): void
     {
+        if (! auth()->user()->can('chatbot.search-terms')) {
+            abort(403);
+        }
+
         ServiceSearchTerm::findOrFail($termId)->delete();
         $this->clearCache();
         $this->dispatch('notify', message: 'Term deleted.', type: 'success');

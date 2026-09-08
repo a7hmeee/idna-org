@@ -67,6 +67,32 @@ final class UserIndex extends Component
 
     public array $selectedPermissions = [];
 
+    public bool $canView = false;
+
+    public bool $canCreate = false;
+
+    public bool $canUpdate = false;
+
+    public bool $canDelete = false;
+
+    public bool $canManageRoles = false;
+
+    public bool $canResetPassword = false;
+
+    public function boot(): void
+    {
+        $this->canView = auth()->user()->can('view users');
+        $this->canCreate = auth()->user()->can('create users');
+        $this->canUpdate = auth()->user()->can('edit users');
+        $this->canDelete = auth()->user()->can('delete users');
+        $this->canManageRoles = auth()->user()->can('assign roles');
+        $this->canResetPassword = auth()->user()->can('edit users');
+
+        if (! $this->canView) {
+            abort(403);
+        }
+    }
+
     public function getPermissionsByGroup(): array
     {
         return app(RoleRepositoryInterface::class)->getPermissionsGrouped();
@@ -99,6 +125,10 @@ final class UserIndex extends Component
 
     public function openCreateModal(): void
     {
+        if (! $this->canCreate) {
+            abort(403);
+        }
+
         $this->resetForm();
         $this->selectedPermissions = [];
         $this->showCreateModal = true;
@@ -106,6 +136,10 @@ final class UserIndex extends Component
 
     public function createUser(CreateUserAction $action): void
     {
+        if (! $this->canCreate) {
+            abort(403);
+        }
+
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
@@ -129,6 +163,10 @@ final class UserIndex extends Component
 
     public function openEditModal(int $userId): void
     {
+        if (! $this->canUpdate) {
+            abort(403);
+        }
+
         $user = app(UserManagementRepositoryInterface::class)->findById($userId);
 
         if ($user) {
@@ -146,6 +184,10 @@ final class UserIndex extends Component
 
     public function updateUser(UpdateUserAction $action): void
     {
+        if (! $this->canUpdate) {
+            abort(403);
+        }
+
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->editingUserId)],
@@ -172,12 +214,20 @@ final class UserIndex extends Component
 
     public function confirmDelete(int $userId): void
     {
+        if (! $this->canDelete) {
+            abort(403);
+        }
+
         $this->deletingUserId = $userId;
         $this->showDeleteModal = true;
     }
 
     public function deleteUser(DeleteUserAction $action): void
     {
+        if (! $this->canDelete) {
+            abort(403);
+        }
+
         if ($this->deletingUserId === auth()->id()) {
             session()->flash('error', 'لا يمكن حذف حسابك الخاص.');
             $this->showDeleteModal = false;
@@ -203,6 +253,10 @@ final class UserIndex extends Component
 
     public function confirmResetPassword(int $userId): void
     {
+        if (! $this->canResetPassword) {
+            abort(403);
+        }
+
         $this->resetPasswordUserId = $userId;
         $this->newPassword = '';
         $this->newPasswordConfirmation = '';
@@ -211,6 +265,10 @@ final class UserIndex extends Component
 
     public function resetPassword(ResetUserPasswordAction $action): void
     {
+        if (! $this->canResetPassword) {
+            abort(403);
+        }
+
         $this->validate([
             'newPassword' => ['required', 'string', 'min:8'],
             'newPasswordConfirmation' => ['required', 'string', 'same:newPassword'],

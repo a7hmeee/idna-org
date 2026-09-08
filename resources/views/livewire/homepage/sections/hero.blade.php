@@ -1,11 +1,9 @@
-@props([
-    'slides' => [],
-    'settings' => [],
-    'municipalityName' => '',
-    'portalUrl' => '',
-])
-
 @php
+    $slides = $slides ?? [];
+    $settings = $settings ?? [];
+    $municipalityName = $municipalityName ?? '';
+    $portalUrl = $portalUrl ?? '';
+
     $singleSlide = count($slides) === 1;
     $primaryBtn = $settings['primary_button_text'] ?? 'الدخول إلى البوابة';
     $secondaryBtn = $settings['secondary_button_text'] ?? 'تعرف على البلدية';

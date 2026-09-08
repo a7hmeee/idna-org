@@ -15,6 +15,10 @@ final class ExecutiveDashboard extends Component
 
     public function mount(): void
     {
+        if (! auth()->user()->can('access panel')) {
+            abort(403);
+        }
+
         $this->dashboardData = app(DashboardRepositoryInterface::class)->getExecutiveDashboard();
     }
 

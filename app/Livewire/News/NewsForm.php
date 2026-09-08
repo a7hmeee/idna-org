@@ -10,7 +10,6 @@ use App\Domains\News\DTOs\NewsData;
 use App\Domains\News\Enums\NewsCategory;
 use App\Domains\News\Enums\NewsStatus;
 use App\Domains\News\Models\NewsItem;
-use App\Domains\SharedKernel\Models\Media;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;

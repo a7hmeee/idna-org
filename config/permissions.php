@@ -379,6 +379,23 @@ return [
     ],
 
     [
+        'module' => 'contact_requests',
+        'display_name' => 'Contact Requests',
+        'permissions' => [
+            ['name' => 'contact_requests.view', 'display_name' => 'View'],
+            ['name' => 'contact_requests.resolve', 'display_name' => 'Resolve'],
+        ],
+    ],
+
+    [
+        'module' => 'login_activity',
+        'display_name' => 'Login Activity',
+        'permissions' => [
+            ['name' => 'login_activity.view', 'display_name' => 'View'],
+        ],
+    ],
+
+    [
         'module' => 'municipality',
         'display_name' => 'Municipality',
         'permissions' => [
@@ -441,15 +458,94 @@ return [
         'display_name' => 'Chatbot',
         'permissions' => [
             ['name' => 'chatbot.view', 'display_name' => 'View Dashboard'],
+            ['name' => 'chatbot.manage', 'display_name' => 'Manage Chatbot'],
             ['name' => 'chatbot.analytics', 'display_name' => 'Analytics'],
             ['name' => 'chatbot.search-terms', 'display_name' => 'Search Terms'],
             ['name' => 'chatbot.unknown-questions', 'display_name' => 'Unknown Questions'],
             ['name' => 'chatbot.performance', 'display_name' => 'Performance'],
+            ['name' => 'chatbot.conversations.view', 'display_name' => 'View Conversations'],
+            ['name' => 'chatbot.feedback.view', 'display_name' => 'View Feedback'],
+            ['name' => 'chatbot.models.view', 'display_name' => 'View Models'],
+            ['name' => 'chatbot.aliases.view', 'display_name' => 'View Aliases'],
         ],
         'navigation' => [
             'icon' => 'bot-message',
             'route' => 'dashboard.chatbot',
             'order' => 20,
+        ],
+    ],
+
+    [
+        'module' => 'navigation',
+        'display_name' => 'Navigation',
+        'permissions' => [
+            ['name' => 'navigation.view', 'display_name' => 'View'],
+            ['name' => 'navigation.create', 'display_name' => 'Create'],
+            ['name' => 'navigation.update', 'display_name' => 'Update'],
+            ['name' => 'navigation.delete', 'display_name' => 'Delete'],
+            ['name' => 'navigation.reorder', 'display_name' => 'Reorder'],
+        ],
+        'navigation' => [
+            'icon' => 'menu',
+            'route' => 'dashboard.navigation',
+            'order' => 3,
+        ],
+    ],
+
+    [
+        'module' => 'footer',
+        'display_name' => 'Footer',
+        'permissions' => [
+            ['name' => 'footer.view', 'display_name' => 'View'],
+            ['name' => 'footer.create', 'display_name' => 'Create'],
+            ['name' => 'footer.update', 'display_name' => 'Update'],
+            ['name' => 'footer.delete', 'display_name' => 'Delete'],
+            ['name' => 'footer.reorder', 'display_name' => 'Reorder'],
+        ],
+    ],
+
+    [
+        'module' => 'seo',
+        'display_name' => 'SEO',
+        'permissions' => [
+            ['name' => 'seo.view', 'display_name' => 'View'],
+            ['name' => 'seo.update', 'display_name' => 'Update'],
+        ],
+        'navigation' => [
+            'icon' => 'search',
+            'route' => 'dashboard.seo',
+            'order' => 9,
+        ],
+    ],
+
+    [
+        'module' => 'dashboard_notifications',
+        'display_name' => 'Notifications',
+        'permissions' => [
+            ['name' => 'notifications.view', 'display_name' => 'View'],
+            ['name' => 'notifications.manage', 'display_name' => 'Manage'],
+        ],
+    ],
+
+    [
+        'module' => 'audit_log',
+        'display_name' => 'Audit Log',
+        'permissions' => [
+            ['name' => 'audit.view', 'display_name' => 'View'],
+        ],
+        'navigation' => [
+            'icon' => 'scroll',
+            'route' => 'dashboard.audit',
+            'order' => 15,
+        ],
+    ],
+
+    [
+        'module' => 'website_settings',
+        'display_name' => 'Website Settings',
+        'permissions' => [
+            ['name' => 'website_settings.view', 'display_name' => 'View'],
+            ['name' => 'website_settings.update', 'display_name' => 'Update'],
         ],
     ],
 ];

@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 
 interface JobRepositoryInterface
 {
-    public function paginateDashboard(): LengthAwarePaginator;
+    public function paginateDashboard(?string $search = null, ?string $status = null): LengthAwarePaginator;
 
     public function find(int $id): ?Job;
 

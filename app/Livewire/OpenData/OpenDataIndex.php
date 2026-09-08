@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\OpenData;
 
 use App\Domains\Homepage\Contracts\HomepageRepositoryInterface;

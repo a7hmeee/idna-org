@@ -29,6 +29,10 @@ final class ChatbotDashboard extends Component
 
     public function mount(): void
     {
+        if (! auth()->user()->can('chatbot.view')) {
+            abort(403);
+        }
+
         $this->loadStats();
     }
 

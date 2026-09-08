@@ -7,7 +7,14 @@
     'socialPlatforms' => [],
     'portalUrl' => '',
     'sectionKeys' => [],
+    'footerItems' => [],
 ])
+
+@php
+    $footerQuickLinks = collect($footerItems)->where('column_key', 'quick_links')->values();
+    $footerServices = collect($footerItems)->where('column_key', 'services')->values();
+    $footerContact = collect($footerItems)->where('column_key', 'contact')->values();
+@endphp
 
 <footer id="footer" style="background:#0B1623;width:100%;max-width:100%;overflow:hidden;" role="contentinfo">
     <div class="container-home py-14 lg:py-16">
@@ -49,41 +56,67 @@
                 @endif
             </div>
 
-            {{-- Column 2: Quick Links --}}
+            {{-- Column 2: Quick Links (database-driven) --}}
             <div>
-                <h4 class="font-bold text-white text-sm mb-4">روابط سريعة</h4>
+                <h4 class="font-bold text-white text-sm mb-4">{{ $footerQuickLinks->first()['column_title'] ?? 'روابط سريعة' }}</h4>
                 <ul class="space-y-3">
-                    <li><a href="{{ route('home') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الرئيسية</a></li>
-                    <li><a href="#municipality-intro" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">عن البلدية</a></li>
-                    <li><a href="{{ Route::has('public.services.index') ? route('public.services.index') : '#services' }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الخدمات</a></li>
-                    <li><a href="{{ Route::has('public.council.index') ? route('public.council.index') : '#council-members' }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">المجلس البلدي</a></li>
-                    <li><a href="{{ Route::has('public.departments.index') ? route('public.departments.index') : '#departments' }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الأقسام</a></li>
-                    <li><a href="#contact" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">اتصل بنا</a></li>
+                    @forelse ($footerQuickLinks as $item)
+                        <li>
+                            <a href="{{ $item['url'] ?? ($item['route_name'] ? route($item['route_name']) : '#') }}"
+                               @if ($item['is_external'] ?? false) target="_blank" rel="noopener noreferrer" @endif
+                               class="text-sm transition-colors duration-200 no-underline"
+                               style="color:rgba(255,255,255,0.55);"
+                               onmouseover="this.style.color='white'"
+                               onmouseout="this.style.color='rgba(255,255,255,0.55)'">
+                                {{ $item['label'] }}
+                            </a>
+                        </li>
+                    @empty
+                        <li><a href="{{ route('home') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الرئيسية</a></li>
+                        <li><a href="#municipality-intro" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">عن البلدية</a></li>
+                        <li><a href="{{ Route::has('public.services.index') ? route('public.services.index') : '#services' }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الخدمات</a></li>
+                        <li><a href="{{ Route::has('public.council.index') ? route('public.council.index') : '#council-members' }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">المجلس البلدي</a></li>
+                        <li><a href="{{ Route::has('public.departments.index') ? route('public.departments.index') : '#departments' }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الأقسام</a></li>
+                        <li><a href="#contact" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">اتصل بنا</a></li>
+                    @endforelse
                 </ul>
             </div>
 
-            {{-- Column 3: E-Services --}}
+            {{-- Column 3: E-Services (database-driven) --}}
             <div>
-                <h4 class="font-bold text-white text-sm mb-4">خدمات إلكترونية</h4>
+                <h4 class="font-bold text-white text-sm mb-4">{{ $footerServices->first()['column_title'] ?? 'خدمات إلكترونية' }}</h4>
                 <ul class="space-y-3">
-                    @if ($portalUrl)
-                        <li><a href="{{ $portalUrl }}" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">بوابة الخدمات</a></li>
-                    @endif
-                    @if (Route::has('public.services.index'))
-                        <li><a href="{{ route('public.services.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">جميع الخدمات</a></li>
-                    @endif
-                    @if (Route::has('public.water-schedule'))
-                        <li><a href="{{ route('public.water-schedule') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">جدول توزيع المياه</a></li>
-                    @endif
-                    @if (Route::has('public.jobs.index'))
-                        <li><a href="{{ route('public.jobs.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الوظائف</a></li>
-                    @endif
-                    @if (Route::has('public.facilities.index'))
-                        <li><a href="{{ route('public.facilities.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">المرافق العامة</a></li>
-                    @endif
-                    @if (Route::has('public.announcements.index'))
-                        <li><a href="{{ route('public.announcements.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الإعلانات</a></li>
-                    @endif
+                    @forelse ($footerServices as $item)
+                        <li>
+                            <a href="{{ $item['url'] ?? ($item['route_name'] ? route($item['route_name']) : '#') }}"
+                               @if ($item['is_external'] ?? false) target="_blank" rel="noopener noreferrer" @endif
+                               class="text-sm transition-colors duration-200 no-underline"
+                               style="color:rgba(255,255,255,0.55);"
+                               onmouseover="this.style.color='white'"
+                               onmouseout="this.style.color='rgba(255,255,255,0.55)'">
+                                {{ $item['label'] }}
+                            </a>
+                        </li>
+                    @empty
+                        @if ($portalUrl)
+                            <li><a href="{{ $portalUrl }}" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">بوابة الخدمات</a></li>
+                        @endif
+                        @if (Route::has('public.services.index'))
+                            <li><a href="{{ route('public.services.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">جميع الخدمات</a></li>
+                        @endif
+                        @if (Route::has('public.water-schedule'))
+                            <li><a href="{{ route('public.water-schedule') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">جدول توزيع المياه</a></li>
+                        @endif
+                        @if (Route::has('public.jobs.index'))
+                            <li><a href="{{ route('public.jobs.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الوظائف</a></li>
+                        @endif
+                        @if (Route::has('public.facilities.index'))
+                            <li><a href="{{ route('public.facilities.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">المرافق العامة</a></li>
+                        @endif
+                        @if (Route::has('public.announcements.index'))
+                            <li><a href="{{ route('public.announcements.index') }}" class="text-sm transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">الإعلانات</a></li>
+                        @endif
+                    @endforelse
                 </ul>
             </div>
 
@@ -112,13 +145,26 @@
     </div>
 
     {{-- Copyright Bar --}}
+    @php
+        $copyrightText = App\Domains\WebsiteSettings\Models\WebsiteSetting::get('footer_copyright_text', 'جميع الحقوق محفوظة');
+        $privacyUrl = App\Domains\WebsiteSettings\Models\WebsiteSetting::get('footer_privacy_url', '');
+        $termsUrl = App\Domains\WebsiteSettings\Models\WebsiteSetting::get('footer_terms_url', '');
+    @endphp
     <div style="border-top:1px solid rgba(255,255,255,0.05);">
         <div class="container-home py-4">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p class="text-xs" style="color:rgba(255,255,255,0.3);">جميع الحقوق محفوظة &copy; {{ date('Y') }} {{ $municipalityName }}</p>
+                <p class="text-xs" style="color:rgba(255,255,255,0.3);">{{ $copyrightText }} &copy; {{ date('Y') }} {{ $municipalityName }}</p>
                 <div class="flex items-center gap-4">
-                    <span class="text-xs" style="color:rgba(255,255,255,0.3);">سياسة الخصوصية</span>
-                    <span class="text-xs" style="color:rgba(255,255,255,0.3);">شروط الاستخدام</span>
+                    @if ($privacyUrl)
+                        <a href="{{ $privacyUrl }}" class="text-xs transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.3);" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">سياسة الخصوصية</a>
+                    @else
+                        <span class="text-xs" style="color:rgba(255,255,255,0.3);">سياسة الخصوصية</span>
+                    @endif
+                    @if ($termsUrl)
+                        <a href="{{ $termsUrl }}" class="text-xs transition-colors duration-200 no-underline" style="color:rgba(255,255,255,0.3);" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">شروط الاستخدام</a>
+                    @else
+                        <span class="text-xs" style="color:rgba(255,255,255,0.3);">شروط الاستخدام</span>
+                    @endif
                 </div>
             </div>
         </div>

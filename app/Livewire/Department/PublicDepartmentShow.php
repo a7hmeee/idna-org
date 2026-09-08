@@ -11,14 +11,17 @@ use Livewire\Component;
 
 final class PublicDepartmentShow extends Component
 {
-    public Department $department;
+    public ?Department $department = null;
 
-    public function mount(string $department): void
+    public function mount(?Department $department = null): void
     {
-        $dept = Department::where('slug', $department)->where('is_public', true)->first();
-        abort_unless($dept, 404);
+        if ($department && $department->exists) {
+            abort_unless($department->is_public && $department->status === 'active', 404);
 
-        $this->department = $dept->loadMissing('creator', 'updater');
+            $this->department = $department->loadMissing('creator', 'updater');
+        }
+
+        abort_unless($this->department, 404);
     }
 
     public function render()

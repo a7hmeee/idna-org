@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Livewire\Complaints;
 
+use App\Domains\Complaints\Actions\CreateComplaintAction;
+use App\Domains\Complaints\DTOs\ComplaintData;
 use App\Domains\Complaints\Enums\ComplaintCategory;
 use App\Domains\Complaints\Enums\ComplaintPriority;
 use App\Domains\Complaints\Enums\ComplaintStatus;
-use App\Domains\Complaints\Models\Complaint;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -69,9 +70,9 @@ final class PublicComplaintForm extends Component
         'attachments.*.max' => 'الملف يجب أن لا يتجاوز 5 ميجابايت.',
     ];
 
-    public function submit(): void
+    public function submit(CreateComplaintAction $action): void
     {
-        $data = $this->validate();
+        $validated = $this->validate();
 
         $attachmentPaths = [];
 
@@ -83,12 +84,11 @@ final class PublicComplaintForm extends Component
 
         $trackingNumber = 'CMP-'.strtoupper(Str::random(10));
 
-        Complaint::create([
-            'tracking_number' => $trackingNumber,
-            'citizen_name' => $this->citizenName,
+        $dto = ComplaintData::fromRequest([
+            'citizenName' => $this->citizenName,
             'phone' => $this->phone,
             'email' => $this->email ?: null,
-            'category' => ComplaintCategory::from($this->category),
+            'category' => $this->category,
             'subject' => $this->subject,
             'description' => $this->description,
             'location' => $this->location ?: null,
@@ -97,8 +97,11 @@ final class PublicComplaintForm extends Component
             'attachments' => ! empty($attachmentPaths) ? $attachmentPaths : null,
             'priority' => ComplaintPriority::Medium,
             'status' => ComplaintStatus::Submitted,
-            'submitted_at' => now(),
+            'trackingNumber' => $trackingNumber,
+            'submittedAt' => now()->toIso8601String(),
         ]);
+
+        $action->execute($dto);
 
         $this->trackingNumber = $trackingNumber;
         $this->submitted = true;

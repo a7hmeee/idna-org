@@ -73,7 +73,7 @@
     {{-- ============================================ --}}
     {{-- CITIZEN QUICK ACTIONS — «الباب البلدي» --}}
     {{-- ============================================ --}}
-    @include('livewire.homepage.sections.quick-actions')
+    @include('livewire.homepage.sections.quick-actions', ['quickLinks' => $quickLinks])
 
     {{-- ============================================ --}}
     {{-- 1. ELECTRONIC SERVICES --}}

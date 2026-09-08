@@ -6,6 +6,7 @@ namespace App\Domains\ContactRequests\Contracts;
 
 use App\Domains\ContactRequests\DTOs\CreateContactRequestData;
 use App\Domains\ContactRequests\Models\ContactRequest;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface ContactRequestRepositoryInterface
 {
@@ -16,4 +17,8 @@ interface ContactRequestRepositoryInterface
     public function findById(int $id): ?ContactRequest;
 
     public function findByTrackingNumber(string $trackingNumber): ?ContactRequest;
+
+    public function paginateDashboard(?string $search = null, ?string $status = null): LengthAwarePaginator;
+
+    public function markAsRead(int $id): bool;
 }

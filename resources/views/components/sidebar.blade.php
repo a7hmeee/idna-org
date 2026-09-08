@@ -206,6 +206,16 @@
         ];
     }
 
+    if ($can('contact_requests.view')) {
+        $navGroups['الخدمات'][] = [
+            'icon' => 'mail',
+            'label' => 'طلبات الاتصال',
+            'route' => 'dashboard.contact-requests',
+            'permission' => 'contact_requests.view',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.contact-requests'),
+        ];
+    }
+
     // البلدية
     if ($can('municipality.view')) {
         $navGroups['البلدية'][] = [
@@ -273,10 +283,41 @@
         ];
     }
 
+    // المساعد الذكي
+    if ($can('chatbot.view')) {
+        $navGroups['المساعد الذكي'] = [
+            ['icon' => 'bot-message', 'label' => 'لوحة التحكم', 'route' => 'dashboard.chatbot', 'permission' => 'chatbot.view', 'active' => $currentRoute === 'dashboard.chatbot'],
+        ];
+    }
+
+    if ($can('chatbot.conversations.view')) {
+        $navGroups['المساعد الذكي'][] = [
+            'icon' => 'messages-square', 'label' => 'المحادثات', 'route' => 'dashboard.chatbot.conversations', 'permission' => 'chatbot.conversations.view', 'active' => str_starts_with($currentRoute ?? '', 'dashboard.chatbot.conversations'),
+        ];
+    }
+
     // Filter out empty groups
     $navGroups = array_filter($navGroups, fn ($items) => !empty($items));
 
     $bottomItems = [];
+
+    if ($can('login_activity.view')) {
+        $bottomItems[] = [
+            'icon' => 'shield',
+            'label' => 'سجل النشاط',
+            'route' => 'dashboard.login-activity',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.login-activity'),
+        ];
+    }
+
+    if ($can('audit.view')) {
+        $bottomItems[] = [
+            'icon' => 'scroll',
+            'label' => 'سجل التدقيق',
+            'route' => 'dashboard.audit',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.audit'),
+        ];
+    }
 
     if ($can('homepage.slides.view')) {
         $bottomItems[] = [
@@ -284,6 +325,42 @@
             'label' => 'إدارة الكاروسيلات',
             'route' => 'dashboard.carousel-config',
             'active' => str_starts_with($currentRoute ?? '', 'dashboard.page-carousels') || str_starts_with($currentRoute ?? '', 'dashboard.carousel-config'),
+        ];
+    }
+
+    if ($can('navigation.view')) {
+        $bottomItems[] = [
+            'icon' => 'menu',
+            'label' => 'القائمة الرئيسية',
+            'route' => 'dashboard.navigation',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.navigation'),
+        ];
+    }
+
+    if ($can('footer.view')) {
+        $bottomItems[] = [
+            'icon' => 'layout-grid',
+            'label' => 'تذييل الموقع',
+            'route' => 'dashboard.footer',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.footer'),
+        ];
+    }
+
+    if ($can('seo.view')) {
+        $bottomItems[] = [
+            'icon' => 'search',
+            'label' => 'تحسين محركات البحث',
+            'route' => 'dashboard.seo',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.seo'),
+        ];
+    }
+
+    if ($can('website_settings.view')) {
+        $bottomItems[] = [
+            'icon' => 'settings',
+            'label' => 'إعدادات الموقع',
+            'route' => 'dashboard.website-settings',
+            'active' => str_starts_with($currentRoute ?? '', 'dashboard.website-settings'),
         ];
     }
 

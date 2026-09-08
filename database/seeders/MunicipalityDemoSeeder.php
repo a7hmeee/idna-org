@@ -55,11 +55,11 @@ final class MunicipalityDemoSeeder extends Seeder
     private function seedContacts(Municipality $municipality): void
     {
         $contacts = [
-            ['type' => 'phone', 'label' => 'الهاتف الرئيسي', 'value' => '+970-22-123456', 'icon' => 'phone', 'display_order' => 1],
-            ['type' => 'phone', 'label' => 'خدمة العملاء', 'value' => '+970-22-123457', 'icon' => 'headset', 'display_order' => 2],
-            ['type' => 'email', 'label' => 'الاستفسارات العامة', 'value' => 'info@idhna.ps', 'icon' => 'envelope', 'display_order' => 3],
-            ['type' => 'email', 'label' => 'الدعم الفني', 'value' => 'support@idhna.ps', 'icon' => 'life-ring', 'display_order' => 4],
-            ['type' => 'fax', 'label' => 'الفاكس', 'value' => '+970-22-123458', 'icon' => 'fax', 'display_order' => 5],
+            ['type' => 'phone', 'label' => 'الهاتف الرئيسي', 'value' => '022205007', 'icon' => 'phone', 'display_order' => 1],
+            ['type' => 'phone', 'label' => 'خدمة العملاء', 'value' => '022205007', 'icon' => 'headset', 'display_order' => 2],
+            ['type' => 'email', 'label' => 'الاستفسارات العامة', 'value' => 'info@idnamuni.ps', 'icon' => 'envelope', 'display_order' => 3],
+            ['type' => 'email', 'label' => 'الدعم الفني', 'value' => 'support@idnamuni.ps', 'icon' => 'life-ring', 'display_order' => 4],
+            ['type' => 'fax', 'label' => 'الفاكس', 'value' => '022205007', 'icon' => 'fax', 'display_order' => 5],
             ['type' => 'address', 'label' => 'المقر الرئيسي', 'value' => 'إذنا - شارع البلدية الرئيسي - مبنى البلدية', 'icon' => 'map-marker-alt', 'display_order' => 6],
         ];
 
@@ -81,7 +81,7 @@ final class MunicipalityDemoSeeder extends Seeder
             ['name' => 'فيسبوك', 'slug' => 'facebook', 'icon' => 'facebook', 'url' => 'https://facebook.com/idhna.municipality', 'color' => '#1877F2', 'display_order' => 1],
             ['name' => 'تويتر / X', 'slug' => 'x', 'icon' => 'x-twitter', 'url' => 'https://x.com/idhna_muni', 'color' => '#000000', 'display_order' => 2],
             ['name' => 'انستغرام', 'slug' => 'instagram', 'icon' => 'instagram', 'url' => 'https://instagram.com/idhna_municipality', 'color' => '#E4405F', 'display_order' => 3],
-            ['name' => 'واتساب', 'slug' => 'whatsapp', 'icon' => 'whatsapp', 'url' => 'https://wa.me/97022123456', 'color' => '#25D366', 'display_order' => 4],
+            ['name' => 'واتساب', 'slug' => 'whatsapp', 'icon' => 'whatsapp', 'url' => 'https://wa.me/22205007', 'color' => '#25D366', 'display_order' => 4],
         ];
 
         foreach ($platforms as $data) {

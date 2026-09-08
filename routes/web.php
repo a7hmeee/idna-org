@@ -12,15 +12,20 @@ use App\Livewire\Admin\Chatbot\SearchTermManager;
 use App\Livewire\Admin\Chatbot\UnknownQuestionsManager;
 use App\Livewire\Announcements\PublicAnnouncementShow;
 use App\Livewire\Announcements\PublicAnnouncementsIndex;
+use App\Livewire\Audit\AuditIndex;
 use App\Livewire\Auth\ChangePassword;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\ResetPassword;
+use App\Livewire\Authentication\LoginActivityIndex;
 use App\Livewire\Chatbot\ChatbotPage;
+use App\Livewire\Chatbot\ConversationBrowser;
 use App\Livewire\Complaints\ComplaintForm;
 use App\Livewire\Complaints\ComplaintsIndex;
 use App\Livewire\Complaints\PublicComplaintForm;
 use App\Livewire\Complaints\PublicComplaintTracking;
+use App\Livewire\ContactRequests\ContactRequestShow;
+use App\Livewire\ContactRequests\ContactRequestsIndex;
 use App\Livewire\Council\PublicCouncilDecisionShow;
 use App\Livewire\Council\PublicCouncilDecisionsIndex;
 use App\Livewire\Council\PublicCouncilMemberProfile;
@@ -46,6 +51,7 @@ use App\Livewire\EngineeringOffices\EngineeringOfficeShow;
 use App\Livewire\EngineeringOffices\EngineeringOfficesIndex;
 use App\Livewire\EngineeringOffices\PublicEngineeringOfficeShow;
 use App\Livewire\EngineeringOffices\PublicEngineeringOfficesIndex;
+use App\Livewire\Footer\FooterIndex;
 use App\Livewire\Homepage\HomepageDashboard;
 use App\Livewire\Homepage\HomepageQuickLinkForm;
 use App\Livewire\Homepage\HomepageQuickLinksIndex;
@@ -56,6 +62,7 @@ use App\Livewire\Homepage\HomepageSlidesIndex;
 use App\Livewire\Homepage\HomepageStatisticForm;
 use App\Livewire\Homepage\HomepageStatisticsIndex;
 use App\Livewire\Homepage\PublicHomePage;
+use App\Livewire\Jobs\EmploymentTypeLabelManager;
 use App\Livewire\Jobs\JobForm;
 use App\Livewire\Jobs\JobsIndex;
 use App\Livewire\Jobs\PublicJobShow;
@@ -76,10 +83,12 @@ use App\Livewire\Municipality\MunicipalityMedia;
 use App\Livewire\Municipality\MunicipalityPlatforms;
 use App\Livewire\Municipality\MunicipalitySocial;
 use App\Livewire\Municipality\PublicMunicipalityAbout;
+use App\Livewire\Navigation\NavigationIndex;
 use App\Livewire\News\NewsForm;
 use App\Livewire\News\NewsIndex;
 use App\Livewire\News\PublicNewsIndex;
 use App\Livewire\News\PublicNewsShow;
+use App\Livewire\Notifications\NotificationCenter;
 use App\Livewire\OpenData\Admin\OpenDataAdminForm;
 use App\Livewire\OpenData\Admin\OpenDataAdminIndex;
 use App\Livewire\OpenData\OpenDataIndex;
@@ -97,6 +106,7 @@ use App\Livewire\PublicFacilities\FacilityForm;
 use App\Livewire\PublicFacilities\PublicFacilitiesIndex;
 use App\Livewire\PublicFacilities\PublicFacilityShow;
 use App\Livewire\Roles\RoleIndex;
+use App\Livewire\Seo\SeoIndex;
 use App\Livewire\Tenders\PublicTenderShow;
 use App\Livewire\Tenders\PublicTendersIndex;
 use App\Livewire\Tenders\TenderForm;
@@ -108,6 +118,8 @@ use App\Livewire\WaterSchedule\WaterAreasIndex;
 use App\Livewire\WaterSchedule\WaterMaintenanceForm;
 use App\Livewire\WaterSchedule\WaterMaintenanceIndex;
 use App\Livewire\WaterSchedule\WaterScheduleDashboard;
+use App\Livewire\WaterSchedule\WaterStatusLabelManager;
+use App\Livewire\WebsiteSettings\SettingsManager;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -549,6 +561,66 @@ Route::middleware('auth')->group(function (): void {
         Route::get('dashboard/chatbot/unknown-questions', UnknownQuestionsManager::class)->name('admin.chatbot.unknown-questions');
         Route::get('dashboard/chatbot/performance', PerformanceMonitor::class)->name('admin.chatbot.performance');
         Route::get('dashboard/chatbot/search-terms', SearchTermManager::class)->name('admin.chatbot.search-terms');
+    });
+
+    // Contact Requests
+    Route::middleware('permission:contact_requests.view')->group(function (): void {
+        Route::get('dashboard/contact-requests', ContactRequestsIndex::class)->name('dashboard.contact-requests');
+    });
+
+    // Login Activity
+    Route::middleware('permission:login_activity.view')->group(function (): void {
+        Route::get('dashboard/login-activity', LoginActivityIndex::class)->name('dashboard.login-activity');
+    });
+
+    // Navigation Management
+    Route::middleware('permission:navigation.view')->group(function (): void {
+        Route::get('dashboard/navigation', NavigationIndex::class)->name('dashboard.navigation');
+    });
+
+    // Footer Management
+    Route::middleware('permission:footer.view')->group(function (): void {
+        Route::get('dashboard/footer', FooterIndex::class)->name('dashboard.footer');
+    });
+
+    // SEO Settings
+    Route::middleware('permission:seo.view')->group(function (): void {
+        Route::get('dashboard/seo', SeoIndex::class)->name('dashboard.seo');
+    });
+
+    // Notifications
+    Route::middleware('permission:notifications.view')->group(function (): void {
+        Route::get('dashboard/notifications', NotificationCenter::class)->name('dashboard.notifications');
+    });
+
+    // Audit Log
+    Route::middleware('permission:audit.view')->group(function (): void {
+        Route::get('dashboard/audit', AuditIndex::class)->name('dashboard.audit');
+    });
+
+    // Chatbot Conversations
+    Route::middleware('permission:chatbot.conversations.view')->group(function (): void {
+        Route::get('dashboard/chatbot/conversations', ConversationBrowser::class)->name('dashboard.chatbot.conversations');
+    });
+
+    // Water Status Labels
+    Route::middleware('permission:water.update')->group(function (): void {
+        Route::get('dashboard/water-schedule/labels', WaterStatusLabelManager::class)->name('dashboard.water-schedule.labels');
+    });
+
+    // Employment Type Labels
+    Route::middleware('permission:jobs.update')->group(function (): void {
+        Route::get('dashboard/jobs/employment-types', EmploymentTypeLabelManager::class)->name('dashboard.jobs.employment-types');
+    });
+
+    // Website Settings
+    Route::middleware('permission:website_settings.view')->group(function (): void {
+        Route::get('dashboard/website-settings', SettingsManager::class)->name('dashboard.website-settings');
+    });
+
+    // Contact Request Detail
+    Route::middleware('permission:contact_requests.view')->group(function (): void {
+        Route::get('dashboard/contact-requests/{contactRequest}', ContactRequestShow::class)->name('dashboard.contact-requests.show');
     });
 
     // Debug-only routes — blocked in production

@@ -17,10 +17,24 @@ final readonly class EloquentJobRepository implements JobRepositoryInterface
         private Job $model,
     ) {}
 
-    public function paginateDashboard(): LengthAwarePaginator
+    public function paginateDashboard(?string $search = null, ?string $status = null): LengthAwarePaginator
     {
-        return $this->model
-            ->with(['department', 'creator', 'updater'])
+        $query = $this->model
+            ->with(['department', 'creator', 'updater']);
+
+        if ($search) {
+            $query->where(function ($q) use ($search): void {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('job_number', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        return $query
             ->orderBy('publish_at', 'desc')
             ->paginate(15);
     }

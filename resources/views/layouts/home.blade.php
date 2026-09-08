@@ -4,16 +4,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $title ?? $municipalityName ?? 'البلدية' }}</title>
-    <meta name="description" content="{{ $metaDescription ?? '' }}">
-    <link rel="canonical" href="{{ url()->current() }}">
+    @php
+        $seoTitle = $seo?->title ?? ($title ?? $municipalityName ?? 'البلدية');
+        $seoDescription = $seo?->meta_description ?? ($metaDescription ?? '');
+        $seoOgTitle = $seo?->og_title ?? ($ogTitle ?? $seoTitle);
+        $seoOgDescription = $seo?->og_description ?? ($ogDescription ?? $seoDescription);
+        $seoOgImage = $seo?->og_image ?? ($logoUrl ?? '');
+        $seoRobots = $seo?->robots ?? 'index,follow';
+        $seoAuthor = $seo?->author ?? '';
+        $seoCanonical = $seo?->canonical_url ?? url()->current();
+        $seoTwitterTitle = $seo?->twitter_title ?? $seoOgTitle;
+        $seoTwitterDescription = $seo?->twitter_description ?? $seoOgDescription;
+        $seoTwitterImage = $seo?->twitter_image ?? $seoOgImage;
+    @endphp
 
-    <meta property="og:title" content="{{ $ogTitle ?? ($title ?? $municipalityName ?? 'البلدية') }}">
-    <meta property="og:description" content="{{ $ogDescription ?? $metaDescription ?? '' }}">
+    <title>{{ $seoTitle }}</title>
+    <meta name="description" content="{{ $seoDescription }}">
+    @if ($seoAuthor)
+        <meta name="author" content="{{ $seoAuthor }}">
+    @endif
+    <meta name="robots" content="{{ $seoRobots }}">
+    <link rel="canonical" href="{{ $seoCanonical }}">
+
+    <meta property="og:title" content="{{ $seoOgTitle }}">
+    <meta property="og:description" content="{{ $seoOgDescription }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    @if (!empty($logoUrl))
-    <meta property="og:image" content="{{ $logoUrl }}">
+    @if ($seoOgImage)
+        <meta property="og:image" content="{{ $seoOgImage }}">
+    @endif
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTwitterTitle }}">
+    <meta name="twitter:description" content="{{ $seoTwitterDescription }}">
+    @if ($seoTwitterImage)
+        <meta name="twitter:image" content="{{ $seoTwitterImage }}">
     @endif
 
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -107,6 +132,7 @@
             'socialPlatforms' => $socialPlatforms ?? [],
             'portalUrl' => $portalUrl ?? '',
             'sectionKeys' => $sectionKeys ?? [],
+            'footerItems' => $footerItems ?? [],
         ])
     @endunless
 

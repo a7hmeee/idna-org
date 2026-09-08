@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domains\SharedKernel\Services;
 
 use App\Domains\Municipality\Contracts\MunicipalityRepositoryInterface;
-use App\Domains\Municipality\Models\Municipality;
 use App\Domains\SharedKernel\Enums\MediaCollection;
 use App\Domains\SharedKernel\Models\Media;
 

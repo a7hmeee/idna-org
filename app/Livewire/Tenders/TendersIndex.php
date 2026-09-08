@@ -101,7 +101,10 @@ final class TendersIndex extends Component
 
     public function render()
     {
-        $tenders = app(TenderRepositoryInterface::class)->paginateDashboard();
+        $tenders = app(TenderRepositoryInterface::class)->paginateDashboard(
+            search: $this->search ?: null,
+            status: $this->status ?: null,
+        );
 
         return view('livewire.tenders.tenders-index', [
             'tenders' => $tenders,

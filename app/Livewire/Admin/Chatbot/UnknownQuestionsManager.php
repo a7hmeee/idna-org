@@ -25,11 +25,19 @@ final class UnknownQuestionsManager extends Component
 
     public function updatedStatusFilter(): void
     {
+        if (! auth()->user()->can('chatbot.unknown-questions')) {
+            abort(403);
+        }
+
         $this->resetPage();
     }
 
     public function openUpdate(int $id): void
     {
+        if (! auth()->user()->can('chatbot.unknown-questions')) {
+            abort(403);
+        }
+
         $this->updatingId = $id;
         $this->adminNotes = '';
         $this->newStatus = 'reviewed';
@@ -42,6 +50,10 @@ final class UnknownQuestionsManager extends Component
 
     public function updateStatus(UnknownQuestionRepositoryInterface $repository): void
     {
+        if (! auth()->user()->can('chatbot.unknown-questions')) {
+            abort(403);
+        }
+
         if ($this->updatingId === null) {
             return;
         }
@@ -63,6 +75,10 @@ final class UnknownQuestionsManager extends Component
 
     public function render(UnknownQuestionRepositoryInterface $repository): View
     {
+        if (! auth()->user()->can('chatbot.unknown-questions')) {
+            abort(403);
+        }
+
         $questions = $repository->getAll($this->statusFilter, 20);
 
         return view('livewire.admin.chatbot.unknown-questions-manager', [

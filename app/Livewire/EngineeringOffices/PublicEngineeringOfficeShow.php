@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\EngineeringOffices;
 
 use App\Domains\EngineeringOffices\Contracts\EngineeringOfficeRepositoryInterface;
@@ -22,6 +24,10 @@ final class PublicEngineeringOfficeShow extends Component
         $office = $repo->findBySlug($this->officeSlug);
 
         if (! $office) {
+            abort(404);
+        }
+
+        if (! $office->is_public || $office->status !== 'active') {
             abort(404);
         }
 

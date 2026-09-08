@@ -101,7 +101,10 @@ final class JobsIndex extends Component
 
     public function render()
     {
-        $jobs = app(JobRepositoryInterface::class)->paginateDashboard();
+        $jobs = app(JobRepositoryInterface::class)->paginateDashboard(
+            search: $this->search ?: null,
+            status: $this->status ?: null,
+        );
 
         return view('livewire.jobs.jobs-index', [
             'jobs' => $jobs,

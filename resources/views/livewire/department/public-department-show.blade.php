@@ -12,6 +12,19 @@
         'compact' => true,
     ])
 
+    {{-- ============================================ --}}
+    {{-- 2. DEPARTMENT COVER IMAGE --}}
+    {{-- ============================================ --}}
+    @if ($department->cover_image_url)
+        <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" style="margin-top:16px;">
+            <div style="border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.08);">
+                <img src="{{ $department->cover_image_url }}" alt="{{ $department->name }}"
+                     style="width:100%;height:320px;object-fit:cover;display:block;"
+                     loading="lazy">
+            </div>
+        </div>
+    @endif
+
     {{-- Department info badges moved below carousel --}}
     <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" style="margin-top:-8px;position:relative;z-index:15;">
         <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 0;">
@@ -146,9 +159,16 @@
                     {{-- Info Card --}}
                     <div style="background:white;border-radius:16px;border:1px solid #F3F4F6;overflow:hidden;">
                         <div style="padding:24px;text-align:center;background:linear-gradient(135deg,rgba(15,106,61,0.04),rgba(15,106,61,0.08));">
-                            <div style="width:64px;height:64px;border-radius:16px;background:#0F6A3D;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-                                <i data-lucide="{{ $department->icon ?? 'building-2' }}" style="width:28px;height:28px;color:white;"></i>
-                            </div>
+                            @if ($department->cover_image_url)
+                                <div style="width:64px;height:64px;border-radius:16px;overflow:hidden;margin:0 auto 12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+                                    <img src="{{ $department->cover_image_url }}" alt="{{ $department->name }}"
+                                         style="width:100%;height:100%;object-fit:cover;display:block;">
+                                </div>
+                            @else
+                                <div style="width:64px;height:64px;border-radius:16px;background:#0F6A3D;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+                                    <i data-lucide="{{ $department->icon ?? 'building-2' }}" style="width:28px;height:28px;color:white;"></i>
+                                </div>
+                            @endif
                             <h3 style="font-size:15px;font-weight:800;color:#1F2937;margin:0;">{{ $department->name }}</h3>
                             @if ($department->manager_position)
                                 <p style="font-size:12px;color:#6B7280;margin:4px 0 0;">{{ $department->manager_position }}</p>

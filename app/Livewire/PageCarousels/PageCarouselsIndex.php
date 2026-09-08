@@ -87,10 +87,6 @@ final class PageCarouselsIndex extends Component
             ['path' => request()->url(), 'query' => request()->query()]
         );
 
-        $debug = 'allSlides='.$allSlides->count().' | items='.$items->count();
-
-        session()->flash('debug', $debug);
-
         return view('livewire.page-carousels.page-carousels-index', [
             'slides' => $slides,
         ]);

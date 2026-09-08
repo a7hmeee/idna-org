@@ -1,3 +1,11 @@
+@php
+    $facebookEnabled = App\Domains\WebsiteSettings\Models\WebsiteSetting::get('facebook_enabled', true);
+    $facebookPageUrl = App\Domains\WebsiteSettings\Models\WebsiteSetting::get('facebook_page_url', 'https://www.facebook.com/100064888802457/');
+    $facebookWidth = App\Domains\WebsiteSettings\Models\WebsiteSetting::get('facebook_plugin_width', '500');
+    $facebookHeight = App\Domains\WebsiteSettings\Models\WebsiteSetting::get('facebook_plugin_height', '1100');
+@endphp
+
+@if ($facebookEnabled)
 <section id="facebook-feed" class="section-py bg-white overflow-hidden">
     <div class="container-home">
         {{-- Section header — centered --}}
@@ -19,7 +27,7 @@
             </p>
 
             {{-- Visit button --}}
-            <a href="https://www.facebook.com/100064888802457/"
+            <a href="{{ $facebookPageUrl }}"
                target="_blank"
                rel="noopener noreferrer"
                aria-label="زيارة صفحة بلدية إذنا على فيسبوك"
@@ -78,10 +86,10 @@
 
             {{-- Facebook Page Plugin --}}
             <div class="fb-page"
-                 data-href="https://www.facebook.com/100064888802457/"
+                 data-href="{{ $facebookPageUrl }}"
                  data-tabs="timeline"
-                 data-width="500"
-                 data-height="1100"
+                 data-width="{{ $facebookWidth }}"
+                 data-height="{{ $facebookHeight }}"
                  data-small-header="true"
                  data-adapt-container-width="true"
                  data-hide-cover="true"
@@ -121,3 +129,4 @@
         @endpush
     @endonce
 </section>
+@endif
