@@ -8,17 +8,13 @@ use App\Domains\Announcements\Enums\AnnouncementPriority;
 use App\Domains\Announcements\Enums\AnnouncementStatus;
 use App\Domains\Announcements\Enums\AnnouncementType;
 use App\Domains\Announcements\Models\Announcement;
-use App\Domains\Department\Models\Department;
 use App\Domains\Homepage\Models\HomepageQuickLink;
 use App\Domains\Homepage\Models\HomepageSection;
 use App\Domains\Homepage\Models\HomepageSetting;
 use App\Domains\Homepage\Models\HomepageStatistic;
 use App\Domains\Municipality\Enums\CouncilDecisionStatus;
 use App\Domains\Municipality\Enums\CouncilDecisionType;
-use App\Domains\Municipality\Enums\CouncilMemberPosition;
-use App\Domains\Municipality\Enums\CouncilMemberStatus;
 use App\Domains\Municipality\Models\CouncilDecision;
-use App\Domains\Municipality\Models\CouncilMember;
 use App\Domains\Municipality\Models\Municipality;
 use App\Domains\Municipality\Models\MunicipalityContact;
 use App\Domains\Municipality\Models\MunicipalityCustomField;
@@ -35,7 +31,6 @@ use App\Domains\SharedKernel\Models\EmergencyContact;
 use App\Domains\WaterSchedule\Models\WaterArea;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 /**
  * Comprehensive data seeder based on Idna Municipality Magazine 2022-2026.
@@ -67,9 +62,9 @@ final class IdnaMagazineSeeder extends Seeder
             $this->seedHomepageSections();
             $this->seedHomepageStatistics();
             $this->seedHomepageQuickLinks();
-            $this->seedCouncilMembersHistorical();
+            $this->call(CouncilMemberSeeder::class);
             $this->seedCouncilDecisionsHistorical();
-            $this->seedDepartments();
+            $this->call(DepartmentSeeder::class);
             $this->seedRoadProjects2022();
             $this->seedRoadProjects2023();
             $this->seedRoadProjects2024();
@@ -329,145 +324,6 @@ final class IdnaMagazineSeeder extends Seeder
         }
     }
 
-    // ─── COUNCIL MEMBERS (HISTORICAL - 2022-2026 Term) ───────────────────
-
-    private function seedCouncilMembersHistorical(): void
-    {
-        CouncilMember::query()->forceDelete();
-
-        $members = [
-            [
-                'full_name' => 'نمر إسليمية',
-                'position' => CouncilMemberPosition::Mayor->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 1,
-                'is_public' => true,
-                'is_featured' => true,
-            ],
-            [
-                'full_name' => 'عبدالرحمن نمر اسليمية',
-                'position' => CouncilMemberPosition::CouncilMember->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 2,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'full_name' => 'خالد اسماعيل النتشة',
-                'position' => CouncilMemberPosition::CouncilMember->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 3,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'full_name' => 'عماد الدين عبد الله نمر',
-                'position' => CouncilMemberPosition::CouncilMember->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 4,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'full_name' => 'بلال عبد القادر النتشة',
-                'position' => CouncilMemberPosition::CouncilMember->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 5,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'full_name' => 'حسين محمود فراحنة',
-                'position' => CouncilMemberPosition::CouncilMember->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 6,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'full_name' => 'ماهر عبدالفتاح نمر',
-                'position' => CouncilMemberPosition::CouncilMember->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 7,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'full_name' => 'ACCOUNT_REDACTED',
-                'position' => CouncilMemberPosition::CouncilMember->value,
-                'qualification' => null,
-                'profession' => null,
-                'bio' => null,
-                'term_start' => '2022-01-01',
-                'term_end' => '2026-12-31',
-                'years_of_experience' => null,
-                'committee' => null,
-                'status' => CouncilMemberStatus::Former->value,
-                'display_order' => 8,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-        ];
-
-        foreach ($members as $member) {
-            CouncilMember::updateOrCreate(
-                ['slug' => Str::slug($member['full_name'])],
-                $member,
-            );
-        }
-
-        $this->command->info('Council members seeded (historical - 2022-2026 term).');
-    }
-
     // ─── COUNCIL DECISIONS (HISTORICAL) ──────────────────────────────────
 
     private function seedCouncilDecisionsHistorical(): void
@@ -498,129 +354,6 @@ final class IdnaMagazineSeeder extends Seeder
         }
 
         $this->command->info('Council decisions seeded (historical).');
-    }
-
-    // ─── DEPARTMENTS ─────────────────────────────────────────────────────
-
-    private function seedDepartments(): void
-    {
-        Department::query()->forceDelete();
-
-        $departments = [
-            [
-                'name' => 'الهندسة والتنظيم',
-                'short_description' => 'دائرة الهندسة والتنظيم مسؤولة عن المشاريع الهندسية والترخيصات والتنظيم العمراني.',
-                'description' => 'تتولى دائرة الهندسة والتنظيم الإشراف على المشاريع الهندسية وإصدار تراخيص البناء ومتابعة المشاريع العمرانية والبنية التحتية في مدينة إذنا.',
-                'icon' => 'building-2',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 1,
-                'is_public' => true,
-                'is_featured' => true,
-            ],
-            [
-                'name' => 'الشؤون الإدارية والمالية',
-                'short_description' => 'الدائرة المسؤولة عن الشؤون الإدارية والمالية والموارد البشرية.',
-                'description' => 'تتولى إدارة الشؤون الإدارية والمالية للموظفين والحسابات والميزانيات.',
-                'icon' => 'calculator',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 2,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'name' => 'المياه والصرف الصحي',
-                'short_description' => 'الدائرة المسؤولة عن شبكة المياه والصرف الصحي والخدمات المائية.',
-                'description' => 'تتولى إدارة وصيانة شبكة المياه التي تتجاوز 110 كم ونحو 140 محبس مياه، فضلاً عن العمل على مخطط شامل للصرف الصحي.',
-                'icon' => 'tint',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 3,
-                'is_public' => true,
-                'is_featured' => true,
-            ],
-            [
-                'name' => 'البيئة والنظافة',
-                'short_description' => 'الدائرة المسؤولة عن النظافة العامة وإدارة النفايات والبيئة.',
-                'description' => 'تتولى إدارة النفايات الصلبة والنظافة العامة والحفاظ على البيئة. تشمل عضويته في مجلس إدارة المجلس المشترك لإدارة النفايات الصلبة.',
-                'icon' => 'leaf',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 4,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'name' => 'الشؤون القانونية',
-                'short_description' => 'الدائرة المسؤولة عن الشؤون القانونية والقضائية والContractات.',
-                'description' => 'تتولى الشؤون القانونية لبلدية إذنا. سجلت 46 قضية عمالية و46 قضية حقوقية وجزائية و104 اعتراضات في محكمة تسوية الخليل و94 ملفاً وارداً للاستشارة القانونية.',
-                'icon' => 'gavel',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 5,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'name' => 'العلاقات العامة والإعلام',
-                'short_description' => 'الدائرة المسؤولة عن العلاقات العامة والإعلام والنشر.',
-                'description' => 'تتولى العلاقات العامة والإعلام والتواصل مع الجمهور والمجتمع المحلي.',
-                'icon' => 'bullhorn',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 6,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'name' => 'تقنية المعلومات',
-                'short_description' => 'الدائرة المسؤولة عن البنية التحتية لتكنولوجيا المعلومات والأنظمة الإلكترونية.',
-                'description' => 'تتولى إدارة الأنظمة الإلكترونية والبنية التحتية لتكنولوجيا المعلومات. تشمل إطلاق بوابة المواطن الإلكترونية وتطوير مركز خدمات الجمهور ونظام التنبيهات الرقمية وتحديث غرفة الخوادم.',
-                'icon' => 'laptop-code',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 7,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-            [
-                'name' => 'الموارد البشرية',
-                'short_description' => 'الدائرة المسؤولة عن شؤون الموظفين والتوظيف والعقود.',
-                'description' => 'تتولى إدارة شؤون 96 موظفاً تشمل 23 موظفاً بعقود سنوية و37 موظفاً مثبتاً ومصنفاً و17 موظف مياومة و11 موظفاً متقاعدأ و12 موظفاً ضمن المركز المجتمعي و70 عقد تشغيل مؤقت لموظفي الصحة.',
-                'icon' => 'users',
-                'phone' => null,
-                'email' => null,
-                'working_hours' => 'الأحد - الخميس: 7:30 صباحاً - 2:30 مساءً',
-                'status' => 'active',
-                'display_order' => 8,
-                'is_public' => true,
-                'is_featured' => false,
-            ],
-        ];
-
-        foreach ($departments as $dept) {
-            Department::updateOrCreate(
-                ['name' => $dept['name']],
-                $dept,
-            );
-        }
-
-        $this->command->info('Departments seeded.');
     }
 
     // ─── ROAD PROJECTS 2022 ──────────────────────────────────────────────
