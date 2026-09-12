@@ -26,7 +26,8 @@ final class DatabaseSeeder extends Seeder
                 EngineeringOfficeSeeder::class,
                 TenderSeeder::class,
                 ComplaintSeeder::class,
-                PublicFacilitySeeder::class,
+                FacilityCategorySeeder::class,
+                FacilitySeeder::class,
             ]);
         }
     }

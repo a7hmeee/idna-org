@@ -26,7 +26,10 @@ return new class extends Migration
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->index(['chat_intent_id', 'is_active', 'is_verified']);
+                $table->index(
+                    ['chat_intent_id', 'is_active', 'is_verified'],
+                    'chat_training_examples_intent_active_verified_idx',
+                );
                 $table->index('locale');
                 $table->index('source');
                 $table->unique(['normalized_text', 'chat_intent_id'], 'unique_active_example');
